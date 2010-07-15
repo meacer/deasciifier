@@ -1,0 +1,7 @@
+#summary Turkish Text Deasciifier
+
+= Introduction =
+
+See the live webpage here: http://turkce-karakter.appspot.com
+
+The source code will be made available soon.
