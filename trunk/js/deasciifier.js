@@ -269,7 +269,7 @@ Deasciifier.prototype = {
   turkish_correct_last_word:function(text) {
     
     this.text = text;
-    var end = this.text.length-1;
+    var end = this.text.length;
     var start = 0;
     // TODO: We find the last word by looking at spaces. Periods
     // and line breaks also make new words. Check them too.
@@ -291,7 +291,7 @@ Deasciifier.prototype = {
       return text;
     }
     this.text = text;
-    this.turkish_correct_region(0, text.length-1);
+    this.turkish_correct_region(0, text.length);
     return this.text;
   }
 };
