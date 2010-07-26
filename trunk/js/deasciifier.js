@@ -138,7 +138,7 @@ Deasciifier.prototype = {
   },
 
   turkish_correct_region:function(start, end) {
-    for (var i=start; i<end; i++) {
+    for (var i=start; i<=end; i++) {
       if (this.turkish_need_correction(i)) {
         this.turkish_toggle_accent(i);
       }
@@ -269,14 +269,14 @@ Deasciifier.prototype = {
   turkish_correct_last_word:function(text) {
     
     this.text = text;
-    var end = this.text.length;
+    var end = this.text.length-1;
     var start = 0;
     // TODO: We find the last word by looking at spaces. Periods
     // and line breaks also make new words. Check them too.
     if (this.text.charAt(end)==' ') {
-      start = this.text.lastIndexOf(' ', end-1);
+      start = this.text.lastIndexOf(' ', end-2);
     } else {
-      start = this.text.lastIndexOf(' ', end);
+      start = this.text.lastIndexOf(' ', end-1);
     }
     this.turkish_correct_region(start, end);
     return this.text;
@@ -291,7 +291,7 @@ Deasciifier.prototype = {
       return text;
     }
     this.text = text;
-    this.turkish_correct_region(0, text.length);
+    this.turkish_correct_region(0, text.length-1);
     return this.text;
   }
 };
