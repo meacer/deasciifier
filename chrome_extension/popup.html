@@ -1,0 +1,38 @@
+﻿<html>
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+<style>
+#page { margin: 5px }
+#msg { white-space: nowrap; font-family:Verdana, Sans Serif; font-size:10pt; overflow:visible }
+#info{ font-size:8pt; color:#aaa; font-family: Tahoma; white-space: nowrap; float:right}
+#info a { color: #999; text-decoration: none}
+#info a:hover { color: #99f; text-decoration: underline}
+</style>
+<body style="background: #eee">
+<div id="page">
+  <div id="msg">
+  </div>
+  <div id="info">
+    <a href="https://chrome.google.com/extensions/detail/nhfdmlgglfmcdheoabgklabmgjklgofk" target="_blank">Chrome Eklentisi</a> | 
+    <a href="http://turkce-karakter.appspot.com" target="_blank">Web Sayfas&#305;</a>
+  </div>
+</div>
+<script>
+var msg = document.getElementById("msg");
+window.onload = function() {
+  msg.visibility = "hidden";
+  var bg = chrome.extension.getBackgroundPage();
+  bg.ConvertTurkishChars();
+  setTimeout(
+    function(){
+      var result = bg.getDeasciifyResult();
+      if (result) {
+        msg.innerText = result;
+        msg.visibility = "visible";
+      }
+    },100
+  );
+}
+</script>
+</body>
+</html>

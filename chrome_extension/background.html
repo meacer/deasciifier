@@ -1,0 +1,63 @@
+<html>
+<head>
+<script src="deasciifier.js"></script>
+<script>
+// Deasciifier
+var deasciifier = new Deasciifier();
+
+var deasciifyResult = "";
+function getDeasciifyResult() {
+  return deasciifyResult;
+}
+var currentTabId = null;
+function ConvertTurkishChars() {
+
+  // Get the current tab:  
+  chrome.tabs.getSelected(null, function(tab) {
+    
+    currentTabId = tab.id;
+    console.log("Current tab: " + currentTabId);
+    deasciifyResult = "T\u00FCrk\u00E7e karakterleri \u00E7evirmek i\u00E7in bir metin kutusu se\u00E7in.";
+
+    // Connect to the tab
+    var port = chrome.tabs.connect(currentTabId);
+    port.onMessage.addListener(function (msg) {
+      console.log("onMessage");
+      if (msg.message=="TEXT_TO_DEASCIIFY") {
+        // Deasciify the text
+        var text = msg.text;
+        var deasciifiedText = deasciifier.deasciify(text);
+        deasciifyResult = deasciifier.num_toggled_chars + " karakter de\u011Fi\u015Ftirildi";
+        
+        // Send back the deasciified text:
+        port.postMessage({message:"DEASCIIFIED_TEXT", text:deasciifiedText});
+        
+        // Show some information on the extension icon:
+        chrome.browserAction.setBadgeText({
+          'text':''+deasciifier.num_toggled_chars,
+          'tabId':currentTabId
+        });
+        chrome.browserAction.setTitle({
+          'title':deasciifier.num_toggled_chars+" karakter de\u011Fi\u015Ftirildi",
+          'tabId':currentTabId
+        });
+        port.disconnect();
+      }
+    });
+    console.log(port);
+    // Request the text to deasciify
+    port.postMessage({message: "REQUEST_TEXT"});  
+  });
+}
+function init() {
+  chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+  chrome.browserAction.setIcon({path: "icon19.png"});     
+}
+// Called when the user clicks on the browser action.
+/*chrome.browserAction.onClicked.addListener(function(tab) {
+  ConvertTurkishChars();
+});*/
+</script>
+</head>
+<body onload="init()"></body>
+</html>
