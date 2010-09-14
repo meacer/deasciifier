@@ -138,7 +138,8 @@ Deasciifier.prototype = {
   },
 
   turkish_correct_region:function(start, end) {
-    for (var i=start; i<end; i++) {
+    this.num_toggled_chars = 0;
+    for (var i=start; i<=end; i++) {
       if (this.turkish_need_correction(i)) {
         this.turkish_toggle_accent(i);
       }
@@ -152,7 +153,8 @@ Deasciifier.prototype = {
       // We cannot directly set the character in JS like this:
       // this.text[pos] = alt      
       // So we do this:
-      this.text = this.setCharAt(this.text, pos, alt);      
+      this.text = this.setCharAt(this.text, pos, alt);
+      this.num_toggled_chars++;      
       // TODO: put the string as an array we can manipulate
       // chars directly.
     }
@@ -165,8 +167,7 @@ Deasciifier.prototype = {
       tr = ch;
     }
     var pl = this.turkish_pattern_table[tr.toLowerCase()];  // Pattern list    
-    var m = pl && this.turkish_match_pattern(pos, pl);  // match
-    
+    var m = pl && this.turkish_match_pattern(pos, pl);  // match    
     // if m then char should turn into turkish else stay ascii
     // only exception with capital I when we need the reverse
     if (tr=="I") {
@@ -180,23 +181,22 @@ Deasciifier.prototype = {
   turkish_match_pattern:function(pos, dlist) { // dlist: decision list
     
     var rank = dlist.length * 2;
-    var str = this.turkish_get_context(pos, this.turkish_context_size);
-    
+    var str = this.turkish_get_context(pos, this.turkish_context_size);    
     var start = 0, s, r;
     var len = str.length;
     
     while (start<=this.turkish_context_size) {
       var end = this.turkish_context_size + 1;      
       while (end<=len) {
-        s = str.substring(start, end);  // TODO: Check against lisp substring
+        s = str.substring(start, end);
         r = dlist[s]; // lookup the pattern
         if (r && Math.abs(r)<Math.abs(rank)) {
           rank = r;
         }
         end++;        
-      } // while (end<=len) 
+      }
       start++;
-    } // while (start<=this.turkish_context_size)
+    }
     return rank>0;
   },
   
@@ -208,61 +208,56 @@ Deasciifier.prototype = {
   
   turkish_get_context:function(pos, size) {
     
-    var s = "",c,x,space;
-    
-    var string_size = 2*size + 1;
-    for (var i=0; i<string_size; i++) { // make-string
+    var s='', space=false, c,x;
+    var string_size = 2*size+1;    
+    for (var j=0; j<string_size; j++) { // make-string
       s = s + ' ';
     }
     s = this.setCharAt(s, size, 'X');
-    
     var i = size+1;
-    var current_char = pos;
-    while (i<s.length && 
-      current_char<this.text.length-1 && 
-      this.text.charAt(current_char)!=' ') {
-      current_char++;
-      c = this.text.charAt(current_char);
-      x = this.turkish_downcase_asciify_table[c]; // get the lowercase version
-      
-      space = (c==' ');
+    var index = pos+1;    
+    while (i<s.length && !space && index<this.text.length) {
+      c = this.text.charAt(index);
+      x = this.turkish_downcase_asciify_table[c];
       if (!x) {
         if (space) {
           i++;
         } else {
-          //space = true;
-          s = this.setCharAt(s,i,' ');
+          space = true;
         }
       } else {
         s = this.setCharAt(s, i, x);
-      }
-      i++;
-      space = false;      
-    } // while (i<s.length && s[current_char]!=' ')
+        space = false;
+        }
+      i++; // this is not the way it's done in turkish-mode, i++ is inside else        
+      //}
+      index++;
+    } // while (i<s.length && s[index]!=' ')
     s = s.substring(0,i);
     
-    current_char = pos; // goto_char(p);
+    index = pos; // goto_char(p);
     i = size-1;
     space = false;
-    while (i>=0 && current_char>0) {
-      current_char--;
-      c = this.text.charAt(current_char);
-      x = this.turkish_upcase_accents_table[c]; // get the uppercase version
-      space = (c==' ');
+    
+    index--;
+    //while (i>=0 && index>0) {
+    while (i>=0 && index>=0) {      
+      c = this.text.charAt(index);
+      x = this.turkish_upcase_accents_table[c];
       if (!x) {
         if (space) {
-          i--;
-        } else {
-          //space = true;
-          s = this.setCharAt(s,i,' ');
+          i--; 
+        } else {        
+          space = true;
         }
       } else {
         s = this.setCharAt(s, i, x);
-      }
-      i--;
-      space = false;      
+        space = false;
+        }
+      i--; // this is not the way it's done in turkish-mode, i-- is inside else
+      //}
+      index--;
     } // while (i>=0)
-    
     return s;
   },
   
@@ -274,9 +269,9 @@ Deasciifier.prototype = {
     // TODO: We find the last word by looking at spaces. Periods
     // and line breaks also make new words. Check them too.
     if (this.text.charAt(end)==' ') {
-      start = this.text.lastIndexOf(' ', end-1);
+      start = this.text.lastIndexOf(' ', end-2);
     } else {
-      start = this.text.lastIndexOf(' ', end);
+      start = this.text.lastIndexOf(' ', end-1);
     }
     this.turkish_correct_region(start, end);
     return this.text;
@@ -284,7 +279,7 @@ Deasciifier.prototype = {
   
   deasciify:function(text) {
     // TODO: Better performance.
-    // Do it this way: Return an array of toggled character positions,
+    // We should return an array of toggled character positions,
     // split the text into characters, toggle required characters and join
     // again. This way we get rid of string operations and use less memory.
     if (!text) {
