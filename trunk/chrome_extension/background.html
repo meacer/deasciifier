@@ -5,7 +5,7 @@
 // Deasciifier
 var deasciifier = new Deasciifier();
 
-var deasciifyResult = "";
+var deasciifyResult = {textFound:false};
 function getDeasciifyResult() {
   return deasciifyResult;
 }
@@ -16,35 +16,39 @@ function ConvertTurkishChars() {
   chrome.tabs.getSelected(null, function(tab) {
     
     currentTabId = tab.id;
-    console.log("Current tab: " + currentTabId);
-    deasciifyResult = "T\u00FCrk\u00E7e karakterleri \u00E7evirmek i\u00E7in bir metin kutusu se\u00E7in.";
-
+    //console.log("Current tab: " + currentTabId);
+    deasciifyResult.text = "T\u00FCrk\u00E7e karakterleri \u00E7evirmek i\u00E7in bir metin kutusu se\u00E7in.";
+    deasciifyResult.textFound = false;
+    
     // Connect to the tab
     var port = chrome.tabs.connect(currentTabId);
     port.onMessage.addListener(function (msg) {
-      console.log("onMessage");
+      //console.log("onMessage");
       if (msg.message=="TEXT_TO_DEASCIIFY") {
         // Deasciify the text
         var text = msg.text;
         var deasciifiedText = deasciifier.deasciify(text);
-        deasciifyResult = deasciifier.num_toggled_chars + " karakter de\u011Fi\u015Ftirildi";
+        var num_toggled_chars = deasciifier.num_toggled_chars || 0;
+        deasciifyResult.text = num_toggled_chars + " karakter de\u011Fi\u015Ftirildi";
+        deasciifyResult.textFound = true;
         
         // Send back the deasciified text:
         port.postMessage({message:"DEASCIIFIED_TEXT", text:deasciifiedText});
         
         // Show some information on the extension icon:
         chrome.browserAction.setBadgeText({
-          'text':''+deasciifier.num_toggled_chars,
+          'text':''+num_toggled_chars,
           'tabId':currentTabId
         });
         chrome.browserAction.setTitle({
-          'title':deasciifier.num_toggled_chars+" karakter de\u011Fi\u015Ftirildi",
+          'title':num_toggled_chars + " karakter de\u011Fi\u015Ftirildi",
           'tabId':currentTabId
         });
+                
         port.disconnect();
       }
     });
-    console.log(port);
+    //console.log(port);
     // Request the text to deasciify
     port.postMessage({message: "REQUEST_TEXT"});  
   });
@@ -53,10 +57,66 @@ function init() {
   chrome.browserAction.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
   chrome.browserAction.setIcon({path: "icon19.png"});     
 }
+
+// Handle the messages from the content script on Alt+T key:
+chrome.extension.onConnect.addListener(function(port) {
+  if (port.name=="deasciify_on_typing") {
+    port.onMessage.addListener(function(msg) {
+      //console.log(msg);
+      switch (msg.message) {
+        case "DEASCIIFY_HANDLER_ON":
+          if (window.webkitNotifications) {
+            var notificationOn = webkitNotifications.createNotification(
+              "http://turkce-karakter.appspot.com/static/icon48.png",
+              "Otomatik \u00E7evrim A\u00C7IK",
+              "Se\u00E7ili kutuya T\u00FCrk\u00E7e karakterler siz yazarken otomatik olarak eklenecek"
+            );
+            notificationOn.show();
+            setTimeout(function(){ notificationOn.cancel(); }, 2500);
+          }
+        break;
+      
+        case "DEASCIIFY_HANDLER_OFF":
+          if (window.webkitNotifications) {
+            var notificationOff = webkitNotifications.createNotification(
+              "http://turkce-karakter.appspot.com/static/icon48.png",
+              "Otomatik \u00E7evrim KAPALI",
+              "Se\u00E7ili kutu i\u00E7in T\u00FCrk\u00E7e karakterler otomatik olarak \u00E7evrilmeyecek"
+            );
+            notificationOff.show();
+            setTimeout(function(){ notificationOff.cancel(); }, 2000);
+          }
+        break;
+        
+        case "DEASCIIFY_TYPED_TEXT":
+          var text = msg.text;
+          if (text && deasciifier && port) {
+            var converted = deasciifier.turkish_correct_last_word(text);
+            // send back deasciified text to content script
+            port.postMessage({"message":"DEASCIIFIED_TEXT_ON_TYPING", "text":converted});
+          }
+        break;
+      }
+    });
+  }
+});
 // Called when the user clicks on the browser action.
 /*chrome.browserAction.onClicked.addListener(function(tab) {
   ConvertTurkishChars();
 });*/
+
+
+function getContextMenuClickHandler() {
+  return function(info, tab) {
+    ConvertTurkishChars();
+  }
+}
+chrome.contextMenus.create({
+  "title":"T\u00FCrk\u00E7e karakterleri \u00E7evir (Deasciify)",
+  "type":"normal",
+  "contexts":["editable"],
+  "onclick":getContextMenuClickHandler()
+});
 </script>
 </head>
 <body onload="init()"></body>
