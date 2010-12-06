@@ -1,9 +1,11 @@
-﻿// Turkish asciifier and deasciifier
-//
-// Author: Mustafa Emre Acer
-//
+﻿// Turkish text deasciifier and asciifier JavaScript library.
 // Deasciifier code directly converted by Mustafa Emre Acer from 
 // Dr. Deniz Yuret's Emacs Turkish Extension: http://www.denizyuret.com/turkish
+//
+// Author:  Mustafa Emre Acer
+// Version: 1.1
+// Date:    2010-12-05
+//
 
 function Asciifier() {
   this.turkish_asciify_table = {
@@ -262,7 +264,6 @@ Deasciifier.prototype = {
   },
   
   turkish_correct_last_word:function(text) {
-    
     this.text = text;
     var end = this.text.length-1;
     var start = 0;
@@ -276,8 +277,8 @@ Deasciifier.prototype = {
     this.turkish_correct_region(start, end);
     return this.text;
   },
-  
-  deasciify:function(text) {
+
+  deasciifyRange:function(text, start, end) {
     // TODO: Better performance.
     // We should return an array of toggled character positions,
     // split the text into characters, toggle required characters and join
@@ -286,7 +287,14 @@ Deasciifier.prototype = {
       return text;
     }
     this.text = text;
-    this.turkish_correct_region(0, text.length-1);
+    this.turkish_correct_region(start, end);
     return this.text;
+  },
+  
+  deasciify:function(text) {
+    if (!text) {
+      return text;
+    }
+    return this.deasciifyRange(text, 0, text.length-1);
   }
 };
