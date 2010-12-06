@@ -1,7 +1,19 @@
 <html>
 <head>
 <script src="deasciifier.js"></script>
+<script src="deasciifier_helper.js"></script>
 <script>
+var MSG_CONVERT_FULL_TEXT = "T\u00FCm metni \u00E7evirmek istedi\u011Finizden emin misiniz?";
+var MSG_SELECT_TEXT_TO_CONVERT = "T\u00FCrk\u00E7e karakterleri \u00E7evirmek i\u00E7in bir metin kutusu se\u00E7in.";
+var MSG_CHARS_REPLACED = " karakter de\u011Fi\u015Ftirildi";
+var MSG_AUTO_CONVERT_ON = "Otomatik \u00E7evrim A\u00C7IK";
+var MSG_AUTO_CONVERT_OFF = "Otomatik \u00E7evrim KAPALI";
+var MSG_TEXT_WILL_BE_AUTO_CONVERTED = "Se\u00E7ili kutuya T\u00FCrk\u00E7e karakterler siz yazarken otomatik olarak eklenecek";
+var MSG_TEXT_WONT_BE_AUTO_CONVERTED = "Se\u00E7ili kutu i\u00E7in T\u00FCrk\u00E7e karakterler otomatik olarak \u00E7evrilmeyecek";
+//var ICON_NOTIFICATION = "http://turkce-karakter.appspot.com/static/icon48.png";
+var ICON_NOTIFICATION = "chrome-extension://nhfdmlgglfmcdheoabgklabmgjklgofk/icon48.png";
+var MSG_CONVERT_TURKISH = "T\u00FCrk\u00E7e karakterleri \u00E7evir (Deasciify)";
+
 // Deasciifier
 var deasciifier = new Deasciifier();
 
@@ -12,28 +24,44 @@ function getDeasciifyResult() {
 var currentTabId = null;
 function ConvertTurkishChars() {
 
-  // Get the current tab:  
+  // Get the current tab:
   chrome.tabs.getSelected(null, function(tab) {
     
     currentTabId = tab.id;
-    //console.log("Current tab: " + currentTabId);
-    deasciifyResult.text = "T\u00FCrk\u00E7e karakterleri \u00E7evirmek i\u00E7in bir metin kutusu se\u00E7in.";
+    deasciifyResult.text = MSG_SELECT_TEXT_TO_CONVERT;
     deasciifyResult.textFound = false;
     
     // Connect to the tab
     var port = chrome.tabs.connect(currentTabId);
     port.onMessage.addListener(function (msg) {
-      //console.log("onMessage");
       if (msg.message=="TEXT_TO_DEASCIIFY") {
         // Deasciify the text
         var text = msg.text;
-        var deasciifiedText = deasciifier.deasciify(text);
+        var selectionStart = msg.selectionStart;
+        var selectionEnd = msg.selectionEnd;
+        var deasciifiedText = null;
+        if (selectionStart!=selectionEnd) {
+          // only selected part
+          deasciifiedText = deasciifier.deasciifyRange(text,selectionStart,selectionEnd);
+        } else {
+          // full text
+          if (!confirm(MSG_CONVERT_FULL_TEXT)) {
+            port.disconnect();
+            return;
+          }
+          deasciifiedText = deasciifier.deasciify(text);
+        }        
         var num_toggled_chars = deasciifier.num_toggled_chars || 0;
-        deasciifyResult.text = num_toggled_chars + " karakter de\u011Fi\u015Ftirildi";
+        deasciifyResult.text = num_toggled_chars + MSG_CHARS_REPLACED;
         deasciifyResult.textFound = true;
         
         // Send back the deasciified text:
-        port.postMessage({message:"DEASCIIFIED_TEXT", text:deasciifiedText});
+        port.postMessage({
+          message:"DEASCIIFIED_TEXT",
+          text:deasciifiedText,
+          selectionStart:selectionStart,
+          selectionEnd:selectionEnd
+        });
         
         // Show some information on the extension icon:
         chrome.browserAction.setBadgeText({
@@ -41,14 +69,13 @@ function ConvertTurkishChars() {
           'tabId':currentTabId
         });
         chrome.browserAction.setTitle({
-          'title':num_toggled_chars + " karakter de\u011Fi\u015Ftirildi",
+          'title':num_toggled_chars + MSG_CHARS_REPLACED,
           'tabId':currentTabId
         });
                 
         port.disconnect();
       }
     });
-    //console.log(port);
     // Request the text to deasciify
     port.postMessage({message: "REQUEST_TEXT"});  
   });
@@ -62,14 +89,13 @@ function init() {
 chrome.extension.onConnect.addListener(function(port) {
   if (port.name=="deasciify_on_typing") {
     port.onMessage.addListener(function(msg) {
-      //console.log(msg);
       switch (msg.message) {
         case "DEASCIIFY_HANDLER_ON":
           if (window.webkitNotifications) {
             var notificationOn = webkitNotifications.createNotification(
-              "http://turkce-karakter.appspot.com/static/icon48.png",
-              "Otomatik \u00E7evrim A\u00C7IK",
-              "Se\u00E7ili kutuya T\u00FCrk\u00E7e karakterler siz yazarken otomatik olarak eklenecek"
+              ICON_NOTIFICATION,
+              MSG_AUTO_CONVERT_ON,           
+              MSG_TEXT_WILL_BE_AUTO_CONVERTED
             );
             notificationOn.show();
             setTimeout(function(){ notificationOn.cancel(); }, 2500);
@@ -79,9 +105,9 @@ chrome.extension.onConnect.addListener(function(port) {
         case "DEASCIIFY_HANDLER_OFF":
           if (window.webkitNotifications) {
             var notificationOff = webkitNotifications.createNotification(
-              "http://turkce-karakter.appspot.com/static/icon48.png",
-              "Otomatik \u00E7evrim KAPALI",
-              "Se\u00E7ili kutu i\u00E7in T\u00FCrk\u00E7e karakterler otomatik olarak \u00E7evrilmeyecek"
+              ICON_NOTIFICATION,
+              MSG_AUTO_CONVERT_OFF,
+              MSG_TEXT_WONT_BE_AUTO_CONVERTED
             );
             notificationOff.show();
             setTimeout(function(){ notificationOff.cancel(); }, 2000);
@@ -91,9 +117,20 @@ chrome.extension.onConnect.addListener(function(port) {
         case "DEASCIIFY_TYPED_TEXT":
           var text = msg.text;
           if (text && deasciifier && port) {
-            var converted = deasciifier.turkish_correct_last_word(text);
+            var converted = null;
+            if (msg.selectionStart==msg.selectionEnd && msg.selectionStart>0){ 
+              // Cursor is in the middle of the text
+              converted = deasciify_word_at_cursor(text,msg.selectionStart);
+            } else {
+              converted = deasciifier.turkish_correct_last_word(text);
+            }
             // send back deasciified text to content script
-            port.postMessage({"message":"DEASCIIFIED_TEXT_ON_TYPING", "text":converted});
+            port.postMessage({
+              "message":"DEASCIIFIED_TEXT_ON_TYPING",
+              "text":converted,
+              "selectionStart":msg.selectionStart,
+              "selectionEnd":msg.selectionEnd
+            });
           }
         break;
       }
@@ -112,7 +149,7 @@ function getContextMenuClickHandler() {
   }
 }
 chrome.contextMenus.create({
-  "title":"T\u00FCrk\u00E7e karakterleri \u00E7evir (Deasciify)",
+  "title":MSG_CONVERT_TURKISH,
   "type":"normal",
   "contexts":["editable"],
   "onclick":getContextMenuClickHandler()
@@ -120,4 +157,6 @@ chrome.contextMenus.create({
 </script>
 </head>
 <body onload="init()"></body>
+<!--<img src="http://turkce-karakter.appspot.com/static/icon48.png">-->
+<img src="chrome-extension://nhfdmlgglfmcdheoabgklabmgjklgofk/icon48.png">
 </html>

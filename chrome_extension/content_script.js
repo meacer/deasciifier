@@ -1,5 +1,7 @@
 // The content script communicates with the background page so that we 
 // don't need to include deasciifier.js in every page.
+
+var MSG_CHECKBOX_TITLE = "Karakterleri otomatik cevir (deasciify)";
 function getActiveTextBox() {
   var activeElement = document.activeElement;
   if (activeElement && 
@@ -16,12 +18,19 @@ chrome.extension.onConnect.addListener(function(port) {
       if (msg.message=="REQUEST_TEXT") {        
         port.postMessage({
           message: "TEXT_TO_DEASCIIFY",
-          text: activeElement.value
+          text: activeElement.value,
+          selectionStart: activeElement.selectionStart,
+          selectionEnd: activeElement.selectionEnd
         });
       }
       else if (msg.message=="DEASCIIFIED_TEXT") {
         if (activeElement) {
-          activeElement.value = msg.text;          
+          activeElement.value = msg.text;
+          // Restore text selection
+          if (msg.selectionStart) {
+            activeElement.selectionStart = msg.selectionStart;
+            activeElement.selectionEnd = msg.selectionEnd;
+          }
           animateTextBox(activeElement);
         }
       }
@@ -57,14 +66,39 @@ function animateTextBox(textBox) {
 var myPort = null;
 var activeTextBox = null;
 function onChangeTextBox(ev) {
+  // Convert word at cursor if space or enter is pressed
   if (ev.keyCode==13 || ev.keyCode==32) {
-    activeTextBox = ev.target;  
+    activeTextBox = ev.target;
     if (activeTextBox && myPort) {
-      myPort.postMessage({message:"DEASCIIFY_TYPED_TEXT", text:activeTextBox.value});
+      myPort.postMessage({
+        message:"DEASCIIFY_TYPED_TEXT",
+        text:activeTextBox.value,
+        selectionStart:activeTextBox.selectionStart,
+        selectionEnd:activeTextBox.selectionEnd,
+      });
     }
   }
 }
 
+// Connect to the background page:
+if (!myPort) {
+  myPort = chrome.extension.connect({"name":"deasciify_on_typing"});        
+  myPort.onMessage.addListener(function(msg) {
+    switch (msg.message) {
+      case "DEASCIIFIED_TEXT_ON_TYPING":
+        if (activeTextBox && msg.text) {
+          activeTextBox.value = msg.text;
+          if (msg.selectionStart && msg.selectionEnd && 
+              msg.selectionStart==msg.selectionEnd) {
+            activeTextBox.selectionStart = msg.selectionStart;
+            activeTextBox.selectionEnd = msg.selectionEnd;
+          }
+        }
+      break;
+    }
+  });
+}
+        
 var handlerInstalled = {};
 // Add handler to the document for Alt+T key (Turn on auto-conversion)
 document.addEventListener(
@@ -76,33 +110,16 @@ document.addEventListener(
       // Get the textbox
       activeTextBox = getActiveTextBox();
       if (activeTextBox) {
-      
-        // Connect to the background page:
-        if (!myPort) {
-          myPort = chrome.extension.connect({"name":"deasciify_on_typing"});        
-          myPort.onMessage.addListener(function(msg) {
-            switch (msg.message) {
-              case "DEASCIIFIED_TEXT_ON_TYPING":
-                if (activeTextBox && msg.text) {
-                  activeTextBox.value = msg.text;
-                }
-              break;
-            }
-          });
-        }
-          
         if (!handlerInstalled[activeTextBox]) {
           // Event not installed. Install and notify the background page.
           myPort.postMessage({message:"DEASCIIFY_HANDLER_ON"});
-          // Bind keyup event to the textbox:
-          activeTextBox.addEventListener("keyup", onChangeTextBox, false);
-          handlerInstalled[activeTextBox] = true;          
+          // Enable automatic deasciification while typing:
+          setEnableAutoConversion(activeTextBox, true);
         } else {
           // Event was already installed, uninstall and notify the background
           myPort.postMessage({message:"DEASCIIFY_HANDLER_OFF"});
-          // Un-bind keyup event of the textbox:
-          activeTextBox.removeEventListener("keyup", onChangeTextBox, false);
-          handlerInstalled[activeTextBox] = false;
+          // Disable automatic deasciification while typing:
+          setEnableAutoConversion(activeTextBox, false);
         }
         // Animate
         animateTextBox(activeTextBox);
@@ -112,3 +129,13 @@ document.addEventListener(
   },
   false
 );
+
+function setEnableAutoConversion(textBox, enabled) {
+  // Bind keyup event to the textbox:
+  if (enabled) {
+    textBox.addEventListener("keyup", onChangeTextBox, false);
+  } else {
+    textBox.removeEventListener("keyup", onChangeTextBox, false);
+  }
+  handlerInstalled[textBox] = enabled;
+}
