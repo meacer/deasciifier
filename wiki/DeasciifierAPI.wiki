@@ -1,4 +1,5 @@
 #summary Deasciifier Kodunu Kullanma.
+#labels deasciifier,API,javascript,deasciify_handler,howto
 
 = Kodu Nasıl Kullanabilirim? =
 
@@ -7,8 +8,8 @@ Deasciifier'i kendi web sayfalarınızda kullanabilirsiniz. Bunun için yapmanı
 1. Kodların içinde /js klasörü altındaki deasciifier.js ve deasciifier_handler.js dosyalarını HTML sayfanızın olduğu yere kopyalayın.
 
 2. HTML sayfanız içinde
-`<script src="deasciifier.js"></script>
-<script src="deasciifier_handler.js"></script>`
+<script src="deasciifier.js"></script>
+<script src="deasciifier_handler.js"></script>
 ile deasciifier'i ve otomatik çeviriciyi yükleyin.
 
 3. {{{DeasciifyHandler.init()}}} ile otomatik çeviriciyi başlatın. Bundan sonra istediğiniz HTML elementi için
@@ -35,3 +36,5 @@ Bu kadar!
 {{{DeasciifyHandler.setEnabled(element, enabled)}}}: Verilen element için otomatik çeviriyi aktive/deaktive eder.
 
 {{{DeasciifyHandler.getEnabled(element)}}}: Verilen element için otomatik çevirinin aktif olup olmadığını bildirir.
+
+----
