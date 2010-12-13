@@ -1,14 +1,14 @@
 #summary One-sentence summary of this page.
 
-= Introduction =
+= Kodu Nasil Kullanabilirim? =
 
 Deasciifier'i kendi web sayfalarinizda kullanabilirsiniz. Bunun icin yapmaniz gereken, web sayfanizin HTML kodunu degistirmek. Adim adim sunlari yapmaniz gerekmekte:
 
 1. Kodlarin icinde /js klasoru altindaki deasciifier.js ve deasciifier_handler.js dosyalarini HTML sayfanizin oldugu yere kopyalayin.
 
 2. HTML sayfaniz icinde
-{{{<script src="deasciifier.js"></script>
-<script src="deasciifier_handler.js"></script>}}}
+<script src="deasciifier.js"></script>
+<script src="deasciifier_handler.js"></script>
 ile deasciifier'i ve otomatik ceviriciyi yukleyin.
 
 3. {{{DeasciifyHandler.init()}}} ile otomatik ceviriciyi baslatin. Bundan sonra istediginiz HTML elementi icin
@@ -16,7 +16,11 @@ ile deasciifier'i ve otomatik ceviriciyi yukleyin.
 
 Bu kadar!
 
-{{{DeasciifyHandler}}}'daki fonksiyonlar:
+----
+
+= Ayrintilar =
+
+{{{DeasciifyHandler}}}'daki fonksiyonlar su sekilde:
 
 *{{{DeasciifyHandler.init()}}}* : Otomatik ceviriciyi yukler.
 
@@ -31,11 +35,3 @@ Bu kadar!
 {{{DeasciifyHandler.setEnabled(element, enabled)}}}: Verilen element icin otomatik ceviriyi aktive/deaktive eder.
 
 {{{DeasciifyHandler.getEnabled(element)}}}: Verilen element icin otomatik cevirinin aktif olup olmadigini donderir.
-
-
-= Details =
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
