@@ -1,37 +1,37 @@
-#summary One-sentence summary of this page.
+#summary Deasciifier Kodunu Kullanma.
 
-= Kodu Nasil Kullanabilirim? =
+= Kodu Nasıl Kullanabilirim? =
 
-Deasciifier'i kendi web sayfalarinizda kullanabilirsiniz. Bunun icin yapmaniz gereken, web sayfanizin HTML kodunu degistirmek. Adim adim sunlari yapmaniz gerekmekte:
+Deasciifier'i kendi web sayfalarınızda kullanabilirsiniz. Bunun için yapmanız gereken, web sayfanızın HTML kodunu değiştirmek. Adım adım şunları yapmanız gerekmekte:
 
-1. Kodlarin icinde /js klasoru altindaki deasciifier.js ve deasciifier_handler.js dosyalarini HTML sayfanizin oldugu yere kopyalayin.
+1. Kodların içinde /js klasörü altındaki deasciifier.js ve deasciifier_handler.js dosyalarını HTML sayfanızın olduğu yere kopyalayın.
 
-2. HTML sayfaniz icinde
-<script src="deasciifier.js"></script>
-<script src="deasciifier_handler.js"></script>
-ile deasciifier'i ve otomatik ceviriciyi yukleyin.
+2. HTML sayfanız içinde
+<script srç="deasciifier.js"></script>
+<script srç="deasciifier_handler.js"></script>
+ile deasciifier'i ve otomatik çeviriciyi yükleyin.
 
-3. {{{DeasciifyHandler.init()}}} ile otomatik ceviriciyi baslatin. Bundan sonra istediginiz HTML elementi icin
-{{{DeasciifyHandler.install(element)}}} seklinde otomatik ceviriyi etkinlestirebilirsiniz.
+3. {{{DeasciifyHandler.init()}}} ile otomatik çeviriciyi başlatın. Bundan sonra istediğiniz HTML elementi için
+{{{DeasciifyHandler.install(element)}}} şeklinde otomatik çeviriyi etkinleştirebilirsiniz.
 
 Bu kadar!
 
 ----
 
-= Ayrintilar =
+= Ayrıntılar =
 
-{{{DeasciifyHandler}}}'daki fonksiyonlar su sekilde:
+{{{DeasciifyHandler}}}'daki fonksiyonlar şu şekilde:
 
-*{{{DeasciifyHandler.init()}}}* : Otomatik ceviriciyi yukler.
+*{{{DeasciifyHandler.init()}}}* : Otomatik çeviriciyi yükler.
 
-*{{{DeasciifyHandler.install(html_element, enabled (opsiyonel), callback_function (opsiyonel))}}}*: html_element icin otomatik ceviriyi etkinlestirir.
-*enabled* parametresi false ise cevirici element'e yuklenir ancak aktive edilmez. Bu parametreyi bos birakabilirsiniz. (Varsayilan deger: true)
-*callback_function* parametresi verilmisse otomatik ceviriden sonra callback_function fonksiyonu cagrilir. Bu parametreyi bos birakabilirsiniz.
+*{{{DeasciifyHandler.install(html_element, enabled (opsiyonel), callback_function (opsiyonel))}}}*: html_element için otomatik çeviriyi etkinleştirir.
+*enabled* parametresi false ise çevirici element'e yüklenir ancak aktive edilmez. Bu parametreyi boş bırakabilirsiniz. (Varsayılan değer: true)
+*callback_function* parametresi verilmişse otomatik çeviriden sonra callback_function fonksiyonu çağrılır. Bu parametreyi boş bırakabilirsiniz.
 
-{{{DeasciifyHandler.uninstall(html_element)}}}: Verilen elementten otomatik ceviriyi kaldirir.
+{{{DeasciifyHandler.uninstall(html_element)}}}: Verilen elementten otomatik çeviriyi kaldırır.
 
-{{{DeasciifyHandler.deasciify(textBox,fullText)}}}: Verilen elementi deasciify eder. fullText true ise tum metin cevrilir, aksi halde sadece imlecin uzerinde oldugu kelime ya da secili kelime cevrilir.
+{{{DeasciifyHandler.deasciify(textBox,fullText)}}}: Verilen elementi deasciify eder. fullText true ise tüm metin çevrilir, aksi halde sadece imlecin üzerinde olduğu kelime ya da seçili kelime çevrilir.
 
-{{{DeasciifyHandler.setEnabled(element, enabled)}}}: Verilen element icin otomatik ceviriyi aktive/deaktive eder.
+{{{DeasciifyHandler.setEnabled(element, enabled)}}}: Verilen element için otomatik çeviriyi aktive/deaktive eder.
 
-{{{DeasciifyHandler.getEnabled(element)}}}: Verilen element icin otomatik cevirinin aktif olup olmadigini donderir.
+{{{DeasciifyHandler.getEnabled(element)}}}: Verilen element için otomatik çevirinin aktif olup olmadığını bildirir.
