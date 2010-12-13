@@ -18,7 +18,7 @@
    }],
    "description": "T\u00FCrk\u00E7e karakterleri otomatik olarak d\u00FCzelten bir eklenti (Automatically adds accented characters to Turkish texts)",
    "name": "Turkish Deasciifier",
-   "permissions": [ "tabs", "notifications", "contextMenus", "http://*/*", "https://*/*", "file://*/*"],
+   "permissions": [ "tabs", "notifications", "contextMenus", "http://*/*", "https://*/*"],
    "update_url": "http://clients2.google.com/service/update2/crx",
-   "version": "1.0.0"
+   "version": "1.0.1"
 }
