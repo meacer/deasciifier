@@ -1,0 +1,32 @@
+#summary One-sentence summary of this page.
+
+= Introduction =
+
+Deasciifier'i kendi web sayfalarinizda kullanabilirsiniz. Bunun icin yapmaniz gereken, web sayfanizin HTML kodunu degistirmek. Adim adim sunlari yapmaniz gerekmekte:
+
+1. Kodlarin icinde /js klasoru altindaki deasciifier.js ve deasciifier_handler.js dosyalarini HTML sayfanizin oldugu yere kopyalayin.
+
+2. HTML sayfaniz icinde
+<script src="deasciifier.js"></script>
+<script src="deasciifier_handler.js"></script>
+ile deasciifier'i ve otomatik ceviriciyi yukleyin.
+
+3. DeasciifyHandler.init() ile otomatik ceviriciyi baslatin. Bundan sonra istediginiz HTML elementi icin
+DeasciifyHandler.install(element) seklinde otomatik ceviriyi etkinlestirebilirsiniz.
+
+Bu kadar!
+
+DeasciifyHandler'daki fonksiyonlar:
+
+*DeasciifyHandler.init()* : Otomatik ceviriciyi yukler.
+
+*DeasciifyHandler.install(html_element, enabled (opsiyonel), callback_function (opsiyonel))*: html_element icin otomatik ceviriyi etkinlestirir.
+*enabled* parametresi false ise cevirici element'e yuklenir ancak aktive edilmez. Bu parametreyi bos birakabilirsiniz. (Varsayilan deger: true)
+*callback_function* parametresi verilmisse otomatik ceviriden sonra callback_function fonksiyonu cagrilir. Bu parametreyi bos birakabilirsiniz.
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
