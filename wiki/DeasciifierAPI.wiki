@@ -7,8 +7,8 @@ Deasciifier'i kendi web sayfalarınızda kullanabilirsiniz. Bunun için yapmanı
 1. Kodların içinde /js klasörü altındaki deasciifier.js ve deasciifier_handler.js dosyalarını HTML sayfanızın olduğu yere kopyalayın.
 
 2. HTML sayfanız içinde
-<script srç="deasciifier.js"></script>
-<script srç="deasciifier_handler.js"></script>
+`<script src="deasciifier.js"></script>
+<script src="deasciifier_handler.js"></script>`
 ile deasciifier'i ve otomatik çeviriciyi yükleyin.
 
 3. {{{DeasciifyHandler.init()}}} ile otomatik çeviriciyi başlatın. Bundan sonra istediğiniz HTML elementi için
