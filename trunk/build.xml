@@ -133,7 +133,22 @@
     <!-- Copy compiled deasciifier JS -->
     <copy todir="${chrome.extension.dir}/lib"
       file="${deasciifier.js.compiled.full}" />
+      
+    <!-- Build the .zip file -->
+    <antcall target="build-chrome-extension-binary"/>
+    
     <echo message="DONE"/>
+  </target>
+  
+  <target name="build-chrome-extension-binary">
+    <!-- Build extension zip -->
+    <delete file="${chrome.extension.output}"/>
+    <exec executable="${basedir}/tools/7zip/7za.exe" dir="${basedir}/src" failonerror="true">
+      <arg value="-xr!.svn"/>                                  <!-- Exclude .svn folder -->
+      <arg value="a"/>
+      <arg value="${chrome.extension.output}"/>                <!-- Output zip file -->
+      <arg value="chrome_extension"/>                          <!-- Folder to add -->
+    </exec>
   </target>
   
   <!--==========================================================================
@@ -170,6 +185,7 @@
       build-deasciifier-js           : Builds deasciifier JS code using either concatenation OR closure compiler
     
       build-chrome-extension         : Builds and deploys Chrome Extension
+      build-chrome-extension-binary  : Builds the .zip file for Chrome Extension
       build-safari-extension         : Builds and deploys Safari Extension
       
       build-deasciifyBox             : Builds deasciifyBox
