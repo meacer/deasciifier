@@ -4,34 +4,14 @@
        Turkish Deasciifier ANT build script
        
        Author:  Mustafa Emre Acer
-       Version: 1.0
-       Date:    2011-07-14
+       Version: 1.1
 -->
 
 <project name="deasciifier" basedir="." default="help">
   
-  <!-- 
-    Configuration used for building the code. 
-    Debug:   JavaScript files are not compiled or optimized, formatting preserved
-    Release: JavaScript files are compiled, formatting not preserved
-  -->    
-  <property name="config.name"                            value="Release" />
-  
-  <!-- The whole deasciifier library, including patterns, compiled into a single file -->
-  <property name="deasciifier.js.compiled.full"           location="src/js/deasciifier.full.js"/>
-  <!-- The deasciifier library compiled into two separate files, the code and the patterns -->
-  <property name="deasciifier.js.compiled.split.lib"      location="src/js/deasciifier.split.lib.js"/>
-  <property name="deasciifier.js.compiled.split.patterns" location="src/js/deasciifier.split.patterns.js"/>
-  
-  <!-- Parameters for Closure Compiler -->
-  <property name="closurecompiler.path"                   location="${basedir}/tools/closure_compiler/compiler.jar"/>
-  <property name="closurecompiler.compileLevel"           value="ADVANCED_OPTIMIZATIONS"/>
-  <property name="closurecompiler.warningLevel"           value="VERBOSE"/>
-  
-  <!-- Misc settings -->
-  <property name="logs.dir" location="${basedir}/logs"/>
-  
-  
+  <!-- Configuration properties -->
+  <property file="build.properties"/>
+
   <!--==========================================================================
     Cleanup deasciifier JavaScript output files, create directories etc 
   ===========================================================================-->
@@ -135,6 +115,14 @@
     <antcall target="${build-deasciifier-js-targetname}" />            
   </target>
   
+  <target name="run-js-tests">
+    <exec executable="java">
+      <arg value="-jar"/>            <arg value="tools/JsTestDriver/JsTestDriver.jar"/>
+      <arg value="--port"/>          <arg value="4224"/>
+      <arg value="--verbose"/>
+    </exec>
+  </target>
+  
   <!--==========================================================================
     Builds Chrome extension
   ===========================================================================-->
@@ -161,21 +149,33 @@
     <echo message="DONE"/>
   </target>
   
+  <target name="build-deasciifyBox">
+    <ant antfile="build-utils.xml" target="build-deasciifyBox-js"/>
+  </target>
+  <target name="build-utils">
+    <ant antfile="build-utils.xml" target="build-utils-all"/>
+  </target>
+  
   <!--==========================================================================
     Builds all targets
   ===========================================================================-->
   <target name="build-all" 
-    depends="build-deasciifier-js-init, build-deasciifier-js, build-chrome-extension, build-safari-extension">
+    depends="build-deasciifier-js-init, build-deasciifier-js, build-chrome-extension, build-safari-extension, build-utils">
   </target>
   
   <target name="help">
-    <echo>build-deasciifier-js-concat    : Builds deasciifier JS code by concatenating files (for debugging)</echo>
-    <echo>build-deasciifier-js-cc        : Builds deasciifier JS code using closure compiler</echo>
-    <echo>build-deasciifier-js           : Builds deasciifier JS code using either concatenation OR closure compiler</echo>
-    <echo></echo>
-    <echo>build-chrome-extension         : Builds and deploys Chrome Extension</echo>
-    <echo>build-safari-extension         : Builds and deploys Safari Extension</echo>
-    <echo>build-all                      : Builds and deploys JS code, Chrome extension and Safari extension</echo>
+    <echo>
+      build-deasciifier-js-concat    : Builds deasciifier JS code by concatenating files (for debugging)
+      build-deasciifier-js-cc        : Builds deasciifier JS code using closure compiler
+      build-deasciifier-js           : Builds deasciifier JS code using either concatenation OR closure compiler
+    
+      build-chrome-extension         : Builds and deploys Chrome Extension
+      build-safari-extension         : Builds and deploys Safari Extension
+      
+      build-deasciifyBox             : Builds deasciifyBox
+      build-utils                    : Builds deasciifyBox and other JS utilities
+      build-all                      : Builds and deploys JS deasciifier, JS utilities, Chrome extension and Safari extension
+    </echo>
   </target>
 
 </project>
