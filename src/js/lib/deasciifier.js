@@ -93,7 +93,6 @@
   }
  
   // Exported for testing:
-  //Deasciifier["URLRegex"] = /\b([((https?|ftp|file):\/\/)|(www\.)][-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
   Deasciifier["URLRegex"] = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
   
   Deasciifier.URLScanner = {
@@ -107,15 +106,6 @@
         var region = new Deasciifier.SkipRegion(startPos, endPos);
         skipList.push(region);
       }
-      /*var matches = text.match();
-      if (matches) {
-        for (var i=0; i<matches.length; i++) {
-          var pos = text.indexOf(matches[i]); // TODO: Why do we need to search again here?
-          var len = matches[i].length;
-          var region = new Deasciifier.SkipRegion(pos, pos+len);
-          skipList.push(region);
-        }
-      }*/
       return new Deasciifier.SkipList(skipList);
     }
   }
