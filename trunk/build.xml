@@ -22,10 +22,43 @@
     <mkdir dir="${logs.dir}" /> <!-- Log directory for Closure Compiler output -->
   </target>
   
+  <target name="compile-java">
+    <!-- <delete dir="build/class"/> -->
+    <mkdir dir="build/class"/>
+    <javac srcdir="build/src" classpath="tools/rhino/js.jar" destdir="build/class" includeantruntime="false"/>
+  </target>
+  
+  <target name="compile-deasciifier-patterns" depends="compile-java">
+    <java classname="com.deasciifier.build.PatternCompiler" failonerror="true">
+      <arg value="${basedir}/build/compile_patterns.js"/>                        <!-- Compilation javascript -->
+      <arg value="${basedir}/src/js/lib/deasciifier.patterns.uncompiled.js"/>    <!-- Source patterns -->
+      <arg value="${basedir}/src/js/lib/deasciifier.patterns.template.js"/>      <!-- Output template -->
+      <arg value="${basedir}/src/js/lib/deasciifier.patterns.js"/>               <!-- Output file -->
+      <classpath>
+        <pathelement path="build/class"/>
+        <pathelement path="tools/rhino/js.jar"/>
+      </classpath>
+    </java>
+  </target>
+  
+  <target name="read-chromeextension-version" depends="compile-java">
+    <java classname="com.deasciifier.build.ChromeManifestReader" failonerror="true" outputproperty="chrome.extension.version">
+      <arg value="src/chrome_extension/manifest.json"/>
+      
+      <classpath>
+        <pathelement path="build/class"/>
+        <pathelement path="tools/rhino/js.jar"/>
+      </classpath>
+    </java>
+    <property name="chrome.extension.output" value="${basedir}/output/chrome_extension_${chrome.extension.version}.zip"/>
+    <echo> CHROME EXTENSION VERSION: ${chrome.extension.version}</echo>
+    <echo> CHROME EXTENSION OUTPUT : ${chrome.extension.output}</echo>
+  </target>
+  
   <!--==========================================================================
     Build deasciifier JavaScript library by concatenating files (for debugging) 
   ===========================================================================-->
-  <target name="build-deasciifier-js-concat" depends="build-deasciifier-js-init">
+  <target name="build-deasciifier-js-concat" depends="build-deasciifier-js-init, compile-deasciifier-patterns">
   
     <echo message="Building deasciifier JS by concatenating files"/>
   
@@ -61,7 +94,7 @@
   <!--==========================================================================
     Build deasciifier JavaScript library using Closure Compiler
   ===========================================================================-->
-  <target name="build-deasciifier-js-cc" depends="build-deasciifier-js-init">
+  <target name="build-deasciifier-js-cc" depends="build-deasciifier-js-init, compile-deasciifier-patterns">
     
     <echo message="Building deasciifier JS using Closure Compiler"/>
     
@@ -126,7 +159,7 @@
   <!--==========================================================================
     Builds Chrome extension
   ===========================================================================-->
-  <target name="build-chrome-extension" depends="build-deasciifier-js">
+  <target name="build-chrome-extension" depends="build-deasciifier-js, read-chromeextension-version">
     <property name="chrome.extension.dir" location="${basedir}/src/chrome_extension"/>
     <echo message="Building Chrome Extension at ${chrome.extension.dir}"/>
     <mkdir dir="${chrome.extension.dir}/lib"/>
@@ -134,13 +167,23 @@
     <copy todir="${chrome.extension.dir}/lib"
       file="${deasciifier.js.compiled.full}" />
       
+    <copy todir="${chrome.extension.dir}/lib"
+      file="src/js/utils/html_deasciifier.js" /> <!-- Html deasciifier -->
+    <copy todir="${chrome.extension.dir}/lib"
+      file="src/js/utils/html_decoder.js" />     <!-- Html decoder -->
+    <copy todir="${chrome.extension.dir}/lib"
+      file="src/js/utils/utils.textHelper.js" /> <!-- Text helper -->
+            
+    <!-- Copy icon -->
+    <copy tofile="${chrome.extension.dir}/g-logo.png"
+      file="resources/icon80x80.png"/>
     <!-- Build the .zip file -->
-    <antcall target="build-chrome-extension-binary"/>
+    <antcall target="build-chrome-extension-zip"/>
     
     <echo message="DONE"/>
   </target>
   
-  <target name="build-chrome-extension-binary">
+  <target name="build-chrome-extension-zip">
     <!-- Build extension zip -->
     <delete file="${chrome.extension.output}"/>
     <exec executable="${basedir}/tools/7zip/7za.exe" dir="${basedir}/src" failonerror="true">
@@ -180,12 +223,13 @@
   
   <target name="help">
     <echo>
+      compile-deasciifier-patterns   : Compiles deasciifier patterns into a dictionary
       build-deasciifier-js-concat    : Builds deasciifier JS code by concatenating files (for debugging)
       build-deasciifier-js-cc        : Builds deasciifier JS code using closure compiler
       build-deasciifier-js           : Builds deasciifier JS code using either concatenation OR closure compiler
     
       build-chrome-extension         : Builds and deploys Chrome Extension
-      build-chrome-extension-binary  : Builds the .zip file for Chrome Extension
+      build-chrome-extension-zip     : Builds the .zip file for Chrome Extension
       build-safari-extension         : Builds and deploys Safari Extension
       
       build-deasciifyBox             : Builds deasciifyBox
