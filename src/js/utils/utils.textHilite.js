@@ -123,9 +123,11 @@
     return span;
   }
   
-  function normalizeText(text) {
-    //return text.replace(/\r\n/g, "\n"); //.replace("\n", "<br>");
-    return text;
+  function escapeHtml(html) {
+    return html.replace(/&/g, "&amp;").replace(/\</g, "&lt;").replace(/\>/g, "&gt;");
+  }
+  function unescapeHtml(html) {
+    return html.replace(/&gt;/g, ">").replace(/&lt;/g, "<").replace(/&amp;/g, "&");
   }
   
   function sortFunc(a,b) {
@@ -188,17 +190,17 @@
         var range = this.hiliteRanges[i];
         var rangeStart = range.start-this.start;  // relative to the area's start
         var rangeEnd = range.end-this.start;      // relative to the area's start
-        var unformattedText = this.text.substring(lastPos, rangeStart);
+        var unformattedText = escapeHtml(this.text.substring(lastPos, rangeStart));
         childNodes.push(document.createTextNode(unformattedText));
         
         var hiliteNode = document.createElement("span");
         CSS.setClass(hiliteNode, CSS_HILITE_SPAN);
-        hiliteNode.innerHTML = this.text.substring(rangeStart, rangeEnd);
+        hiliteNode.innerHTML = escapeHtml(this.text.substring(rangeStart, rangeEnd));
         childNodes.push(hiliteNode);
         lastPos = rangeEnd;
       }
       if (lastPos<this.text.length) {
-        childNodes.push(document.createTextNode(this.text.substring(lastPos)));
+        childNodes.push(document.createTextNode(escapeHtml(this.text.substring(lastPos))));
       }
       addChildren(this.domNode, childNodes);
     }
@@ -239,9 +241,9 @@
       }
       this.prevDimensions = textDimensions;
 
-      log("Textarea: Width: " + textDimensions.width + ", Height: "+ textDimensions.height);
-      log("Textarea: PrevWidth: " + this.prevDimensions.width + ", PrevHeight: "+ this.prevDimensions.height);
-      log("Textarea: Relative Top: " + textDimensions.relativeTop + ", Relative Left: " + textDimensions.relativeLeft);
+      //log("Textarea: Width: " + textDimensions.width + ", Height: "+ textDimensions.height);
+      //log("Textarea: PrevWidth: " + this.prevDimensions.width + ", PrevHeight: "+ this.prevDimensions.height);
+      //log("Textarea: Relative Top: " + textDimensions.relativeTop + ", Relative Left: " + textDimensions.relativeLeft);
       
       this.wrapperDiv.style.top = textDimensions.relativeTop + "px";
       this.wrapperDiv.style.left = textDimensions.relativeLeft + "px";
@@ -378,16 +380,16 @@
       for (var i=0; i<this.hiliteRanges.length; i++) {
         var range = this.hiliteRanges[i];
         // Add unformatted text:
-        htmlCodes.push(fullText.substring(lastPos, range.start));
+        htmlCodes.push(escapeHtml(fullText.substring(lastPos, range.start)));
         
         // Add formatted text:
-        var hiliteText = fullText.substring(range.start, range.end);
+        var hiliteText = escapeHtml(fullText.substring(range.start, range.end));
         htmlCodes.push("<span class='" + CSS_HILITE_SPAN + "' style='" + hiliteStyles + "'>" + hiliteText + "</span>");
         lastPos = range.end;
       }
       if (lastPos>0) {
         // Add any remaining unformatted text:
-        htmlCodes.push(fullText.substring(lastPos));
+        htmlCodes.push(escapeHtml(fullText.substring(lastPos)));
       }
       
       // Replace line breaks (\n or \r\n) with <br>s 
@@ -408,8 +410,8 @@
       var textCursor = fullText.substring(wordStart, wordEnd);  // Word between the given coords
       var textAfter = fullText.substring(wordEnd);              // Text after cursor, required for word breaks
       
-      var html = textBefore + 
-        "<span id='" + ID_FOR_CURSOR +"' style='display:inline'>" + textCursor + "</span>" + textAfter;
+      var html = escapeHtml(textBefore) + 
+        "<span id='" + ID_FOR_CURSOR +"' style='display:inline'>" + escapeHtml(textCursor) + "</span>" + escapeHtml(textAfter);
       this.cursorLayer.innerHTML = replaceNewlines(html);
       var cursorNode = document.getElementById(ID_FOR_CURSOR);
       return CSS.getDimensions(cursorNode);
