@@ -8,6 +8,9 @@
 
 (function(){
 
+  if (typeof(MEA)=="undefined") {
+    MEA = {};
+  }
   // NOTE: text[i] does not work in IE, always use text.charAt(i)
   
   MEA.TextHelper = {
