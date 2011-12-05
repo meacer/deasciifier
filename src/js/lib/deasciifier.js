@@ -361,7 +361,7 @@
     }
     return Deasciifier.turkish_correct_region(
       text, start, end, Deasciifier.build_skip_list(text, options));
-  },
+  }
   
   Deasciifier.turkish_correct_last_word = function(text, options) {
     if (!text) {
