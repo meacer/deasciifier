@@ -252,7 +252,8 @@
      */
     uninstall:function(textArea) {
       if (!this.getInstance(textArea)) {
-        throw "Deasciifier already not installed for this text area";
+        window.console && window.console.log && window.console.log( "Deasciifier already not installed for this text area");
+        return;
       }
       for (var i=0; i<handledEvents.length; i++) {
         var e = handledEvents[i];
@@ -271,7 +272,7 @@
       if (instance) {
         instance.processSelection(DeasciiConverter);
       } else {
-        throw "DeasciifyBox not installed for this text area";
+        window.console && window.console.log && window.console.log("DeasciifyBox not installed for this text area");
       }
     },
     
@@ -285,7 +286,7 @@
       if (instance) {
         instance.processSelection(AsciiConverter);
       } else {
-        throw "DeasciifyBox not installed for this text area";
+        window.console && window.console.log && window.console.log("DeasciifyBox not installed for this text area");
       }
     },
     
