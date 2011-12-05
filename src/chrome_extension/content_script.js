@@ -1,42 +1,87 @@
-// The content script communicates with the background page so that we 
-// don't need to include deasciifier.js in every page.
+// Author: Mustafa Emre Acer
+//
+// Chrome deasciifier content script: Communicates with the background page so 
+// that we don't need to include deasciifier.js in every page.
 
-var MSG_CHECKBOX_TITLE = "Karakterleri otomatik cevir (deasciify)";
-function getActiveTextBox() {
+(function(){
+
+function getActiveInput() {
   var activeElement = document.activeElement;
-  if (activeElement && 
-    (activeElement.tagName=="INPUT" || activeElement.tagName=="TEXTAREA")) {
-    return activeElement;
+  if (activeElement) {
+    // Gmail style html inputs:
+    if (activeElement.tagName=="IFRAME") {
+      activeElement = activeElement.contentDocument.activeElement;
+      if (activeElement && activeElement.tagName=="BODY" && activeElement.isContentEditable) {
+        return activeElement;
+      }
+      return null;
+    }
+    if (activeElement.tagName=="INPUT" || activeElement.tagName=="TEXTAREA") {
+      return activeElement;
+    }
   }
   return null;
 }
-// Communication with the background page when user clicks on extension icon
-chrome.extension.onConnect.addListener(function(port) {  
-  port.onMessage.addListener(function(msg) {  
-    var activeElement = getActiveTextBox();
+
+function getTextToConvert(element) {
+  if (isSimpleTextBox(element)) {
+    return {
+      isPlainText:    true,
+      text:           element.value, 
+      selectionStart: element.selectionStart,
+      selectionEnd:   element.selectionEnd
+    }
+  }
+  if (isContentEditableElement(element)) {
+    return {
+      isHTML: true,
+      text:   element.innerHTML
+    }
+  }
+  return null;
+}
+
+function isSimpleTextBox(element) {
+  return (element && element.tagName=="INPUT" || element.tagName=="TEXTAREA");
+}
+function isContentEditableElement(element) {
+  return (element && element.tagName=="BODY" && element.isContentEditable);
+}
+function msgListener(port) {
+  function onMsgHandler(msg) {
+    var activeElement = getActiveInput();
     if (activeElement) {
-      if (msg.message=="REQUEST_TEXT") {        
+      if (msg.message=="REQUEST_TEXT") {
+        var input = getTextToConvert(activeElement);
         port.postMessage({
           message: "TEXT_TO_DEASCIIFY",
-          text: activeElement.value,
-          selectionStart: activeElement.selectionStart,
-          selectionEnd: activeElement.selectionEnd
+          input: input
         });
       }
       else if (msg.message=="DEASCIIFIED_TEXT") {
-        if (activeElement) {
-          activeElement.value = msg.text;
-          // Restore text selection
-          if (msg.selectionStart) {
-            activeElement.selectionStart = msg.selectionStart;
-            activeElement.selectionEnd = msg.selectionEnd;
-          }
-          animateTextBox(activeElement);
-        }
+        setConvertedText(activeElement, msg);
       }
     } // activeElement    
-  });
-});
+  }
+  port.onMessage.addListener(onMsgHandler);
+}
+// Communication with the background page when user clicks on extension icon
+chrome.extension.onConnect.addListener(msgListener);
+
+function setConvertedText(element, response) {
+  if (isSimpleTextBox(element)) {
+    element.value = response.text;
+    // Restore text selection
+    if (response.selectionStart) {
+      element.selectionStart = response.selectionStart;
+      element.selectionEnd = response.selectionEnd;
+    }
+    animateTextBox(element);
+  } else if (isContentEditableElement(element)) {
+    element.innerHTML = response.text;
+    animateTextBox(element);
+  }
+}
 
 // Animate a text box:
 var animationTimer = null;
@@ -82,7 +127,7 @@ function onChangeTextBox(ev) {
 
 // Connect to the background page:
 if (!myPort) {
-  myPort = chrome.extension.connect({"name":"deasciify_on_typing"});        
+  myPort = chrome.extension.connect({"name":"deasciify_on_typing"});
   myPort.onMessage.addListener(function(msg) {
     switch (msg.message) {
       case "DEASCIIFIED_TEXT_ON_TYPING":
@@ -98,15 +143,24 @@ if (!myPort) {
     }
   });
 }
-        
+
+
+function getActiveTextBox() { // TODO: REMOVE
+  var activeElement = document.activeElement;
+  if (activeElement && activeElement.tagName=="INPUT" || activeElement.tagName=="TEXTAREA") {
+    return activeElement;
+  }
+  return null;
+}
+
 var handlerInstalled = {};
 // Add handler to the document for Alt+T key (Turn on auto-conversion)
 document.addEventListener(
   "keyup",
   function(ev) {
-    var s = String.fromCharCode(ev.keyCode);
+    var key = String.fromCharCode(ev.keyCode);
     // ALT+T:
-    if (ev.altKey && s && s=="T") {
+    if (ev.altKey && key && key=="T") {
       // Get the textbox
       activeTextBox = getActiveTextBox();
       if (activeTextBox) {
@@ -139,3 +193,5 @@ function setEnableAutoConversion(textBox, enabled) {
   }
   handlerInstalled[textBox] = enabled;
 }
+
+})();
