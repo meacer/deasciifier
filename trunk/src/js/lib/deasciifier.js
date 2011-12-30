@@ -218,9 +218,17 @@
         throw "Pattern list not loaded";
       }
     }
-    
+    if (!text) {
+      return null;
+    }
+    if (start<0) {
+      start = 0;
+    }
+    if (end>text.length) {
+      end = text.length;
+    }
     var changedPositions = [];
-    for (var i=start; i<=end; i++) {
+    for (var i=start; i<end; i++) {
       if (filter && filter.shouldExclude(i)) {
         continue;
       }
