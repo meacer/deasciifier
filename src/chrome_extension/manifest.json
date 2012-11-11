@@ -1,26 +1,34 @@
 {
-   "background_page": "background.html",
-   "browser_action": {
-      "default_icon":"g-logo.png",
-      "name": "Turkish Deasciifier",
-      "popup":"popup.html",
-      "default_title": "T\u00FCrk\u00E7e karakterleri d\u00FCzelt"
-   },
-   "icons": {
+  "background": {
+	"page":"background.html"
+  },
+  "browser_action": {
+    "default_icon":"g-logo.png",
+    "default_popup": "popup.html",
+    "default_title": "Turkish Deasciifier - T\u00FCrk\u00E7e karakterleri d\u00FCzelt"
+  },
+  "icons": {
     "16":"g-logo.png",
     "48":"g-logo.png",
     "64":"g-logo.png",
     "128":"g-logo.png"
-   },
-   "content_scripts":[{
+  },
+  "content_scripts":[{
     "matches": ["http://*/*", "https://*/*", "file://*/*"],
     "js":["content_script.js"],
     "all_frames":true
-   }],
-   "description": "T\u00FCrk\u00E7e karakterleri otomatik olarak d\u00FCzelten bir eklenti (Automatically adds accented characters to Turkish texts)",
-   "name": "Turkish Deasciifier",
-   "permissions": [ "tabs", "notifications", "contextMenus", "http://*/*", "https://*/*"],
-   "update_url": "http://clients2.google.com/service/update2/crx",
-   "version": "1.3",
-   "homepage_url":"http://www.deasciifier.com/?chrome_extension"
+  }],
+  "web_accessible_resources": [
+    "g-logo.png" // see crbug.com/134315
+  ],
+  "description": "T\u00FCrk\u00E7e karakterleri otomatik olarak d\u00FCzelten bir eklenti (Automatically adds accented characters to Turkish texts)",
+  "name": "Turkish Deasciifier",
+  "permissions": [
+    "tabs", "notifications", "contextMenus", 
+    "http://*/*", "https://*/*"
+  ],
+  "update_url": "http://clients2.google.com/service/update2/crx",
+  "version": "1.3.1",
+  "homepage_url":"http://www.deasciifier.com/?chrome_extension",
+  "manifest_version": 2
 }
