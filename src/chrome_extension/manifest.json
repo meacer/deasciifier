@@ -1,6 +1,6 @@
 {
   "background": {
-	"page":"background.html"
+    "page":"background.html"
   },
   "browser_action": {
     "default_icon":"g-logo.png",
@@ -19,7 +19,7 @@
     "all_frames":true
   }],
   "web_accessible_resources": [
-    "g-logo.png" // see crbug.com/134315
+    "g-logo.png"
   ],
   "description": "T\u00FCrk\u00E7e karakterleri otomatik olarak d\u00FCzelten bir eklenti (Automatically adds accented characters to Turkish texts)",
   "name": "Turkish Deasciifier",
