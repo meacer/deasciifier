@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE HTML>
 <html>
-<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <style>
 #page { margin: 5px; font-family: Verdana, Sans Serif; font-size: 10pt; min-width:370px}
@@ -8,7 +9,7 @@
 #info { text-align:right; width:100%; font-size:8pt; color:#777; font-family: Tahoma; white-space: nowrap; float:right; clear:both}
 a { color: #777; text-decoration: underline}
 a:hover { color: #99f; text-decoration: none}
-#inputtext {width:100%; min-height:150px; font-family:Tahoma}
+#inputtext {width: 100%; min-height: 200px; font-family: Tahoma}
 hr { width:100%; height:1px; margin: 2px 0px 2px 0px; display: inline-block}
 .btn {font-family: Tahoma; font-size:10pt; cursor:pointer; min-width:50px; }
 #btnTable {font-family:Verdana, Sans Serif; font-size:9pt; font-weight:bold}
@@ -19,34 +20,32 @@ hr { width:100%; height:1px; margin: 2px 0px 2px 0px; display: inline-block}
 <div id="page">
   <div style="clear:both">
     <div id="msg">
+      Turk&#231;e karakterleri &#231;evirmek i&#231;in sayfadan bir metin kutusu se&#231;in.
     </div>
   </div>
-  <div id="customtext" style="clear:both; display:none">
+  <div id="customtext" style="clear:both">
     <div class="sep"></div>
-    <textarea id="inputtext" style="font-style:italic">&#199;evirmek istedi&#287;iniz metni buraya girebilirsiniz</textarea>
-    <span style="white-space:nowrap">            
+    <textarea id="inputtext" placeholder="&#199;evirmek istedi&#287;iniz metni buraya girebilirsiniz."></textarea>
+    <span style="white-space:nowrap">
       <b>&#199;evir:</b>
-      <input class="btn" type="button" id="btn_deascii" value="T&#252;rk&#231;e" title="Metne T&#252;rk&#231;e karakterleri ekler" />      
+      <input class="btn" type="button" id="btn_deascii" value="T&#252;rk&#231;e" title="Metne T&#252;rk&#231;e karakterleri ekler" />
       <input class="btn" type="button" id="btn_ascii" value="ASCII" title="Metni ASCII karakterlere &#231;evirir"/>
       <input class="btn" type="button" id="btn_html" value="HTML" title="Metni HTML kodlar&#305;na &#231;evirir"/>
-      <input class="btn" type="button" id="btn_js" value="JS" title="Metni JavaScript kodlar&#305;na &#231;evirir"/>      
+      <input class="btn" type="button" id="btn_js" value="JS" title="Metni JavaScript kodlar&#305;na &#231;evirir"/>
       <span style="vertical-align:middle; margin-left:5px;">
-        <input type="checkbox" id="checkCopy"><label style="color:#777;font-family:Tahoma; font-size:9pt; cursor:pointer" 
-          for="checkCopy" title="&#199;evrilen metni otomatik olarak panoya kopyalar">&#199;eviriyi kopyala</label>        
+        <input type="checkbox" id="checkCopy"><label style="color:#777;font-family:Tahoma; font-size:9pt; cursor:pointer"
+          for="checkCopy" title="&#199;evrilen metni otomatik olarak panoya kopyalar">&#199;eviriyi kopyala</label>
       </span>
     </span>
   </div>
   <div id="info">
     <div class="sep"></div>
-    <span style="float:left;clear:both">
+    <span style="float:left; clear:both">
       Metin kutular&#305;na yazarken otomatik &#231;evrimi <b>ALT+T</b> ile a&#231;&#305;p kapatabilirsiniz.
-    </span><br>
-    <span style="float:left" id="customtext_toggler">
-      <a href="#" id="btn_entertext">Metin Gir</a>
     </span>
-    <a href="https://chrome.google.com/extensions/detail/nhfdmlgglfmcdheoabgklabmgjklgofk" target="_blank" title="Eklentinin web sayfas&#305;na git">Chrome Eklentisi</a> | 
-    <a href="http://www.deasciifier.com/?src=chrome_deasciifier" target="_blank" title="Turkish Deasciifier'&#305; online kullan">Web Sayfas&#305;</a> |
-    <a href="http://www.mustafaacer.com/?src=chrome_deasciifier" target="_blank" title="Mustafa Emre Acer'in web sitesi">Mustafa Emre Acer</a>
+    <br>
+    <a href="https://chrome.google.com/extensions/detail/nhfdmlgglfmcdheoabgklabmgjklgofk" target="_blank" title="Eklentinin web sayfas&#305;na git">Chrome Eklentisi</a> |
+    <a href="http://www.deasciifier.com/?src=chrome_deasciifier" target="_blank" title="Turkish Deasciifier'&#305; online kullan">deasciifier.com</a>
   </div>
 </div>
 <script src="lib/deasciifier.full.js"></script>
