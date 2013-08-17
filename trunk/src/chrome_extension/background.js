@@ -55,7 +55,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
           selectionStart: msg.input.selectionStart,
           selectionEnd: msg.input.selectionEnd
         });
-        setBrowserActionUI(currentTabId, toggledCharCnt);
+        if (sender && sender.tab) {
+          setBrowserActionUI(sender.tab.id, toggledCharCnt);
+        }
       }
     }
     break;
