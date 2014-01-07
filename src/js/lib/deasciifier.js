@@ -1,11 +1,11 @@
-﻿/** @preserve 
+﻿/** @preserve
  *
  * Turkish text deasciifier and asciifier JavaScript library.
- *  Deasciifier code directly converted by Mustafa Emre Acer from 
+ *  Deasciifier code directly converted by Mustafa Emre Acer from
  *  Dr. Deniz Yuret's Emacs Turkish Extension: http://www.denizyuret.com/turkish
  *
  *  Author:  Mustafa Emre Acer
- *  Version: 2.0
+ *  Version: 2.1
  *  Date:    2010-05-21
  */
 
@@ -28,9 +28,9 @@
     '\u00FC': 'u', // Lowercase turkish u
     '\u00DC': 'U'  // Uppercase turkish u
   };
-  
+
   var Asciifier = {
-  
+
     asciifyRange:function(text, start, end) {
       if (!text || start>=end) {
         return null;
@@ -53,7 +53,7 @@
         "changedPositions":changedPositions
       };
     },
-  
+
     asciify:function(text) {
       if (!text) {
         return null;
@@ -61,7 +61,7 @@
       return Asciifier.asciifyRange(text, 0, text.length-1);
     }
   };
-  
+
   // Define the namespace:
   if (!window["Deasciifier"]) {
     window["Deasciifier"] = {};
@@ -84,27 +84,34 @@
   Deasciifier.SkipList.prototype = {
     shouldExclude:function(pos) {
       for (var i=0; i<this.skipRegions.length; i++) {
-        if (pos>=this.skipRegions[i].start && pos<=this.skipRegions[i].end) {        
+        if (pos>=this.skipRegions[i].start && pos<=this.skipRegions[i].end) {
           return true;
         }
       }
       return false;
     }
   }
- 
+
   // Exported for testing:
   Deasciifier["URLRegex"] = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
-  
-  Deasciifier.URLScanner = {
-    getSkipRegions:function(text) {
+
+  Deasciifier.DefaultSkipFilter = {
+    getSkipRegions:function(options, text) {
+      // TODO: Better algorithm here if number of regions grow large
+      var regexps = [];
+      if (options && options["skipURLs"]) {
+        regexps.push(Deasciifier["URLRegex"])
+      }
       var skipList = [];
-      var regex = Deasciifier["URLRegex"];
-      var match = null;
-      while ((match=regex.exec(text))!=null) {
-        var startPos = match.index;
-        var endPos = regex.lastIndex;
-        var region = new Deasciifier.SkipRegion(startPos, endPos);
-        skipList.push(region);
+      for (var i=0; i<regexps.length; i++) {
+        var regex = regexps[i];
+        var match = null;
+        while ((match=regex.exec(text))!=null) {
+          var startPos = match.index;
+          var endPos = regex.lastIndex;
+          var region = new Deasciifier.SkipRegion(startPos, endPos);
+          skipList.push(region);
+        }
       }
       return new Deasciifier.SkipList(skipList);
     }
@@ -112,11 +119,26 @@
 
   Deasciifier.initialized = false;
   Deasciifier.turkish_context_size = 10;
-  Deasciifier.defaultOptions = {
-    "skipURLs":true
+
+  var Options = {
+    defaults: { // Default options
+      "skipURLs":true
+    },
+    get:function(options, optionName) {
+      if (options && options.hasOwnProperty(optionName)) {
+        return options[optionName];
+      }
+      return Options.defaults[optionName];
+    },
+    getMulti:function(options, optionNames) {
+      var ret = {};
+      for (var i=0; i<optionNames.length; i++) {
+        ret[optionNames[i]] = Options.get(options, optionNames[i]);
+      }
+      return ret;
+    }
   };
 
-  
   Deasciifier.turkish_char_alist = {
     'c': DEASCII_TR_LOWER_C,
     'C': DEASCII_TR_UPPER_C,
@@ -131,12 +153,12 @@
     'u': DEASCII_TR_LOWER_U,
     'U': DEASCII_TR_UPPER_U
   };
-    
+
   Deasciifier.init = function() {
     if (!Deasciifier["patternList"]) {
       return false;
     }
-    
+
     Deasciifier.make_turkish_asciify_table();
     Deasciifier.make_turkish_downcase_asciify_table();
     Deasciifier.make_turkish_upcase_accents_table();
@@ -145,7 +167,7 @@
     Deasciifier.initialized = true;
     return true;
   };
-  
+
   Deasciifier.make_turkish_asciify_table = function() {
     var ct = {};
     for (var i in Deasciifier.turkish_char_alist) {
@@ -153,7 +175,7 @@
     }
     Deasciifier.turkish_asciify_table = ct;
   };
-  
+
   Deasciifier.make_turkish_downcase_asciify_table = function() {
     var ct = {};
     var ch = 'a';
@@ -169,7 +191,7 @@
     }
     Deasciifier.turkish_downcase_asciify_table = ct;
   }
-  
+
   Deasciifier.make_turkish_upcase_accents_table = function() {
     var ct = {};
     var ch = 'a';
@@ -179,11 +201,11 @@
       ct[ch.toUpperCase()] = ch;
       ch = String.fromCharCode(ch.charCodeAt(0)+1); // next char
     }
-    // now check the characters in turkish alphabet 
+    // now check the characters in turkish alphabet
     // (same as downcase table except for .toUpperCase)
     for (var i in Deasciifier.turkish_char_alist) {
       ct[ Deasciifier.turkish_char_alist[i] ] = i.toUpperCase();
-    }    
+    }
     ct['i'] = 'i';
     ct['I'] = 'I';
     // We will do this part a bit different. Since we have only one
@@ -193,7 +215,7 @@
     ct['\u0131'] = 'I'; // lower turkish i
     Deasciifier.turkish_upcase_accents_table = ct;
   };
-  
+
   Deasciifier.make_turkish_toggle_accent_table = function() {
     var ct = {};
     for (var i in Deasciifier.turkish_char_alist) {
@@ -202,14 +224,14 @@
     }
     Deasciifier.turkish_toggle_accent_table = ct;
   }
-  
+
   Deasciifier.make_pattern_hash = function() {
     // This is precompiled:
     Deasciifier.turkish_pattern_table = Deasciifier["patternList"];
   }
 
   Deasciifier.turkish_correct_region = function(text, start, end, filter) {
-      
+
     if (!Deasciifier.initialized) {
       // Try loading pattern list again:
       Deasciifier.init();
@@ -243,7 +265,7 @@
       "skippedRegions":filter
     };
   }
-    
+
   Deasciifier.turkish_toggle_accent = function(text, pos) {
     var alt = Deasciifier.turkish_toggle_accent_table[text.charAt(pos)];
     if (alt) {
@@ -251,15 +273,15 @@
     }
     return text;
   }
-  
+
   Deasciifier.turkish_need_correction = function(text, pos) {
     var ch = text.charAt(pos);
     var tr = Deasciifier.turkish_asciify_table[ch];
     if (!tr) {
       tr = ch;
     }
-    var pl = Deasciifier.turkish_pattern_table[tr.toLowerCase()];  // Pattern list    
-    var m = pl && Deasciifier.turkish_match_pattern(text, pos, pl);  // match    
+    var pl = Deasciifier.turkish_pattern_table[tr.toLowerCase()];  // Pattern list
+    var m = pl && Deasciifier.turkish_match_pattern(text, pos, pl);  // match
     // if m then char should turn into turkish else stay ascii
     // only exception with capital I when we need the reverse
     if (tr=="I") {
@@ -268,14 +290,15 @@
     // else
     return (ch==tr) ? m: !m;
   }
-  
+
   Deasciifier.turkish_match_pattern = function(text, pos, dlist) { // dlist: decision list
-    
+
     var rank = dlist.length * 2;
-    var str = Deasciifier.turkish_get_context(text, pos, Deasciifier.turkish_context_size);    
+    var str = Deasciifier.turkish_get_context(
+        text, pos, Deasciifier.turkish_context_size);
     var start = 0, s, r;
     var len = str.length;
-    
+
     while (start<=Deasciifier.turkish_context_size) {
       var end = Deasciifier.turkish_context_size + 1;
       while (end<=len) {
@@ -290,14 +313,14 @@
     }
     return rank>0;
   }
-  
+
   function setCharAt(str, pos, c) {
     // TODO: Improve performance
     return str.substring(0,pos) + c + str.substring(pos+1);
   }
-  
+
   Deasciifier.turkish_get_context = function(text, pos, size) {
-    
+
     var s='', space=false, c,x;
     var string_size = 2*size+1;
     for (var j=0; j<string_size; j++) { // make-string
@@ -319,16 +342,17 @@
         s = setCharAt(s, i, x);
         space = false;
         }
-      i++; // this is not the way it's done in turkish-mode, i++ is inside else        
+      i++; // this is not the way it's done in turkish-mode,
+           // i++ is inside else
       //}
       index++;
     } // while (i<s.length && s[index]!=' ')
     s = s.substring(0,i);
-    
+
     index = pos; // goto_char(p);
     i = size-1;
     space = false;
-    
+
     index--;
     //while (i>=0 && index>0) {
     while (i>=0 && index>=0) {
@@ -336,7 +360,7 @@
       x = Deasciifier.turkish_upcase_accents_table[c];
       if (!x) {
         if (space) {
-          i--; 
+          i--;
         } else {
           space = true;
         }
@@ -344,21 +368,22 @@
         s = setCharAt(s, i, x);
         space = false;
         }
-      i--; // this is not the way it's done in turkish-mode, i-- is inside else
+      i--; // this is not the way it's done in turkish-mode,
+           // i-- is inside else
       //}
       index--;
     } // while (i>=0)
     return s;
   }
-  
+
   Deasciifier.build_skip_list = function(text, options) {
-    if ((options && options.hasOwnProperty("skipURLs") && options["skipURLs"]) || 
-        Deasciifier.defaultOptions["skipURLs"]){
-      return Deasciifier.URLScanner.getSkipRegions(text);
+    var skipOptions = Options.getMulti(options, ["skipURLs"]);
+    if (skipOptions) {
+      return Deasciifier.DefaultSkipFilter.getSkipRegions(skipOptions, text);
     }
     return null;
   }
-  
+
   Deasciifier.deasciifyRange = function(text, start, end, options) {
     // TODO: Better performance.
     // We should return an array of toggled character positions,
@@ -370,7 +395,7 @@
     return Deasciifier.turkish_correct_region(
       text, start, end, Deasciifier.build_skip_list(text, options));
   }
-  
+
   Deasciifier.turkish_correct_last_word = function(text, options) {
     if (!text) {
       return null;
@@ -393,14 +418,14 @@
     }
     return Deasciifier.deasciifyRange(text, 0, text.length-1, options);
   }
-  
+
   // Exports for Closure Compiler:
   window["Asciifier"] = Asciifier;
-  window["Asciifier"]["asciify"] = Asciifier.asciify;
-  window["Asciifier"]["asciifyRange"] = Asciifier.asciifyRange;
+  Asciifier["asciify"] = Asciifier.asciify;
+  Asciifier["asciifyRange"] = Asciifier.asciifyRange;
   window["Deasciifier"] = Deasciifier;
-  window["Deasciifier"]["deasciify"] = Deasciifier.deasciify;
-  window["Deasciifier"]["deasciifyRange"] = Deasciifier.deasciifyRange;
+  Deasciifier["deasciify"] = Deasciifier.deasciify;
+  Deasciifier["deasciifyRange"] = Deasciifier.deasciifyRange;
 
 })();
 
