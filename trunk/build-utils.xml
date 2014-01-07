@@ -42,6 +42,11 @@
   
   <target name="build-deasciifyBox-js-cc">
     
+    <!-- 
+    
+      TODO: Either create deasciifyBox.full.js above too, or ignore it here too 
+      
+    -->
     <echo message="Building combined deasciifyBox file using closure compiler at ${closurecompiler.path}"/>
     <mkdir dir="${basedir}/logs" />
     <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
@@ -64,6 +69,7 @@
       <arg value="--js_output_file"/>    <arg value="${deasciifyBox.js.compiled.full}"/>
       <arg value="--compilation_level"/> <arg value="${closurecompiler.compileLevel}"/>
       <arg value="--warning_level"/>     <arg value="${closurecompiler.warningLevel}"/>
+      <arg value="--output_wrapper"/>    <arg value="(function(){%output%})();"/>                 <!-- Output wrapper    -->
     </exec>
     
     <echo message="Building split deasciifyBox file without patterns"/>
@@ -86,6 +92,7 @@
       <arg value="--js_output_file"/>    <arg value="${deasciifyBox.js.compiled.split.lib}"/>
       <arg value="--compilation_level"/> <arg value="${closurecompiler.compileLevel}"/>
       <arg value="--warning_level"/>     <arg value="${closurecompiler.warningLevel}"/>
+      <arg value="--output_wrapper"/>    <arg value="(function(){%output%})();"/>                <!-- Output wrapper    -->
     </exec>
     <!-- Patterns are compiled in build.xml -->
   </target>

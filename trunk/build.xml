@@ -28,6 +28,9 @@
     <javac srcdir="build/src" classpath="tools/rhino/js.jar" destdir="build/class" includeantruntime="false"/>
   </target>
   
+  <!--==========================================================================
+    Compile deasciifier patterns from an array into a dictionary
+  ===========================================================================-->
   <target name="compile-deasciifier-patterns" depends="compile-java">
     <java classname="com.deasciifier.build.PatternCompiler" failonerror="true">
       <arg value="${basedir}/build/compile_patterns.js"/>                        <!-- Compilation javascript -->
@@ -41,6 +44,9 @@
     </java>
   </target>
   
+  <!--==========================================================================
+    Read chrome extension version from manifest.json file 
+  ===========================================================================-->
   <target name="read-chromeextension-version" depends="compile-java">
     <java classname="com.deasciifier.build.ChromeManifestReader" failonerror="true" outputproperty="chrome.extension.version">
       <arg value="src/chrome_extension/manifest.json"/>
@@ -98,6 +104,9 @@
     
     <echo message="Building deasciifier JS using Closure Compiler"/>
     
+    <!-- 
+        Combined file
+    -->
     <echo message="Building combined file"/>
     <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
       append="true" output="${logs.dir}/build.log" logError="true">
@@ -109,8 +118,12 @@
       <arg value="--js_output_file"/>   <arg value="${deasciifier.js.compiled.full}"/>     <!-- Full output file  --> 
       <arg value="--compilation_level"/><arg value="${closurecompiler.compileLevel}"/>     <!-- Compilation level -->
       <arg value="--warning_level"/>    <arg value="${closurecompiler.warningLevel}"/>     <!-- Warning level     -->
+      <arg value="--output_wrapper"/>   <arg value="(function(){%output%})();"/>           <!-- Output wrapper    -->
     </exec>
     
+    <!-- 
+        Splitted files 
+    -->
     <echo message="Building splitted files"/>
     <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
       append="true" output="${basedir}/logs/build.log" logError="true">
@@ -121,6 +134,7 @@
       <arg value="--js_output_file"/>   <arg value="${deasciifier.js.compiled.split.lib}"/><!-- Full output file  --> 
       <arg value="--compilation_level"/><arg value="${closurecompiler.compileLevel}"/>     <!-- Compilation level -->
       <arg value="--warning_level"/>    <arg value="${closurecompiler.warningLevel}"/>     <!-- Warning level     -->
+      <arg value="--output_wrapper"/>   <arg value="(function(){%output%})();"/>           <!-- Output wrapper    -->
     </exec>
     <!-- Compile patterns separately -->
     <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true"
@@ -130,6 +144,7 @@
       <arg value="--js_output_file"/>   <arg value="${deasciifier.js.compiled.split.patterns}"/><!-- Patterns output file  --> 
       <arg value="--compilation_level"/><arg value="${closurecompiler.compileLevel}"/>     <!-- Compilation level -->
       <arg value="--warning_level"/>    <arg value="${closurecompiler.warningLevel}"/>     <!-- Warning level     -->
+      <arg value="--output_wrapper"/>   <arg value="(function(){%output%})();"/>           <!-- Output wrapper    -->
     </exec>
     <echo message="DONE"/>
   </target>
