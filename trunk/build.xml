@@ -64,17 +64,20 @@
   <!--==========================================================================
     Read chrome extension version from manifest.json file
   ===========================================================================-->
-  <target name="read-chromeextension-version" depends="compile-java">
-    <java classname="com.deasciifier.build.ChromeManifestReader"
-       failonerror="true" outputproperty="chrome.extension.version">
+  <target name="read-chromeextension-version">
+    <exec
+        executable="python"
+        dir="${basedir}"
+        failonerror="true"
+        failifexecutionfails="true"
+        outputproperty="chrome.extension.version">
+      
+      <arg value="build/chrome_extension_version.py"/>
+      
       <arg value="src/chrome_extension/manifest.json"/>
-
-      <classpath>
-        <pathelement path="build/class"/>
-        <pathelement path="tools/rhino/js.jar"/>
-      </classpath>
-    </java>
-    <property name="chrome.extension.output" value="${basedir}/output/chrome_extension_${chrome.extension.version}.zip"/>
+    </exec>
+    <property name="chrome.extension.output"
+        value="output/chrome_extension_${chrome.extension.version}.zip"/>
     <echo> CHROME EXTENSION VERSION: ${chrome.extension.version}</echo>
     <echo> CHROME EXTENSION OUTPUT : ${chrome.extension.output}</echo>
   </target>
