@@ -1,7 +1,4 @@
-//
 // This file is used to generate the final pattern list.
-//
-// Author: Mustafa Emre Acer
 
 if (!window["Deasciifier"]) {
   window["Deasciifier"] = {};

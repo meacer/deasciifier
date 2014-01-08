@@ -40,28 +40,27 @@
   <!--==========================================================================
     Compile deasciifier patterns from an array into a dictionary.
   ===========================================================================-->
-  <target name="compile-deasciifier-patterns"
-      depends="compile-java, build-deasciifier-js-init">
-    <java classname="com.deasciifier.build.PatternCompiler" failonerror="true">
+  <target name="compile-deasciifier-patterns" 
+      depends="build-deasciifier-js-init">
+    <exec
+        executable="python"
+        dir="${basedir}"
+        failonerror="true"
+        failifexecutionfails="true">
       
       <!-- Compilation script -->
-      <arg value="${basedir}/build/compile_patterns.js"/>                        
+      <arg value="${basedir}/build/compile_patterns.py"/>                        
       <!-- Source patterns (input) -->
-      <arg value="${basedir}/src/js/lib/patterns/patterns.js"/>
+      <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
       
       <!-- Pattern template (input) -->
       <arg value="${basedir}/src/js/lib/patterns/template.js"/>
       
       <!-- Compiled patterns (output) -->
       <arg value="${output.dir}/js/patterns/patterns.js"/>
-      
-      <classpath>
-        <pathelement path="build/class"/>
-        <pathelement path="tools/rhino/js.jar"/>
-      </classpath>
-    </java>
+    </exec>
   </target>
-
+  
   <!--==========================================================================
     Read chrome extension version from manifest.json file
   ===========================================================================-->
