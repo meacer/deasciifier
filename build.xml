@@ -1,56 +1,75 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
        Turkish Deasciifier ANT build script
-       
+
        Author:  Mustafa Emre Acer
        Version: 1.1
 -->
 
 <project name="deasciifier" basedir="." default="help">
-  
+
   <!-- Configuration properties -->
   <property file="build.properties"/>
 
-  <!--==========================================================================
-    Cleanup deasciifier JavaScript output files, create directories etc 
-  ===========================================================================-->
-  <target name="build-deasciifier-js-init">
-    <delete file="${deasciifier.js.compiled.full}"/>
-    <delete file="${deasciifier.js.compiled.split.lib}"/>
-    <delete file="${deasciifier.js.compiled.split.patterns}"/>
-    <mkdir dir="${logs.dir}" /> <!-- Log directory for Closure Compiler output -->
+  <target name="clean">
+    <delete dir="${output.dir}" />
   </target>
   
+  <!--==========================================================================
+    Cleanup deasciifier JavaScript output files, create directories etc
+  ===========================================================================-->
+  <target name="build-deasciifier-js-init" depends="clean">
+    <!-- Create output directories -->
+    <mkdir dir="${output.dir}" />
+    <mkdir dir="${output.dir}/js" />
+    <mkdir dir="${output.dir}/js/patterns" />
+    
+    <!-- Create log directory for Closure Compiler output -->
+    <mkdir dir="${logs.dir}" />
+    
+  </target>
+
   <target name="compile-java">
     <!-- <delete dir="build/class"/> -->
     <mkdir dir="build/class"/>
-    <javac srcdir="build/src" classpath="tools/rhino/js.jar" destdir="build/class" includeantruntime="false"/>
+    <javac srcdir="build/src" classpath="tools/rhino/js.jar"
+        destdir="build/class" includeantruntime="false"/>
   </target>
-  
+
   <!--==========================================================================
-    Compile deasciifier patterns from an array into a dictionary
+    Compile deasciifier patterns from an array into a dictionary.
   ===========================================================================-->
-  <target name="compile-deasciifier-patterns" depends="compile-java">
+  <target name="compile-deasciifier-patterns"
+      depends="compile-java, build-deasciifier-js-init">
     <java classname="com.deasciifier.build.PatternCompiler" failonerror="true">
-      <arg value="${basedir}/build/compile_patterns.js"/>                        <!-- Compilation javascript -->
-      <arg value="${basedir}/src/js/lib/deasciifier.patterns.uncompiled.js"/>    <!-- Source patterns -->
-      <arg value="${basedir}/src/js/lib/deasciifier.patterns.template.js"/>      <!-- Output template -->
-      <arg value="${basedir}/src/js/lib/deasciifier.patterns.js"/>               <!-- Output file -->
+      
+      <!-- Compilation script -->
+      <arg value="${basedir}/build/compile_patterns.js"/>                        
+      <!-- Source patterns (input) -->
+      <arg value="${basedir}/src/js/lib/patterns/patterns.js"/>
+      
+      <!-- Pattern template (input) -->
+      <arg value="${basedir}/src/js/lib/patterns/template.js"/>
+      
+      <!-- Compiled patterns (output) -->
+      <arg value="${output.dir}/js/patterns/patterns.js"/>
+      
       <classpath>
         <pathelement path="build/class"/>
         <pathelement path="tools/rhino/js.jar"/>
       </classpath>
     </java>
   </target>
-  
+
   <!--==========================================================================
-    Read chrome extension version from manifest.json file 
+    Read chrome extension version from manifest.json file
   ===========================================================================-->
   <target name="read-chromeextension-version" depends="compile-java">
-    <java classname="com.deasciifier.build.ChromeManifestReader" failonerror="true" outputproperty="chrome.extension.version">
+    <java classname="com.deasciifier.build.ChromeManifestReader"
+       failonerror="true" outputproperty="chrome.extension.version">
       <arg value="src/chrome_extension/manifest.json"/>
-      
+
       <classpath>
         <pathelement path="build/class"/>
         <pathelement path="tools/rhino/js.jar"/>
@@ -60,196 +79,331 @@
     <echo> CHROME EXTENSION VERSION: ${chrome.extension.version}</echo>
     <echo> CHROME EXTENSION OUTPUT : ${chrome.extension.output}</echo>
   </target>
-  
+
   <!--==========================================================================
-    Build deasciifier JavaScript library by concatenating files (for debugging) 
+    Build deasciifier JavaScript library by concatenating files (for debugging)
   ===========================================================================-->
-  <target name="build-deasciifier-js-concat" depends="build-deasciifier-js-init, compile-deasciifier-patterns">
-  
+  <target name="build-deasciifier-js-concat" 
+      depends="build-deasciifier-js-init, compile-deasciifier-patterns">
+
     <echo message="Building deasciifier JS by concatenating files"/>
-  
+
     <echo message="Building combined file"/>
-    <concat destfile="${deasciifier.js.compiled.full}" append="true" encoding="UTF-8" outputencoding="UTF-8"> 
+    <concat destfile="${deasciifier.js.compiled.full}" append="true"
+        encoding="UTF-8" outputencoding="UTF-8">
       <filelist dir="${basedir}">
-        <file name="src/js/lib/turkish.chars.js"/>           <!-- Turkish char list  -->
-        <file name="src/js/lib/deasciifier.patterns.js"/>    <!-- Patterns          -->
-        <file name="src/js/lib/deasciifier.js"/>             <!-- Ascii/Deasciifier -->
-        <file name="src/js/lib/turkishEncoder.js"/>          <!-- JS/HTML Encoder   -->
+        
+        <!-- Turkish char list  -->
+        <file name="src/js/lib/turkish_chars.js"/>
+        
+        <!-- Generated pattern list -->
+        <file name="${output.dir}/js/patterns/patterns.js"/>
+        
+        <!-- Ascii/Deasciifier -->
+        <file name="src/js/lib/deasciifier.js"/>
+        
+        <!-- JS/HTML Encoder -->
+        <file name="src/js/lib/turkish_encoder.js"/>
       </filelist>
       <filterchain>
-        <deletecharacters chars="&#xFEFF;" />                <!-- Delete BOM characters-->
+        <!-- Delete BOM characters-->
+        <deletecharacters chars="&#xFEFF;" />
+      </filterchain>
+    </concat>
+
+    <echo message="Building splitted files"/>
+    <concat destfile="${deasciifier.js.compiled.split.lib}" append="true"
+        encoding="UTF-8" outputencoding="UTF-8">
+      <filelist dir="${basedir}">
+        
+        <!-- Turkish char list -->
+        <file name="src/js/lib/turkish_chars.js"/>
+        
+        <!-- Ascii/Deasciifier -->
+        <file name="src/js/lib/deasciifier.js"/>
+        
+        <!-- JS/HTML Encoder -->
+        <file name="src/js/lib/turkish_encoder.js"/>
+      </filelist>
+      
+      <filterchain>
+        <!-- Delete BOM characters -->
+        <deletecharacters chars="&#xFEFF;"/>
       </filterchain>
     </concat>
     
-    <echo message="Building splitted files"/>
-    <concat destfile="${deasciifier.js.compiled.split.lib}" append="true" encoding="UTF-8" outputencoding="UTF-8">
-      <filelist dir="${basedir}">
-        <file name="src/js/lib/turkish.chars.js"/>           <!-- Turkish char list -->
-        <file name="src/js/lib/deasciifier.js"/>             <!-- Ascii/Deasciifier -->
-        <file name="src/js/lib/turkishEncoder.js"/>          <!-- JS/HTML Encoder   -->
-      </filelist>
-      <filterchain>
-        <deletecharacters chars="&#xFEFF;"/>                 <!-- Delete BOM characters-->
-      </filterchain>
-    </concat>
+    <!-- Patterns -->
     <copy tofile="${deasciifier.js.compiled.split.patterns}"
-      file="src/js/lib/deasciifier.patterns.js"/>             <!-- Patterns          -->
+        file="${output.dir}/js/patterns/patterns.js"/>
     <echo message="DONE"/>
   </target>
-  
+
   <!--==========================================================================
     Build deasciifier JavaScript library using Closure Compiler
   ===========================================================================-->
-  <target name="build-deasciifier-js-cc" depends="build-deasciifier-js-init, compile-deasciifier-patterns">
-    
+  <target name="build-deasciifier-js-cc"
+      depends="build-deasciifier-js-init, compile-deasciifier-patterns">
+
     <echo message="Building deasciifier JS using Closure Compiler"/>
-    
-    <!-- 
+
+    <!--
         Combined file
     -->
     <echo message="Building combined file"/>
-    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
-      append="true" output="${logs.dir}/build.log" logError="true">
-      <arg value="-jar"/>               <arg value="${closurecompiler.path}"/>
-      <arg value="--js"/>               <arg value="src/js/lib/turkish.chars.js"/>         <!-- Turkish char list -->
-      <arg value="--js"/>               <arg value="src/js/lib/deasciifier.patterns.js"/>  <!-- Patterns          -->
-      <arg value="--js"/>               <arg value="src/js/lib/deasciifier.js"/>           <!-- Ascii/Deasciifier -->
-      <arg value="--js"/>               <arg value="src/js/lib/turkishEncoder.js"/>        <!-- JS/HTML Encoder   -->
-      <arg value="--js_output_file"/>   <arg value="${deasciifier.js.compiled.full}"/>     <!-- Full output file  --> 
-      <arg value="--compilation_level"/><arg value="${closurecompiler.compileLevel}"/>     <!-- Compilation level -->
-      <arg value="--warning_level"/>    <arg value="${closurecompiler.warningLevel}"/>     <!-- Warning level     -->
-      <arg value="--output_wrapper"/>   <arg value="(function(){%output%})();"/>           <!-- Output wrapper    -->
+    <exec
+        executable="java"
+        dir="${basedir}"
+        failonerror="true"
+        failifexecutionfails="true"
+        append="true"
+        output="${logs.dir}/build.log"
+        logError="true">
+
+      <arg value="-jar"/>
+      <arg value="${closurecompiler.path}"/>
+
+      <!-- Turkish char list -->
+      <arg value="--js"/>
+      <arg value="src/js/lib/turkish_chars.js"/>
+
+      <!-- Generated pattern list (input) -->
+      <arg value="--js"/>
+      <arg value="${output.dir}/js/patterns/patterns.js"/>
+
+      <!-- Ascii/Deasciifier -->
+      <arg value="--js"/>
+      <arg value="src/js/lib/deasciifier.js"/>
+
+      <!-- JS/HTML Encoder -->
+      <arg value="--js"/>
+      <arg value="src/js/lib/turkish_encoder.js"/>
+
+      <!-- Full output file -->
+      <arg value="--js_output_file"/>
+      <arg value="${deasciifier.js.compiled.full}"/>
+
+      <!-- Compilation level -->
+      <arg value="--compilation_level"/>
+      <arg value="${closurecompiler.compileLevel}"/>
+
+      <!-- Warning level -->
+      <arg value="--warning_level"/>
+      <arg value="${closurecompiler.warningLevel}"/>
+
+      <!-- Output wrapper -->
+      <arg value="--output_wrapper"/>
+      <arg value="(function(){%output%})();"/>
     </exec>
-    
-    <!-- 
-        Splitted files 
+
+    <!--
+        Splitted files
     -->
     <echo message="Building splitted files"/>
-    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
-      append="true" output="${basedir}/logs/build.log" logError="true">
-      <arg value="-jar"/>               <arg value="${closurecompiler.path}"/>
-      <arg value="--js"/>               <arg value="src/js/lib/turkish.chars.js"/>         <!-- Turkish char list -->
-      <arg value="--js"/>               <arg value="src/js/lib/deasciifier.js"/>           <!-- Ascii/Deasciifier -->
-      <arg value="--js"/>               <arg value="src/js/lib/turkishEncoder.js"/>        <!-- JS/HTML Encoder   -->
-      <arg value="--js_output_file"/>   <arg value="${deasciifier.js.compiled.split.lib}"/><!-- Full output file  --> 
-      <arg value="--compilation_level"/><arg value="${closurecompiler.compileLevel}"/>     <!-- Compilation level -->
-      <arg value="--warning_level"/>    <arg value="${closurecompiler.warningLevel}"/>     <!-- Warning level     -->
-      <arg value="--output_wrapper"/>   <arg value="(function(){%output%})();"/>           <!-- Output wrapper    -->
+    <exec
+        executable="java"
+        dir="${basedir}"
+        failonerror="true"
+        failifexecutionfails="true"
+        append="true"
+        output="${basedir}/logs/build.log"
+        logError="true">
+
+      <arg value="-jar"/>
+      <arg value="${closurecompiler.path}"/>
+
+      <!-- Turkish char list -->
+      <arg value="--js"/>
+      <arg value="src/js/lib/turkish_chars.js"/>
+
+      <!-- Ascii/Deasciifier -->
+      <arg value="--js"/>
+      <arg value="src/js/lib/deasciifier.js"/>
+
+      <!-- JS/HTML Encoder -->
+      <arg value="--js"/>
+      <arg value="src/js/lib/turkish_encoder.js"/>
+
+      <!-- Full output file -->
+      <arg value="--js_output_file"/>
+      <arg value="${deasciifier.js.compiled.split.lib}"/>
+
+      <!-- Compilation level -->
+      <arg value="--compilation_level"/>
+      <arg value="${closurecompiler.compileLevel}"/>
+
+      <!-- Warning level -->
+      <arg value="--warning_level"/>
+      <arg value="${closurecompiler.warningLevel}"/>
+
+      <!-- Output wrapper -->
+      <arg value="--output_wrapper"/>
+      <arg value="(function(){%output%})();"/>
     </exec>
+
     <!-- Compile patterns separately -->
-    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true"
-      append="true" output="${basedir}/logs/build.log" logError="true">
-      <arg value="-jar"/>               <arg value="${closurecompiler.path}"/>
-      <arg value="--js"/>               <arg value="src/js/lib/deasciifier.patterns.js"/>  <!-- Patterns          -->
-      <arg value="--js_output_file"/>   <arg value="${deasciifier.js.compiled.split.patterns}"/><!-- Patterns output file  --> 
-      <arg value="--compilation_level"/><arg value="${closurecompiler.compileLevel}"/>     <!-- Compilation level -->
-      <arg value="--warning_level"/>    <arg value="${closurecompiler.warningLevel}"/>     <!-- Warning level     -->
-      <arg value="--output_wrapper"/>   <arg value="(function(){%output%})();"/>           <!-- Output wrapper    -->
+    <exec
+        executable="java"
+        dir="${basedir}"
+        failonerror="true"
+        failifexecutionfails="true"
+        append="true"
+        output="${basedir}/logs/build.log"
+        logError="true">
+
+      <arg value="-jar"/>
+      <arg value="${closurecompiler.path}"/>
+
+      <!-- Generated pattern list (input) -->
+      <arg value="--js"/>
+      <arg value="${output.dir}/js/patterns/patterns.js"/>
+
+      <!-- Compiled patterns (output) -->
+      <arg value="--js_output_file"/>
+      <arg value="${deasciifier.js.compiled.split.patterns}"/>
+
+      <!-- Compilation level -->
+      <arg value="--compilation_level"/>
+      <arg value="${closurecompiler.compileLevel}"/>
+
+      <!-- Warning level -->
+      <arg value="--warning_level"/>
+      <arg value="${closurecompiler.warningLevel}"/>
+
+      <!-- Output wrapper -->
+      <arg value="--output_wrapper"/>
+      <arg value="(function(){%output%})();"/>
     </exec>
     <echo message="DONE"/>
   </target>
-  
+
   <!--==========================================================================
-    Builds deasciifier JavaScript code using either concatenation or Closure Compiler
+    Builds deasciifier JavaScript code using either concatenation or Closure
+    Compiler
   ===========================================================================-->
   <target name="build-deasciifier-js">
-    <condition property="build-deasciifier-js-targetname"
-      value="build-deasciifier-js-concat"
-      else="build-deasciifier-js-cc"
-    >
+    <condition
+        property="build-deasciifier-js-targetname"
+        value="build-deasciifier-js-concat"
+        else="build-deasciifier-js-cc">
       <!-- If config.name==Debug, we will call js-concat, otherwise it will be js-cc -->
       <equals arg1="${config.name}" arg2="Debug"/>
     </condition>
-    <antcall target="${build-deasciifier-js-targetname}" />            
+    <antcall target="${build-deasciifier-js-targetname}" />
   </target>
-  
+
   <target name="run-js-tests">
     <exec executable="java">
-      <arg value="-jar"/>            <arg value="tools/JsTestDriver/JsTestDriver.jar"/>
-      <arg value="--port"/>          <arg value="4224"/>
+      <arg value="-jar"/>
+      <arg value="tools/JsTestDriver/JsTestDriver.jar"/>
+
+      <arg value="--port"/>
+      <arg value="4224"/>
+
       <arg value="--verbose"/>
     </exec>
   </target>
-  
+
   <!--==========================================================================
     Builds Chrome extension
   ===========================================================================-->
-  <target name="build-chrome-extension" depends="build-deasciifier-js, read-chromeextension-version">
-    <property name="chrome.extension.dir" location="${basedir}/src/chrome_extension"/>
+  <target name="build-chrome-extension"
+      depends="build-deasciifier-js, read-chromeextension-version">
+    <property name="chrome.extension.dir"
+        location="${basedir}/src/chrome_extension"/>
     <echo message="Building Chrome Extension at ${chrome.extension.dir}"/>
     <mkdir dir="${chrome.extension.dir}/lib"/>
+
     <!-- Copy compiled deasciifier JS -->
     <copy todir="${chrome.extension.dir}/lib"
-      file="${deasciifier.js.compiled.full}" />
-      
+        file="${deasciifier.js.compiled.full}" />
+
+    <!-- Html deasciifier -->
     <copy todir="${chrome.extension.dir}/lib"
-      file="src/js/utils/html_deasciifier.js" /> <!-- Html deasciifier -->
+        file="src/js/utils/html_deasciifier.js" />
+
+    <!-- Html decoder -->
     <copy todir="${chrome.extension.dir}/lib"
-      file="src/js/utils/html_decoder.js" />     <!-- Html decoder -->
+        file="src/js/utils/html_decoder.js" />
+
+    <!-- Text helper -->
     <copy todir="${chrome.extension.dir}/lib"
-      file="src/js/utils/utils.textHelper.js" /> <!-- Text helper -->
-            
+        file="src/js/utils/utils.textHelper.js" />
+
     <!-- Copy icon -->
     <copy tofile="${chrome.extension.dir}/g-logo.png"
       file="resources/icon80x80.png"/>
+
     <!-- Build the .zip file -->
     <antcall target="build-chrome-extension-zip"/>
-    
+
     <echo message="DONE"/>
   </target>
-  
+
   <target name="build-chrome-extension-zip">
     <!-- Build extension zip -->
     <delete file="${chrome.extension.output}"/>
-    <exec executable="${basedir}/tools/7zip/7za.exe" dir="${basedir}/src" failonerror="true">
-      <arg value="-xr!.svn"/>                                  <!-- Exclude .svn folder -->
+    <exec
+        executable="${basedir}/tools/7zip/7za.exe"
+        dir="${basedir}/src"
+        failonerror="true">
+
+      <!-- Exclude .svn folder -->
+      <arg value="-xr!.svn"/>
+
+      <!-- Archive flag -->
       <arg value="a"/>
-      <arg value="${chrome.extension.output}"/>                <!-- Output zip file -->
-      <arg value="chrome_extension"/>                          <!-- Folder to add -->
+
+      <!-- Output zip file -->
+      <arg value="${chrome.extension.output}"/>
+
+      <!-- Folder to add -->
+      <arg value="chrome_extension"/>
     </exec>
   </target>
-  
+
   <!--==========================================================================
     Builds Safari extension
   ===========================================================================-->
   <target name="build-safari-extension" depends="build-deasciifier-js">
-    <property name="safari.extension.dir" location="${basedir}/src/safari_extension/safari_deasciifier.safariextension"/>
+    <property name="safari.extension.dir"  
+location="${basedir}/src/safari_extension/safari_deasciifier.safariextension"/>
     <echo message="Building Safari Extension at ${safari.extension.dir}"/>
     <mkdir dir="${safari.extension.dir}/lib"/>
     <!-- Copy compiled deasciifier JS -->
     <copy todir="${safari.extension.dir}/lib"
-      file="${deasciifier.js.compiled.full}" />
+        file="${deasciifier.js.compiled.full}" />
     <echo message="DONE"/>
   </target>
-  
+
   <target name="build-deasciifyBox">
     <ant antfile="build-utils.xml" target="build-deasciifyBox-js"/>
   </target>
   <target name="build-utils">
     <ant antfile="build-utils.xml" target="build-utils-all"/>
   </target>
-  
+
   <!--==========================================================================
     Builds all targets
   ===========================================================================-->
-  <target name="build-all" 
+  <target name="build-all"
     depends="build-deasciifier-js-init, build-deasciifier-js, build-chrome-extension, build-safari-extension, build-utils">
   </target>
-  
+
   <target name="help">
     <echo>
-      compile-deasciifier-patterns   : Compiles deasciifier patterns into a dictionary
-      build-deasciifier-js-concat    : Builds deasciifier JS code by concatenating files (for debugging)
-      build-deasciifier-js-cc        : Builds deasciifier JS code using closure compiler
-      build-deasciifier-js           : Builds deasciifier JS code using either concatenation OR closure compiler
-    
-      build-chrome-extension         : Builds and deploys Chrome Extension
-      build-chrome-extension-zip     : Builds the .zip file for Chrome Extension
-      build-safari-extension         : Builds and deploys Safari Extension
-      
-      build-deasciifyBox             : Builds deasciifyBox
-      build-utils                    : Builds deasciifyBox and other JS utilities
-      build-all                      : Builds and deploys JS deasciifier, JS utilities, Chrome extension and Safari extension
+      clean                          : Cleans output files.
+      compile-deasciifier-patterns   : Compiles deasciifier patterns into a dictionary.
+      build-deasciifier-js-concat    : Builds deasciifier JS code by concatenating files (for debugging).
+      build-deasciifier-js-cc        : Builds deasciifier JS code using closure compiler.
+      build-deasciifier-js           : Builds deasciifier JS code using either concatenation OR closure compiler.
+
+      build-chrome-extension         : Builds and deploys Chrome Extension.
+      build-chrome-extension-zip     : Builds the .zip file for Chrome Extension.
+      build-safari-extension         : Builds and deploys Safari Extension.
+
+      build-deasciifyBox             : Builds deasciifyBox.
+      build-utils                    : Builds deasciifyBox and other JS utilities.
+      build-all                      : Builds and deploys JS deasciifier, JS utilities, Chrome extension and Safari extension.
     </echo>
   </target>
 
