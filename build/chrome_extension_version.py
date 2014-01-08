@@ -1,5 +1,6 @@
 """
-Reads the version information from the manifest of the Chrome extension.
+  Reads the version information from the manifest of the Chrome extension.
+  Author: Mustafa Emre Acer
 """
 
 import json
