@@ -30,13 +30,6 @@
     
   </target>
 
-  <target name="compile-java">
-    <!-- <delete dir="build/class"/> -->
-    <mkdir dir="build/class"/>
-    <javac srcdir="build/src" classpath="tools/rhino/js.jar"
-        destdir="build/class" includeantruntime="false"/>
-  </target>
-
   <!--==========================================================================
     Compile deasciifier patterns from an array into a dictionary.
   ===========================================================================-->
