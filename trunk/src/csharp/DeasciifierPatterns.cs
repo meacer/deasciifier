@@ -15,6 +15,19 @@ namespace org.deasciifier
 {
     class DeasciifierPatterns
     {
+        const char TR_LOWER_C = '\u00E7';
+        const char TR_UPPER_C = '\u00C7';
+        const char TR_LOWER_G = '\u011F';
+        const char TR_UPPER_G = '\u011E';
+        const char TR_LOWER_I = '\u0131';
+        const char TR_UPPER_I = '\u0130';
+        const char TR_LOWER_O = '\u00F6';
+        const char TR_UPPER_O = '\u00D6';
+        const char TR_LOWER_S = '\u015F';
+        const char TR_UPPER_S = '\u015E';
+        const char TR_LOWER_U = '\u00FC';
+        const char TR_UPPER_U = '\u00DC';
+
         public Dictionary<String, Dictionary<String, Int16>> p = new
             Dictionary<String, Dictionary<String, Int16>>();
         public Dictionary<String, String> turkish_char_alist = new Dictionary<string, string>();
@@ -28,18 +41,18 @@ namespace org.deasciifier
         public void init()
         {
             init_patterns();
-            turkish_char_alist["c"] = "ç";
-            turkish_char_alist["C"] = "Ç";
-            turkish_char_alist["g"] = "ð";
-            turkish_char_alist["G"] = "Ð";
-            turkish_char_alist["i"] = "ý";
-            turkish_char_alist["I"] = "Ý";
-            turkish_char_alist["o"] = "ö";
-            turkish_char_alist["O"] = "Ö";
-            turkish_char_alist["s"] = "þ";
-            turkish_char_alist["S"] = "Þ";
-            turkish_char_alist["u"] = "ü";
-            turkish_char_alist["U"] = "Ü";
+            turkish_char_alist["c"] = TR_LOWER_C.ToString();
+            turkish_char_alist["C"] = TR_UPPER_C.ToString();
+            turkish_char_alist["g"] = TR_LOWER_G.ToString();
+            turkish_char_alist["G"] = TR_UPPER_G.ToString();
+            turkish_char_alist["i"] = TR_LOWER_I.ToString();
+            turkish_char_alist["I"] = TR_UPPER_I.ToString();
+            turkish_char_alist["o"] = TR_LOWER_O.ToString();
+            turkish_char_alist["O"] = TR_UPPER_O.ToString();
+            turkish_char_alist["s"] = TR_LOWER_S.ToString();
+            turkish_char_alist["S"] = TR_UPPER_S.ToString();
+            turkish_char_alist["u"] = TR_LOWER_U.ToString();
+            turkish_char_alist["U"] = TR_UPPER_U.ToString();
 
             make_turkish_asciify_table();
             make_turkish_downcase_asciify_table();
@@ -99,8 +112,8 @@ namespace org.deasciifier
             // We will do this part a bit different. Since we have only one
             // correspondence for every character in turkish_char_alist,
             // we will just set the values directly:
-            ct["Ý"] = "i";
-            ct["ý"] = "I";
+            ct[TR_UPPER_I.ToString()] = "i";
+            ct[TR_LOWER_I.ToString()] = "I";
             turkish_upcase_accents_table = ct;
         }
 
