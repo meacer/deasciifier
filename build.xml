@@ -15,7 +15,7 @@
   <target name="clean">
     <delete dir="${output.dir}" />
   </target>
-  
+
   <!--==========================================================================
     Cleanup deasciifier JavaScript output files, create directories etc
   ===========================================================================-->
@@ -24,36 +24,36 @@
     <mkdir dir="${output.dir}" />
     <mkdir dir="${output.dir}/js" />
     <mkdir dir="${output.dir}/js/patterns" />
-    
+
     <!-- Create log directory for Closure Compiler output -->
     <mkdir dir="${logs.dir}" />
-    
+
   </target>
 
   <!--==========================================================================
     Compile deasciifier patterns from an array into a dictionary.
   ===========================================================================-->
-  <target name="compile-deasciifier-patterns" 
+  <target name="compile-deasciifier-patterns"
       depends="build-deasciifier-js-init">
     <exec
         executable="python"
         dir="${basedir}"
         failonerror="true"
         failifexecutionfails="true">
-      
+
       <!-- Compilation script -->
-      <arg value="${basedir}/build/compile_patterns.py"/>                        
+      <arg value="${basedir}/build/compile_patterns.py"/>
       <!-- Source patterns (input) -->
       <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
-      
+
       <!-- Pattern template (input) -->
       <arg value="${basedir}/src/js/lib/patterns/template.js"/>
-      
+
       <!-- Compiled patterns (output) -->
       <arg value="${output.dir}/js/patterns/patterns.js"/>
     </exec>
   </target>
-  
+
   <!--==========================================================================
     Read chrome extension version from manifest.json file
   ===========================================================================-->
@@ -64,9 +64,9 @@
         failonerror="true"
         failifexecutionfails="true"
         outputproperty="chrome.extension.version">
-      
+
       <arg value="build/chrome_extension_version.py"/>
-      
+
       <arg value="src/chrome_extension/manifest.json"/>
     </exec>
     <property name="chrome.extension.output"
@@ -78,7 +78,7 @@
   <!--==========================================================================
     Build deasciifier JavaScript library by concatenating files (for debugging)
   ===========================================================================-->
-  <target name="build-deasciifier-js-concat" 
+  <target name="build-deasciifier-js-concat"
       depends="build-deasciifier-js-init, compile-deasciifier-patterns">
 
     <echo message="Building deasciifier JS by concatenating files"/>
@@ -87,16 +87,16 @@
     <concat destfile="${deasciifier.js.compiled.full}" append="true"
         encoding="UTF-8" outputencoding="UTF-8">
       <filelist dir="${basedir}">
-        
+
         <!-- Turkish char list  -->
         <file name="src/js/lib/turkish_chars.js"/>
-        
+
         <!-- Generated pattern list -->
         <file name="${output.dir}/js/patterns/patterns.js"/>
-        
+
         <!-- Ascii/Deasciifier -->
         <file name="src/js/lib/deasciifier.js"/>
-        
+
         <!-- JS/HTML Encoder -->
         <file name="src/js/lib/turkish_encoder.js"/>
       </filelist>
@@ -110,23 +110,23 @@
     <concat destfile="${deasciifier.js.compiled.split.lib}" append="true"
         encoding="UTF-8" outputencoding="UTF-8">
       <filelist dir="${basedir}">
-        
+
         <!-- Turkish char list -->
         <file name="src/js/lib/turkish_chars.js"/>
-        
+
         <!-- Ascii/Deasciifier -->
         <file name="src/js/lib/deasciifier.js"/>
-        
+
         <!-- JS/HTML Encoder -->
         <file name="src/js/lib/turkish_encoder.js"/>
       </filelist>
-      
+
       <filterchain>
         <!-- Delete BOM characters -->
         <deletecharacters chars="&#xFEFF;"/>
       </filterchain>
     </concat>
-    
+
     <!-- Patterns -->
     <copy tofile="${deasciifier.js.compiled.split.patterns}"
         file="${output.dir}/js/patterns/patterns.js"/>
@@ -338,9 +338,9 @@
     <!-- Build extension zip -->
     <delete file="${chrome.extension.output}"/>
     <exec
-        executable="${basedir}/tools/7zip/7za.exe"
-        dir="${basedir}/src"
-        failonerror="true">
+      executable="${basedir}/tools/7zip/7za.exe"
+      dir="${basedir}/src"
+      failonerror="true">
 
       <!-- Exclude .svn folder -->
       <arg value="-xr!.svn"/>
@@ -360,8 +360,8 @@
     Builds Safari extension
   ===========================================================================-->
   <target name="build-safari-extension" depends="build-deasciifier-js">
-    <property name="safari.extension.dir"  
-location="${basedir}/src/safari_extension/safari_deasciifier.safariextension"/>
+    <property name="safari.extension.dir"
+      location="${basedir}/src/safari_extension/safari_deasciifier.safariextension"/>
     <echo message="Building Safari Extension at ${safari.extension.dir}"/>
     <mkdir dir="${safari.extension.dir}/lib"/>
     <!-- Copy compiled deasciifier JS -->

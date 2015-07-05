@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- 
+<!--
        Turkish Deasciifier JS utilities ANT build script
-       
+
        Author:  Mustafa Emre Acer
        Version: 1.1
 -->
 
 <project name="build-deasciifier-utils" basedir="." default="help">
-  
+
   <property file="build.properties"/>
-  
+
   <filelist id="deasciifyBox.js.files" dir="${basedir}">
-    <file name="src/js/lib/turkish.chars.js"/>              <!-- Turkish chars     -->
+    <file name="src/js/lib/turkish_chars.js"/>              <!-- Turkish chars     -->
     <file name="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
     <file name="src/js/utils/build.config.js"/>             <!-- Build config      -->
     <file name="src/js/utils/utils.base.js"/>               <!-- Base (logs etc)   -->
     <file name="src/js/utils/utils.css.js"/>                <!-- CSS helper        -->
-    <file name="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     --> 
+    <file name="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     -->
     <file name="src/js/utils/utils.textSelection.js"/>      <!-- Text selection    -->
     <file name="src/js/utils/utils.textHelper.js"/>         <!-- Text helper       -->
     <file name="src/js/utils/utils.textHilite.js"/>         <!-- Text highlighter  -->
@@ -25,7 +25,7 @@
     <file name="src/js/utils/deasciifyBox.js"/>             <!-- DeasciifyBox      -->
     <file name="src/js/utils/utils.keyboard.js"/>           <!-- Virtual Keyboard  -->
   </filelist>
-  
+
   <!-- Builds deasciifier javascript library -->
   <target name="build-deasciifyBox-js-concat">
 
@@ -35,31 +35,31 @@
     <!-- First write the config name. If empty, will default to Release -->
     <echo file="${deasciifyBox.js.compiled.split.lib}" message="DEASCI_CONFIG_NAME='${config.name}'; &#xa;" /> <!-- &#xa; is newline -->
     <!-- Write the files -->
-    <concat destfile="${deasciifyBox.js.compiled.split.lib}" append="true"> 
+    <concat destfile="${deasciifyBox.js.compiled.split.lib}" append="true">
       <filelist refid="deasciifyBox.js.files" />
     </concat>
   </target>
-  
+
   <target name="build-deasciifyBox-js-cc">
-    
-    <!-- 
-    
-      TODO: Either create deasciifyBox.full.js above too, or ignore it here too 
-      
+
+    <!--
+
+      TODO: Either create deasciifyBox.full.js above too, or ignore it here too
+
     -->
     <echo message="Building combined deasciifyBox file using closure compiler at ${closurecompiler.path}"/>
     <mkdir dir="${basedir}/logs" />
-    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
+    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true"
       append="true" output="${basedir}/logs/build.log" logError="true">
       <arg value="-jar"/>                <arg value="${closurecompiler.path}"/>
       <arg value="--externs"/>           <arg value="src/js/utils/extern/jquery_1.5_externs.js"/><!-- jQuery externs for CC  -->
-      <arg value="--js"/>                <arg value="src/js/lib/turkish.chars.js"/>              <!-- Turkish chars     -->
-      <arg value="--js"/>                <arg value="src/js/lib/deasciifier.patterns.js"/>       <!-- Patterns          -->
+      <arg value="--js"/>                <arg value="src/js/lib/turkish_chars.js"/>              <!-- Turkish chars     -->
+      <arg value="--js"/>                <arg value="output/js/patterns/patterns.js"/>           <!-- Patterns          -->
       <arg value="--js"/>                <arg value="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
       <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.base.js"/>               <!-- Base (logs etc)   -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.css.js"/>                <!-- CSS helper        -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     --> 
+      <arg value="--js"/>                <arg value="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.textSelection.js"/>      <!-- Text selection    -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.textHelper.js"/>         <!-- Text helper       -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.textHilite.js"/>         <!-- Text highlighter  -->
@@ -71,9 +71,9 @@
       <arg value="--warning_level"/>     <arg value="${closurecompiler.warningLevel}"/>
       <arg value="--output_wrapper"/>    <arg value="(function(){%output%})();"/>                 <!-- Output wrapper    -->
     </exec>
-    
+
     <echo message="Building split deasciifyBox file without patterns"/>
-    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true" 
+    <exec executable="java" dir="${basedir}" failonerror="true" failifexecutionfails="true"
       append="true" output="${basedir}/logs/build.log" logError="true">
       <arg value="-jar"/>                <arg value="${closurecompiler.path}"/>
       <arg value="--externs"/>           <arg value="src/js/utils/extern/jquery_1.5_externs.js"/><!-- jQuery externs for CC  -->
@@ -82,7 +82,7 @@
       <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.base.js"/>               <!-- Base (logs etc)   -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.css.js"/>                <!-- CSS helper        -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     --> 
+      <arg value="--js"/>                <arg value="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.textSelection.js"/>      <!-- Text selection    -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.textHelper.js"/>         <!-- Text helper       -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.textHilite.js"/>         <!-- Text highlighter  -->
@@ -96,7 +96,7 @@
     </exec>
     <!-- Patterns are compiled in build.xml -->
   </target>
-  
+
 
   <!--==========================================================================
     Builds deasciifier JavaScript code using either concatenation or Closure Compiler
@@ -109,12 +109,12 @@
       <!-- If config.name==Debug, we will call js-concat, otherwise it will be js-cc -->
       <equals arg1="${config.name}" arg2="Debug"/>
     </condition>
-    <antcall target="${build-deasciifyBox-js-targetname}" />            
+    <antcall target="${build-deasciifyBox-js-targetname}" />
   </target>
-  
+
   <target name="build-utils-all" depends="build-deasciifyBox-js">
   </target>
-  
+
   <target name="help">
     <echo>
       build-deasciifyBox-js-concat   : Builds deasciifyBox JS code by concatenating files (for debugging)
