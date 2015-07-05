@@ -1,0 +1,62 @@
+# App name changed from |turkce-karakter| for High Replication Datastore
+# migration.
+application: turkce-klavye
+version: 4
+runtime: python27
+api_version: 1
+threadsafe: true
+
+# Magic skip configuration, do not edit.
+skip_files: |
+  ^(.*/)?(
+  (index\.yaml)|
+  (#.*#)|
+  (.*~)|
+  (.*\.py[co])|
+  (.*/RCS/.*)|
+  (\..*)|
+  (BUILD)|
+  (\.project)|
+  (\.pydevproject)|
+  (\.settings/.*)|
+  (Makefile)|
+  (.*/data/.*)|
+  (.*/test/.*)|
+  (tools/.*)|
+  (\tools)|
+  (bin/.*)|
+  )$
+
+# Enable app warmup:
+inbound_services:
+- warmup
+
+libraries:
+- name: django
+  version: latest
+
+builtins:
+- appstats: on
+
+handlers:
+
+- url: /(favicon\.ico)
+  static_files: static/\1
+  upload: static/favicon\.ico
+
+- url: /(robots\.txt)
+  static_files: static/\1
+  upload: static/robots\.txt
+
+- url: /js
+  static_dir: static/js
+
+- url: /css
+  static_dir: static/css
+
+- url: /static
+  static_dir: static
+
+- url: .*
+  script: main.application
+
