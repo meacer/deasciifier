@@ -77,7 +77,7 @@
       append="true" output="${basedir}/logs/build.log" logError="true">
       <arg value="-jar"/>                <arg value="${closurecompiler.path}"/>
       <arg value="--externs"/>           <arg value="src/js/utils/extern/jquery_1.5_externs.js"/><!-- jQuery externs for CC  -->
-      <arg value="--js"/>                <arg value="src/js/lib/turkish.chars.js"/>              <!-- Turkish chars     -->
+      <arg value="--js"/>                <arg value="src/js/lib/turkish_chars.js"/>              <!-- Turkish chars     -->
       <arg value="--js"/>                <arg value="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
       <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
       <arg value="--js"/>                <arg value="src/js/utils/utils.base.js"/>               <!-- Base (logs etc)   -->

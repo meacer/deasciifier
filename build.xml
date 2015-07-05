@@ -1,15 +1,7 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
-
-<!--
-       Turkish Deasciifier ANT build script
-
-       Author:  Mustafa Emre Acer
-       Version: 1.1
--->
+<?xml version="1.0" encoding="UTF-8"?>
 
 <project name="deasciifier" basedir="." default="help">
 
-  <!-- Configuration properties -->
   <property file="build.properties"/>
 
   <target name="clean">
@@ -25,7 +17,7 @@
     <mkdir dir="${output.dir}/js" />
     <mkdir dir="${output.dir}/js/patterns" />
 
-    <!-- Create log directory for Closure Compiler output -->
+    <!-- Log directory for Closure Compiler output -->
     <mkdir dir="${logs.dir}" />
 
   </target>
@@ -373,6 +365,7 @@
   <target name="build-deasciifyBox">
     <ant antfile="build-utils.xml" target="build-deasciifyBox-js"/>
   </target>
+
   <target name="build-utils">
     <ant antfile="build-utils.xml" target="build-utils-all"/>
   </target>
