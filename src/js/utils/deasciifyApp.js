@@ -3,35 +3,34 @@
  *  Author: Mustafa Emre Acer
  *  Version: 1.0
  *  Example usage:
- * 
+ *
  *    DeasciifyApp.init({
  *      "textbox": document.getElementById("txt"), // txt is the ID of the text area
  *      "auto_convert": true,                      // Auto conversion while typing. Optional, default is true
  *      "skip_urls": true,                         // Skip URL deasciification. Optional, default is true
  *      "show_corrections":true                    // Show correction menu on click. Optional, default is true
- *    });      
- * 
+ *    });
+ *
  */
- 
+
 var DeasciifyApp = {
   options:{},
   textBox:null,
-  
+
   deasciifySelection:function(textBox) {
     DeasciifyBox.deasciifySelection(textBox);
   },
   asciifySelection:function(textBox) {
     DeasciifyBox.asciifySelection(textBox);
   },
-  displayKeyboard:function() {
-    var container = document.getElementById(DeasciifyApp.options["keyboard_container"]);
+  displayKeyboard:function(keyboardContainer) {
     if (MEA.Keyboard) {
       if (!MEA.Keyboard.isInstalled()) {
         // Install and position:
         var keyLayoutID = DeasciifyApp.options["keyboard_layout"] || "TR_Q";
-        MEA.Keyboard.install(DeasciifyApp.textBox, keyLayoutID, {"left":0, "top":0});
+        MEA.Keyboard.install(DeasciifyApp.textBox, keyLayoutID, {"left":0, "top":0}, keyboardContainer);
         // Position the keyboard:
-        var position = $(container).position();
+        var position = $(keyboardContainer).position();
         var btnKeyboard = $("#" + DeasciifyApp.options["keyboard_toggle_btn"]);
         var dimensions = MEA.Keyboard.getDimensions();
         MEA.Keyboard.position({"left":position.left-dimensions.width, "top":position.top + btnKeyboard.height() + 10});
@@ -51,7 +50,7 @@ var DeasciifyApp = {
       DeasciifyBox.setOption(this.textBox, optionName, isEnabled);
     }
   },
-  
+
   init:function(options) {
     var self = this;
     // Load options
@@ -61,7 +60,6 @@ var DeasciifyApp = {
       {"name":"skip_urls",          "value":true,   "domID":"deasciifyapp_skip_urls" },
       {"name":"show_corrections",   "value":true,   "domID":"deasciifyapp_show_corrections"},
       {"name":"keyboard_layout",    "value":"TR_Q"},
-      {"name":"keyboard_container", "value":"deasciifyapp_keyboard"},
       {"name":"keyboard_toggle_btn","value":"deasciifyapp_toggle_keyboard_btn"}
     ];
     for (var i=0; i<defaultOptions.length; i++) {
@@ -93,16 +91,16 @@ var DeasciifyApp = {
     if (toggleKbdBtn) {
       toggleKbdBtn.onclick = this.displayKeyboard;
     }
-    
+
     // Set handlers for textbox:
     this.textBox = options["textbox"];
     if (this.textBox) {
-      var hl = !($.browser.msie);
       var options = {
-        "highlight":hl,
-        "autogrow":true,
-        "auto_convert":this.options["auto_convert"],
-        "show_corrections":this.options["show_corrections"]
+        // TODO(meacer): Make sure this actually works in IE.
+        "highlight": true,
+        "autogrow": true,
+        "auto_convert": this.options["auto_convert"],
+        "show_corrections": this.options["show_corrections"]
       };
       DeasciifyBox.install(this.textBox, options);
     }
