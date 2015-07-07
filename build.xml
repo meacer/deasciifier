@@ -314,7 +314,7 @@
 
     <!-- Text helper -->
     <copy todir="${chrome.extension.dir}/lib"
-        file="src/js/utils/utils.textHelper.js" />
+        file="src/js/utils/text_helper.js" />
 
     <!-- Copy icon -->
     <copy tofile="${chrome.extension.dir}/g-logo.png"
@@ -327,25 +327,7 @@
   </target>
 
   <target name="build-chrome-extension-zip">
-    <!-- Build extension zip -->
-    <delete file="${chrome.extension.output}"/>
-    <exec
-      executable="${basedir}/tools/7zip/7za.exe"
-      dir="${basedir}/src"
-      failonerror="true">
 
-      <!-- Exclude .svn folder -->
-      <arg value="-xr!.svn"/>
-
-      <!-- Archive flag -->
-      <arg value="a"/>
-
-      <!-- Output zip file -->
-      <arg value="${chrome.extension.output}"/>
-
-      <!-- Folder to add -->
-      <arg value="chrome_extension"/>
-    </exec>
   </target>
 
   <!--==========================================================================

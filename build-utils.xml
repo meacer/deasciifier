@@ -57,15 +57,15 @@
       <arg value="--js"/>                <arg value="output/js/patterns/patterns.js"/>           <!-- Patterns          -->
       <arg value="--js"/>                <arg value="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
       <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.base.js"/>               <!-- Base (logs etc)   -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.css.js"/>                <!-- CSS helper        -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.textSelection.js"/>      <!-- Text selection    -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.textHelper.js"/>         <!-- Text helper       -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.textHilite.js"/>         <!-- Text highlighter  -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.correctionMenu.js"/>     <!-- Suggestions Menu  -->
-      <arg value="--js"/>                <arg value="src/js/utils/deasciifyBox.js"/>             <!-- DeasciifyBox      -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.keyboard.js"/>           <!-- Virtual Keyboard  -->
+      <arg value="--js"/>                <arg value="src/js/website/common.js"/>               <!-- Base (logs etc)   -->
+      <arg value="--js"/>                <arg value="src/js/website/css.js"/>                <!-- CSS helper        -->
+      <arg value="--js"/>                <arg value="src/js/website/event_handler.js"/>       <!-- Event handler     -->
+      <arg value="--js"/>                <arg value="src/js/website/text_selection.js"/>      <!-- Text selection    -->
+      <arg value="--js"/>                <arg value="src/js/utils/text_helper.js"/>         <!-- Text helper       -->
+      <arg value="--js"/>                <arg value="src/js/website/text_highlight.js"/>         <!-- Text highlighter  -->
+      <arg value="--js"/>                <arg value="src/js/website/correction_menu.js"/>     <!-- Suggestions Menu  -->
+      <arg value="--js"/>                <arg value="src/js/website/deasciify_box.js"/>             <!-- DeasciifyBox      -->
+      <arg value="--js"/>                <arg value="src/js/website/keyboard.js"/>           <!-- Virtual Keyboard  -->
       <arg value="--js_output_file"/>    <arg value="${deasciifyBox.js.compiled.full}"/>
       <arg value="--compilation_level"/> <arg value="${closurecompiler.compileLevel}"/>
       <arg value="--warning_level"/>     <arg value="${closurecompiler.warningLevel}"/>
@@ -80,15 +80,15 @@
       <arg value="--js"/>                <arg value="src/js/lib/turkish_chars.js"/>              <!-- Turkish chars     -->
       <arg value="--js"/>                <arg value="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
       <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.base.js"/>               <!-- Base (logs etc)   -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.css.js"/>                <!-- CSS helper        -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.eventHandler.js"/>       <!-- Event handler     -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.textSelection.js"/>      <!-- Text selection    -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.textHelper.js"/>         <!-- Text helper       -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.textHilite.js"/>         <!-- Text highlighter  -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.correctionMenu.js"/>     <!-- Suggestions Menu  -->
-      <arg value="--js"/>                <arg value="src/js/utils/deasciifybox.js"/>             <!-- DeasciifyBox      -->
-      <arg value="--js"/>                <arg value="src/js/utils/utils.keyboard.js"/>           <!-- Virtual Keyboard  -->
+      <arg value="--js"/>                <arg value="src/js/website/common.js"/>               <!-- Base (logs etc)   -->
+      <arg value="--js"/>                <arg value="src/js/website/css.js"/>                <!-- CSS helper        -->
+      <arg value="--js"/>                <arg value="src/js/website/event_handler.js"/>       <!-- Event handler     -->
+      <arg value="--js"/>                <arg value="src/js/website/text_selection.js"/>      <!-- Text selection    -->
+      <arg value="--js"/>                <arg value="src/js/utils/text_helper.js"/>         <!-- Text helper       -->
+      <arg value="--js"/>                <arg value="src/js/website/text_highlight.js"/>         <!-- Text highlighter  -->
+      <arg value="--js"/>                <arg value="src/js/website/correction_menu.js"/>     <!-- Suggestions Menu  -->
+      <arg value="--js"/>                <arg value="src/js/website/deasciify_box.js"/>             <!-- DeasciifyBox      -->
+      <arg value="--js"/>                <arg value="src/js/website/keyboard.js"/>           <!-- Virtual Keyboard  -->
       <arg value="--js_output_file"/>    <arg value="${deasciifyBox.js.compiled.split.lib}"/>
       <arg value="--compilation_level"/> <arg value="${closurecompiler.compileLevel}"/>
       <arg value="--warning_level"/>     <arg value="${closurecompiler.warningLevel}"/>
