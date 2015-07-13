@@ -2,8 +2,3 @@
 logs/
 output/
 .svn
-
-# Ignore generated files.
-src/chrome_extension/g-logo.png
-src/chrome_extension/lib/
-src/safari_extension/

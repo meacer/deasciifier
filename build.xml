@@ -59,10 +59,10 @@
 
       <arg value="build/chrome_extension_version.py"/>
 
-      <arg value="src/chrome_extension/manifest.json"/>
+      <arg value="${basedir}/src/chrome_extension/manifest.json"/>
     </exec>
     <property name="chrome.extension.output"
-        value="output/chrome_extension_${chrome.extension.version}.zip"/>
+        value="${output.dir.release}/chrome_extension_${chrome.extension.version}.zip"/>
     <echo> CHROME EXTENSION VERSION: ${chrome.extension.version}</echo>
     <echo> CHROME EXTENSION OUTPUT : ${chrome.extension.output}</echo>
   </target>
@@ -221,6 +221,10 @@
 
     <echo message="Building Chrome Extension at ${chrome.extension.dir} (no debug version)"/>
     <mkdir dir="${chrome.extension.dir}/lib"/>
+
+    <copy todir="${chrome.extension.dir}">
+      <fileset dir="${basedir}/src/chrome_extension" includes="*" />
+    </copy>
 
     <!-- Copy compiled deasciifier JS -->
     <copy todir="${chrome.extension.dir}/lib"
