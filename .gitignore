@@ -2,3 +2,4 @@
 logs/
 output/
 .svn
+.DS_Store
