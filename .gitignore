@@ -1,4 +1,7 @@
 *.pyc
+
+src/js/node_modules/**
+
 logs/
 output/
 .svn

@@ -1,81 +1,50 @@
-/** @preserve
- *
- * Turkish text deasciifier and asciifier JavaScript library.
- *  Deasciifier code directly converted by Mustafa Emre Acer from
- *  Dr. Deniz Yuret's Emacs Turkish Extension: http://www.denizyuret.com/turkish
- *
- *  Author:  Mustafa Emre Acer
- */
+var base = require('./base');
 
-(function(){
+(function(exports){
 
-  /**
-   * @enum {string}
-   */
-  var TURKISH_ASCIIFY_TABLE = {
-    '\u00E7': 'c', // Lowercase turkish c
-    '\u00C7': 'C', // Uppercase turkish c
-    '\u011F': 'g', // Lowercase turkish g
-    '\u011E': 'G', // Uppercase turkish g
-    '\u0131': 'i', // Lowercase turkish i
-    '\u0130': 'I', // Uppercase turkish i
-    '\u00F6': 'o', // Lowercase turkish o
-    '\u00D6': 'O', // Uppercase turkish o
-    '\u015F': 's', // Lowercase turkish s
-    '\u015E': 'S', // Uppercase turkish s
-    '\u00FC': 'u', // Lowercase turkish u
-    '\u00DC': 'U'  // Uppercase turkish u
+  /** @const */
+  var Asciifier = {};
+
+  Asciifier.asciifyRange = function(text, start, end) {
+    if (!text || start >= end) {
+      return null;
+    }
+    // There seems to be a bug here. Chrome fails to convert long texts correctly.
+    var changedPositions = [];
+    var output = new Array(text.length);
+    for (var i = 0; i < text.length; i++) {
+      var ch = text.charAt(i);
+      var toggled = base.TURKISH_ASCIIFY_TABLE[ch];
+      if (i >= start && i <= end && toggled) {
+        output[i] = toggled;
+        changedPositions.push(i);
+      } else {
+        output[i] = ch;
+      }
+    }
+    return {
+      "text":output.join(""),
+      "changedPositions":changedPositions
+    };
   };
 
-  var Asciifier = {
-    asciifyRange: function(text, start, end) {
-      if (!text || start >= end) {
-        return null;
-      }
-      // There seems to be a bug here. Chrome fails to convert long texts correctly.
-      var changedPositions = [];
-      var output = new Array(text.length);
-      for (var i = 0; i < text.length; i++) {
-        var ch = text.charAt(i);
-        var toggled = TURKISH_ASCIIFY_TABLE[ch];
-        if (i >= start && i <= end && toggled) {
-          output[i] = toggled;
-          changedPositions.push(i);
-        } else {
-          output[i] = ch;
-        }
-      }
-      return {
-        "text":output.join(""),
-        "changedPositions":changedPositions
-      };
-    },
-
-    asciify: function(text) {
-      if (!text) {
-        return null;
-      }
-      return Asciifier.asciifyRange(text, 0, text.length-1);
+  Asciifier.asciify = function(text) {
+    if (!text) {
+      return null;
     }
+    return Asciifier.asciifyRange(text, 0, text.length-1);
   }
 
-  // Define the namespace:
-  if (!window["Deasciifier"]) {
-    window["Deasciifier"] = {};
-  }
-  var Deasciifier = window["Deasciifier"];
+  /** @const */
+  var Deasciifier = {};
 
-  /**
-   * @constructor
-   */
+  /** @constructor */
   Deasciifier.SkipRegion = function(start, end) {
     this.start = start;
     this.end = end;
   }
 
-  /**
-   * @constructor
-   */
+  /** @constructor */
   Deasciifier.SkipList = function(skipRegions) {
     this.skipRegions = skipRegions;
   }
@@ -91,15 +60,16 @@
     }
   }
 
-  // Exported for testing:
-  Deasciifier["URLRegex"] = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
+  /** @const */
+  var URL_REGEX = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
 
+  /** @const */
   Deasciifier.DefaultSkipFilter = {
     getSkipRegions: function(options, text) {
       // TODO: Better algorithm here if number of regions grow large
       var regexps = [];
       if (options && options["skipURLs"]) {
-        regexps.push(Deasciifier["URLRegex"])
+        regexps.push(URL_REGEX);
       }
       var skipList = [];
       for (var i = 0; i < regexps.length; i++) {
@@ -117,21 +87,25 @@
   };
 
   Deasciifier.initialized = false;
-  Deasciifier.turkish_context_size = 10;
 
+  /** @const */
+  var TURKISH_CONTEXT_SIZE = 10;
+
+  /** @const */
   var Options = {
     defaults: { // Default options
       "skipURLs":true
     },
 
-    get:function(options, optionName) {
+    get: function(options, optionName) {
       if (options && options.hasOwnProperty(optionName)) {
         return options[optionName];
       }
       return Options.defaults[optionName];
     },
 
-    getMulti:function(options, optionNames) {
+    // TODO: remove?
+    getMulti: function(options, optionNames) {
       var ret = {};
       for (var i = 0; i < optionNames.length; i++) {
         ret[optionNames[i]] = Options.get(options, optionNames[i]);
@@ -140,40 +114,26 @@
     }
   };
 
-  Deasciifier.TURKISH_CHAR_ALIST = {
-    'c': DEASCII_TR_LOWER_C,
-    'C': DEASCII_TR_UPPER_C,
-    'g': DEASCII_TR_LOWER_G,
-    'G': DEASCII_TR_UPPER_G,
-    'i': DEASCII_TR_LOWER_I,
-    'I': DEASCII_TR_UPPER_I,
-    'o': DEASCII_TR_LOWER_O,
-    'O': DEASCII_TR_UPPER_O,
-    's': DEASCII_TR_LOWER_S,
-    'S': DEASCII_TR_UPPER_S,
-    'u': DEASCII_TR_LOWER_U,
-    'U': DEASCII_TR_UPPER_U
-  };
-
-  Deasciifier.init = function() {
-    if (!Deasciifier["patternList"]) {
-      return false;
-    }
-
-    Deasciifier.turkish_asciify_table = make_turkish_asciify_table();
-    Deasciifier.turkish_downcase_asciify_table = make_turkish_downcase_asciify_table();
-    Deasciifier.turkish_upcase_accents_table = make_turkish_upcase_accents_table();
-    Deasciifier.turkish_toggle_accent_table = make_turkish_toggle_accent_table();
-    // This is precompiled:
-    Deasciifier.turkish_pattern_table = Deasciifier["patternList"];
-    Deasciifier.initialized = true;
-    return true;
+  /** @const */
+  var TURKISH_CHAR_ALIST = {
+    'c': base.DEASCII_TR_LOWER_C,
+    'C': base.DEASCII_TR_UPPER_C,
+    'g': base.DEASCII_TR_LOWER_G,
+    'G': base.DEASCII_TR_UPPER_G,
+    'i': base.DEASCII_TR_LOWER_I,
+    'I': base.DEASCII_TR_UPPER_I,
+    'o': base.DEASCII_TR_LOWER_O,
+    'O': base.DEASCII_TR_UPPER_O,
+    's': base.DEASCII_TR_LOWER_S,
+    'S': base.DEASCII_TR_UPPER_S,
+    'u': base.DEASCII_TR_LOWER_U,
+    'U': base.DEASCII_TR_UPPER_U
   };
 
   function make_turkish_asciify_table() {
     var ct = {};
-    for (var i in Deasciifier.TURKISH_CHAR_ALIST) {
-      ct[Deasciifier.TURKISH_CHAR_ALIST[i]] = i;
+    for (var i in TURKISH_CHAR_ALIST) {
+      ct[TURKISH_CHAR_ALIST[i]] = i;
     }
     return ct;
   }
@@ -188,8 +148,8 @@
       ch = String.fromCharCode(ch.charCodeAt(0) + 1); // next char
     }
     // now check the characters in turkish alphabet
-    for (var i in Deasciifier.TURKISH_CHAR_ALIST) {
-      ct[Deasciifier.TURKISH_CHAR_ALIST[i]] = i.toLowerCase();
+    for (var i in TURKISH_CHAR_ALIST) {
+      ct[TURKISH_CHAR_ALIST[i]] = i.toLowerCase();
     }
     return ct;
   }
@@ -205,8 +165,8 @@
     }
     // now check the characters in turkish alphabet
     // (same as downcase table except for .toUpperCase)
-    for (var i in Deasciifier.TURKISH_CHAR_ALIST) {
-      ct[ Deasciifier.TURKISH_CHAR_ALIST[i] ] = i.toUpperCase();
+    for (var i in TURKISH_CHAR_ALIST) {
+      ct[TURKISH_CHAR_ALIST[i]] = i.toUpperCase();
     }
     ct['i'] = 'i';
     ct['I'] = 'I';
@@ -220,16 +180,16 @@
 
   function make_turkish_toggle_accent_table() {
     var ct = {};
-    for (var i in Deasciifier.TURKISH_CHAR_ALIST) {
-      ct[i] = Deasciifier.TURKISH_CHAR_ALIST[i]; // ascii to turkish
-      ct[Deasciifier.TURKISH_CHAR_ALIST[i]] = i; // turkish to ascii
+    for (var i in TURKISH_CHAR_ALIST) {
+      ct[i] = TURKISH_CHAR_ALIST[i]; // ascii to turkish
+      ct[TURKISH_CHAR_ALIST[i]] = i; // turkish to ascii
     }
     return ct;
   }
 
   Deasciifier.turkish_correct_region = function(text, start, end, filter) {
     if (!Deasciifier.initialized) {
-      throw "Pattern list not loaded";
+      throw new Error("Pattern list not loaded");
     }
     if (!text) {
       return null;
@@ -284,13 +244,12 @@
 
   Deasciifier.turkish_match_pattern = function(text, pos, dlist) { // dlist: decision list
     var rank = dlist.length * 2;
-    var str = Deasciifier.turkish_get_context(
-        text, pos, Deasciifier.turkish_context_size);
+    var str = Deasciifier.turkish_get_context(text, pos, TURKISH_CONTEXT_SIZE);
     var start = 0;
     var len = str.length;
 
-    while (start <= Deasciifier.turkish_context_size) {
-      var end = Deasciifier.turkish_context_size + 1;
+    while (start <= TURKISH_CONTEXT_SIZE) {
+      var end = TURKISH_CONTEXT_SIZE + 1;
       while (end <= len) {
         var s = str.substring(start, end);
         var r = dlist[s]; // lookup the pattern
@@ -340,8 +299,8 @@
     index = pos; // goto_char(p);
     i = size - 1;
     space = false;
-
     index--;
+
     while (i >= 0 && index >= 0) {
       var c = text.charAt(index);
       var x = Deasciifier.turkish_upcase_accents_table[c];
@@ -368,18 +327,6 @@
     return null;
   }
 
-  Deasciifier.deasciifyRange = function(text, start, end, options) {
-    // TODO: Better performance.
-    // We should return an array of toggled character positions,
-    // split the text into characters, toggle required characters and join
-    // again. This way we get rid of string operations and use less memory.
-    if (!text) {
-      return null;
-    }
-    return Deasciifier.turkish_correct_region(
-        text, start, end, Deasciifier.build_skip_list(text, options));
-  }
-
   Deasciifier.turkish_correct_last_word = function(text, options) {
     if (!text) {
       return null;
@@ -396,6 +343,31 @@
     return Deasciifier.deasciifyRange(text, start, end, options);
   }
 
+  Deasciifier.init = function(patternList) {
+    if (!patternList) {
+      throw new Error("Pattern list can't be null");
+    }
+    Deasciifier.turkish_asciify_table = make_turkish_asciify_table();
+    Deasciifier.turkish_downcase_asciify_table = make_turkish_downcase_asciify_table();
+    Deasciifier.turkish_upcase_accents_table = make_turkish_upcase_accents_table();
+    Deasciifier.turkish_toggle_accent_table = make_turkish_toggle_accent_table();
+    // This is precompiled:
+    Deasciifier.turkish_pattern_table = patternList;
+    Deasciifier.initialized = true;
+  };
+
+  Deasciifier.deasciifyRange = function(text, start, end, options) {
+    // TODO: Better performance.
+    // We should return an array of toggled character positions,
+    // split the text into characters, toggle required characters and join
+    // again. This way we get rid of string operations and use less memory.
+    if (!text) {
+      return null;
+    }
+    return Deasciifier.turkish_correct_region(
+        text, start, end, Deasciifier.build_skip_list(text, options));
+  }
+
   Deasciifier.deasciify = function(text, options) {
     if (!text) {
       return null;
@@ -403,12 +375,15 @@
     return Deasciifier.deasciifyRange(text, 0, text.length - 1, options);
   }
 
-  // Exports for Closure Compiler:
-  window["Asciifier"] = Asciifier;
-  Asciifier["asciify"] = Asciifier.asciify;
-  Asciifier["asciifyRange"] = Asciifier.asciifyRange;
-  window["Deasciifier"] = Deasciifier;
-  Deasciifier["init"] = Deasciifier.init;
-  Deasciifier["deasciify"] = Deasciifier.deasciify;
-  Deasciifier["deasciifyRange"] = Deasciifier.deasciifyRange;
-})();
+  exports.Asciifier = {
+    asciify: Asciifier.asciify,
+    asciifyRange: Asciifier.asciifyRange
+  };
+
+  exports.Deasciifier = {
+    init: Deasciifier.init,
+    deasciify: Deasciifier.deasciify,
+    deasciifyRange: Deasciifier.deasciifyRange
+  };
+
+})(exports);

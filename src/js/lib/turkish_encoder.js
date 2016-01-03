@@ -1,4 +1,4 @@
-﻿(function(exports){
+(function(exports){
 
   /** @enum {string} */
   var TURKISH_HTML_TABLE = {
