@@ -5,8 +5,6 @@
  *  Dr. Deniz Yuret's Emacs Turkish Extension: http://www.denizyuret.com/turkish
  *
  *  Author:  Mustafa Emre Acer
- *  Version: 2.1
- *  Date:    2010-05-21
  */
 
 (function(){

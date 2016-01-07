@@ -1,7 +1,6 @@
 ﻿// Turkish character encoder for HTML and JavaScript
 //
 // Author: Mustafa Emre Acer
-// Version: 1.1
 //
 // Converts Turkish characters to HTML and JavaScript codes
 //
@@ -10,9 +9,8 @@ var TurkishEncoder = {};
 
 (function(){
 
-  /** @enum {string}
-  */
-  var turkish_html_table = {
+  /** @enum {string} */
+  var TURKISH_HTML_TABLE = {
     '\u00E7':'&#231;', // turkish lowercase c
     '\u00C7':'&#199;', // turkish uppercase c
     '\u011F':'&#287;', // turkish lowercase g
@@ -26,9 +24,9 @@ var TurkishEncoder = {};
     '\u00FC':'&#252;', // turkish lowercase u
     '\u00DC':'&#220;'  // turkish uppercase u
   };
-  /** @enum {string}
-  */
-  var turkish_js_table = {
+
+  /** @enum {string} */
+  var TURKISH_JS_TABLE = {
     '\u00E7':'\\u00E7', // turkish lowercase c
     '\u00C7':'\\u00C7', // turkish uppercase c
     '\u011F':'\\u011F', // turkish lowercase g
@@ -44,31 +42,31 @@ var TurkishEncoder = {};
   };
 
   TurkishEncoder.encodeHTML = function(str) {
-    return encode(str, turkish_html_table);
+    return encode(str, TURKISH_HTML_TABLE);
   };
+
   TurkishEncoder.encodeJS = function(str) {
-    return encode(str, turkish_js_table);
+    return encode(str, TURKISH_JS_TABLE);
   };
-  
+
   function encode(text, char_table) {
     // There seems to be a bug here. Chrome fails to convert long texts correctly.
     if (!text) {
       return text;
     }
     var output = new Array(text.length);
-    for (var i=0; i<text.length; i++) {
+    for (var i = 0; i < text.length; i++) {
       var ch = text.charAt(i);
       var ascii = char_table[ch] || ch;
       output[i] = ascii;
     }
     // TODO: Add changed positions list:
-    return {"text":output.join("")};
+    return {"text": output.join("")};
   }
-  
+
 })();
 
 // Exports for Closure Compiler
 window["TurkishEncoder"] = TurkishEncoder;
 window["TurkishEncoder"]["encodeJS"] = TurkishEncoder.encodeJS;
 window["TurkishEncoder"]["encodeHTML"] = TurkishEncoder.encodeHTML;
-
