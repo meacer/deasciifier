@@ -324,46 +324,39 @@
       var c = text.charAt(index);
       var x = Deasciifier.turkish_downcase_asciify_table[c];
       if (!x) {
-        if (space) {
+        if (!space) {
           i++;
-        } else {
           space = true;
         }
       } else {
         s = setCharAt(s, i, x);
+        i++;
         space = false;
-        }
-      i++; // this is not the way it's done in turkish-mode,
-           // i++ is inside else
-      //}
+      }
       index++;
-    } // while (i<s.length && s[index]!=' ')
-    s = s.substring(0, i);
+    }
 
+    s = s.substring(0, i);
     index = pos; // goto_char(p);
     i = size - 1;
     space = false;
 
     index--;
-    //while (i>=0 && index>0) {
     while (i >= 0 && index >= 0) {
       var c = text.charAt(index);
       var x = Deasciifier.turkish_upcase_accents_table[c];
       if (!x) {
-        if (space) {
+        if (!space) {
           i--;
-        } else {
           space = true;
         }
       } else {
         s = setCharAt(s, i, x);
+        i--;
         space = false;
-        }
-      i--; // this is not the way it's done in turkish-mode,
-           // i-- is inside else
-      //}
+      }
       index--;
-    } // while (i>=0)
+    }
     return s;
   }
 
@@ -415,6 +408,7 @@
   Asciifier["asciify"] = Asciifier.asciify;
   Asciifier["asciifyRange"] = Asciifier.asciifyRange;
   window["Deasciifier"] = Deasciifier;
+  Deasciifier["init"] = Deasciifier.init;
   Deasciifier["deasciify"] = Deasciifier.deasciify;
   Deasciifier["deasciifyRange"] = Deasciifier.deasciifyRange;
 })();
