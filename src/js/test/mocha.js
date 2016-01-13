@@ -77,7 +77,7 @@ describe('Deasciifier', function() {
 });
 
 describe('TurkishEncoder', function() {
-  it('should encode', function() {
+  it('should encode Turkish characters', function() {
     assert.equal(
         testdata.TEST_DATA[0].html_encoded,
         turkish_encoder.TurkishEncoder.encodeHTML(

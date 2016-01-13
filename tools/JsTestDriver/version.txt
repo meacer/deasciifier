@@ -1,1 +1,0 @@
-Current JSTestDriver.jar version: 1.3.2

@@ -211,16 +211,8 @@
     <antcall target="${build-deasciifier-js-targetname}" />
   </target>
 
-  <target name="run-js-tests">
-    <exec executable="java">
-      <arg value="-jar"/>
-      <arg value="tools/JsTestDriver/JsTestDriver.jar"/>
-
-      <arg value="--port"/>
-      <arg value="4224"/>
-
-      <arg value="--verbose"/>
-    </exec>
+  <target name="test">
+    <exec executable="mocha" dir="src/js" />
   </target>
 
   <!--==========================================================================
@@ -373,6 +365,7 @@
       build-safari-extension         : Builds the Safari Extension.
 
       build-all                      : Builds all targets.
+      test                           : Runs tests.
     </echo>
   </target>
 
