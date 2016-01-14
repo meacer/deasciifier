@@ -15,10 +15,10 @@ describe('Asciifier', function() {
 });
 
 describe('Deasciifier', function() {
-  it('should deasciify short text', function () {
+  it('should deasciify short text', function() {
     deasciifier.Deasciifier.init(patterns.PATTERN_LIST);
-    assert.isNotNull(deasciifier.Deasciifier.deasciify(
-        "Arkadaslarla agaca ciktik", null));
+    assert.isNotNull(
+        deasciifier.Deasciifier.deasciify("Arkadaslarla agaca ciktik", null));
   });
 });
 
@@ -27,8 +27,8 @@ describe('Deasciifier', function() {
     deasciifier.Deasciifier.init(patterns.PATTERN_LIST);
     assert.equal(
         testdata.TEST_DATA[0].deasciified,
-        deasciifier.Deasciifier.deasciify(
-            testdata.TEST_DATA[0].asciified).text);
+        deasciifier.Deasciifier.deasciify(testdata.TEST_DATA[0].asciified)
+            .text);
   });
 });
 
@@ -81,6 +81,7 @@ describe('TurkishEncoder', function() {
     assert.equal(
         testdata.TEST_DATA[0].html_encoded,
         turkish_encoder.TurkishEncoder.encodeHTML(
-            testdata.TEST_DATA[0].deasciified).text);
+                                          testdata.TEST_DATA[0].deasciified)
+            .text);
   });
 });

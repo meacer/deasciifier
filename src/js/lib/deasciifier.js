@@ -1,6 +1,6 @@
 var base = require('./base');
 
-(function(exports){
+(function(exports) {
 
   /** @const */
   var Asciifier = {};
@@ -9,7 +9,8 @@ var base = require('./base');
     if (!text || start >= end) {
       return null;
     }
-    // There seems to be a bug here. Chrome fails to convert long texts correctly.
+    // There seems to be a bug here. Chrome fails to convert long texts
+    // correctly.
     var changedPositions = [];
     var output = new Array(text.length);
     for (var i = 0; i < text.length; i++) {
@@ -22,18 +23,15 @@ var base = require('./base');
         output[i] = ch;
       }
     }
-    return {
-      "text":output.join(""),
-      "changedPositions":changedPositions
-    };
+    return {"text": output.join(""), "changedPositions": changedPositions};
   };
 
   Asciifier.asciify = function(text) {
     if (!text) {
       return null;
     }
-    return Asciifier.asciifyRange(text, 0, text.length-1);
-  }
+    return Asciifier.asciifyRange(text, 0, text.length - 1);
+  };
 
   /** @const */
   var Deasciifier = {};
@@ -42,23 +40,24 @@ var base = require('./base');
   Deasciifier.SkipRegion = function(start, end) {
     this.start = start;
     this.end = end;
-  }
+  };
 
   /** @constructor */
   Deasciifier.SkipList = function(skipRegions) {
     this.skipRegions = skipRegions;
-  }
+  };
 
   Deasciifier.SkipList.prototype = {
     shouldExclude: function(pos) {
       for (var i = 0; i < this.skipRegions.length; i++) {
-        if (pos >= this.skipRegions[i].start && pos <= this.skipRegions[i].end) {
+        if (pos >= this.skipRegions[i].start &&
+            pos <= this.skipRegions[i].end) {
           return true;
         }
       }
       return false;
     }
-  }
+  };
 
   /** @const */
   var URL_REGEX = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
@@ -93,8 +92,9 @@ var base = require('./base');
 
   /** @const */
   var Options = {
-    defaults: { // Default options
-      "skipURLs":true
+    defaults: {
+      // Default options
+      "skipURLs": true
     },
 
     get: function(options, optionName) {
@@ -145,7 +145,7 @@ var base = require('./base');
     while (ch <= 'z') {
       ct[ch] = ch;
       ct[ch.toUpperCase()] = ch;
-      ch = String.fromCharCode(ch.charCodeAt(0) + 1); // next char
+      ch = String.fromCharCode(ch.charCodeAt(0) + 1);  // next char
     }
     // now check the characters in turkish alphabet
     for (var i in TURKISH_CHAR_ALIST) {
@@ -154,14 +154,14 @@ var base = require('./base');
     return ct;
   }
 
-  function make_turkish_upcase_accents_table(){
+  function make_turkish_upcase_accents_table() {
     var ct = {};
     var ch = 'a';
     // initialize for all characters in English alphabet
     while (ch <= 'z') {
       ct[ch] = ch;
       ct[ch.toUpperCase()] = ch;
-      ch = String.fromCharCode(ch.charCodeAt(0) + 1); // next char
+      ch = String.fromCharCode(ch.charCodeAt(0) + 1);  // next char
     }
     // now check the characters in turkish alphabet
     // (same as downcase table except for .toUpperCase)
@@ -173,16 +173,16 @@ var base = require('./base');
     // We will do this part a bit different. Since we have only one
     // correspondence for every character in TURKISH_CHAR_ALIST,
     // we will just set the values directly:
-    ct['\u0130'] = 'i'; // upper turkish i
-    ct['\u0131'] = 'I'; // lower turkish i
+    ct['\u0130'] = 'i';  // upper turkish i
+    ct['\u0131'] = 'I';  // lower turkish i
     return ct;
-  };
+  }
 
   function make_turkish_toggle_accent_table() {
     var ct = {};
     for (var i in TURKISH_CHAR_ALIST) {
-      ct[i] = TURKISH_CHAR_ALIST[i]; // ascii to turkish
-      ct[TURKISH_CHAR_ALIST[i]] = i; // turkish to ascii
+      ct[i] = TURKISH_CHAR_ALIST[i];  // ascii to turkish
+      ct[TURKISH_CHAR_ALIST[i]] = i;  // turkish to ascii
     }
     return ct;
   }
@@ -216,7 +216,7 @@ var base = require('./base');
       "changedPositions": changedPositions,
       "skippedRegions": filter
     };
-  }
+  };
 
   Deasciifier.turkish_toggle_accent = function(text, pos) {
     var alt = Deasciifier.turkish_toggle_accent_table[text.charAt(pos)];
@@ -224,7 +224,7 @@ var base = require('./base');
       return setCharAt(text, pos, alt);
     }
     return text;
-  }
+  };
 
   Deasciifier.turkish_need_correction = function(text, pos) {
     var ch = text.charAt(pos);
@@ -232,17 +232,19 @@ var base = require('./base');
     if (!tr) {
       tr = ch;
     }
-    var pl = Deasciifier.turkish_pattern_table[tr.toLowerCase()];  // Pattern list
+    var pl =
+        Deasciifier.turkish_pattern_table[tr.toLowerCase()];  // Pattern list
     var m = pl && Deasciifier.turkish_match_pattern(text, pos, pl);  // match
     // if m then char should turn into turkish else stay ascii
     // only exception with capital I when we need the reverse
     if (tr == "I") {
       return (ch == tr) ? !m : m;
     }
-    return (ch == tr) ? m: !m;
-  }
+    return (ch == tr) ? m : !m;
+  };
 
-  Deasciifier.turkish_match_pattern = function(text, pos, dlist) { // dlist: decision list
+  Deasciifier.turkish_match_pattern = function(text, pos,
+                                               dlist) {  // dlist: decision list
     var rank = dlist.length * 2;
     var str = Deasciifier.turkish_get_context(text, pos, TURKISH_CONTEXT_SIZE);
     var start = 0;
@@ -252,7 +254,7 @@ var base = require('./base');
       var end = TURKISH_CONTEXT_SIZE + 1;
       while (end <= len) {
         var s = str.substring(start, end);
-        var r = dlist[s]; // lookup the pattern
+        var r = dlist[s];  // lookup the pattern
         if (r && Math.abs(r) < Math.abs(rank)) {
           rank = r;
         }
@@ -261,7 +263,7 @@ var base = require('./base');
       start++;
     }
     return rank > 0;
-  }
+  };
 
   function setCharAt(str, pos, c) {
     // TODO: Improve performance
@@ -272,7 +274,7 @@ var base = require('./base');
     var s = '';
     var space = false;
     var string_size = 2 * size + 1;
-    for (var j = 0; j < string_size; j++) { // make-string
+    for (var j = 0; j < string_size; j++) {  // make-string
       s = s + ' ';
     }
     s = setCharAt(s, size, 'X');
@@ -296,7 +298,7 @@ var base = require('./base');
     }
 
     s = s.substring(0, i);
-    index = pos; // goto_char(p);
+    index = pos;  // goto_char(p);
     i = size - 1;
     space = false;
     index--;
@@ -317,7 +319,7 @@ var base = require('./base');
       index--;
     }
     return s;
-  }
+  };
 
   Deasciifier.build_skip_list = function(text, options) {
     var skipOptions = Options.getMulti(options, ["skipURLs"]);
@@ -325,7 +327,7 @@ var base = require('./base');
       return Deasciifier.DefaultSkipFilter.getSkipRegions(skipOptions, text);
     }
     return null;
-  }
+  };
 
   Deasciifier.turkish_correct_last_word = function(text, options) {
     if (!text) {
@@ -341,16 +343,19 @@ var base = require('./base');
       start = text.lastIndexOf(' ', end - 1);
     }
     return Deasciifier.deasciifyRange(text, start, end, options);
-  }
+  };
 
   Deasciifier.init = function(patternList) {
     if (!patternList) {
       throw new Error("Pattern list can't be null");
     }
     Deasciifier.turkish_asciify_table = make_turkish_asciify_table();
-    Deasciifier.turkish_downcase_asciify_table = make_turkish_downcase_asciify_table();
-    Deasciifier.turkish_upcase_accents_table = make_turkish_upcase_accents_table();
-    Deasciifier.turkish_toggle_accent_table = make_turkish_toggle_accent_table();
+    Deasciifier.turkish_downcase_asciify_table =
+        make_turkish_downcase_asciify_table();
+    Deasciifier.turkish_upcase_accents_table =
+        make_turkish_upcase_accents_table();
+    Deasciifier.turkish_toggle_accent_table =
+        make_turkish_toggle_accent_table();
     // This is precompiled:
     Deasciifier.turkish_pattern_table = patternList;
     Deasciifier.initialized = true;
@@ -366,14 +371,14 @@ var base = require('./base');
     }
     return Deasciifier.turkish_correct_region(
         text, start, end, Deasciifier.build_skip_list(text, options));
-  }
+  };
 
   Deasciifier.deasciify = function(text, options) {
     if (!text) {
       return null;
     }
     return Deasciifier.deasciifyRange(text, 0, text.length - 1, options);
-  }
+  };
 
   exports.Asciifier = {
     asciify: Asciifier.asciify,
