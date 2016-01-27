@@ -89,7 +89,10 @@ var DeasciifyApp = {
     // toggle keyboard button:
     var toggleKbdBtn = document.getElementById(this.options["keyboard_toggle_btn"]);
     if (toggleKbdBtn) {
-      toggleKbdBtn.onclick = this.displayKeyboard;
+      var that = this;
+      toggleKbdBtn.onclick = function() {
+        that.displayKeyboard(document.getElementById('keyboard'));
+      }
     }
 
     // Set handlers for textbox:
