@@ -7,7 +7,7 @@ APP_TITLE = 'Turkish Text Deasciifier'
 #TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
-    ('mea', 'meacer@gmail.com'),
+    ('meacer', 'meacer@gmail.com'),
 )
 
 MANAGERS = ADMINS
@@ -87,7 +87,7 @@ INSTALLED_APPS = (
 #    'django.contrib.sites',      # mea: not needed?
 )
 
-# From browserscope: 
+# From browserscope:
 # We toggle DEBUG and TEMPLATE_DEBUG based on APP ENGINE's reported env.
 DEBUG = False
 BUILD = 'production'

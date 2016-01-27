@@ -11,10 +11,6 @@
   deniz yuret, mustafa emre acer, turkish text deasciifier, turkce karakter, otomatik turkce karakter cevrimi" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="canonical" href="https://deasciifier.com" />
-  <!--
-  Author:  Mustafa Emre Acer
-  Version: 2.0
-  -->
   <link rel="stylesheet" href="/static/css/main.css"/>
 
   <!-- Google Analytics -->
@@ -144,19 +140,19 @@
 
   <div id="prefooter">
     <div class="action_list">
-      <a href="extensions/chrome" class="chrome_ext">
+      <a href="https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk" target="_blank" class="chrome_ext">
         <span class="eng">Chrome Extension</span>
         <span class="tur">Chrome Eklentisi</span>
       </a>
-      <a href="extensions/safari" class="safari_ext">
+      <a href="http://www.mustafaacer.com/deasciifier/safari/safari_deasciifier.safariextz" target="_blank" class="safari_ext">
         <span class="eng">Safari Extension [New]</span>
         <span class="tur">Safari Eklentisi [Yeni]</span>
       </a>
-      <a href="extensions/firefox" class="firefox_ext">
+      <a href="https://addons.mozilla.org/en-US/firefox/addon/204311/" target="_blank" class="firefox_ext">
          <span class="eng">Firefox Extension</span>
          <span class="tur">Firefox Eklentisi</span>
       </a>
-      <a href="https://github.com/meacer/deasciifier" class="sourcecode" style="border-right:0">
+      <a href="https://github.com/meacer/deasciifier" class="sourcecode" target="_blank" style="border-right:0">
         <span class="eng">Source Code</span>
         <span class="tur">Kaynak Kodları</span>
       </a>
@@ -214,7 +210,7 @@ if (typeof(window.Deasciifier)=="undefined") {
   window.Deasciifier = {};
 }
 </script>
-<script src="/static/js/allscripts.js?3"></script>
+<script src="/static/js/allscripts.js?4"></script>
 <script>
 var textArea = document.getElementById("txt");
 
@@ -294,9 +290,12 @@ try {
 <!-- Pattern list (very large) -->
 <script type="text/javascript">
 (function(){
-  var sc = document.createElement("script"); sc.type = "text/javascript"; sc.async = true;
-  sc.src = "/static/js/deasciifier.patterns.js?2";
-  var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sc, s);
+  var sc = document.createElement("script");
+  sc.type = "text/javascript";
+  sc.async = true;
+  sc.src = "/static/js/deasciifier.patterns.js?4";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(sc, s);
 })();
 </script>
 <!-- /Pattern list -->
