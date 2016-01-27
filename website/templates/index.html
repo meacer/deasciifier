@@ -240,8 +240,9 @@ function enableControls(enabled) {
     }
   }
 }
-window.Deasciifier.onPatternListLoaded = function() {
+window.Deasciifier.onPatternListLoaded = function(patternList) {
   $("#loading").hide();
+  Deasciifier.init(patternList);
   enableControls(true);
   document.getElementById("btn_deasciify").style.visibility = "visible";
   document.getElementById("btn_asciify").style.visibility = "visible";

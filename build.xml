@@ -306,8 +306,8 @@
       append="true" output="${logs.dir}/build.log" logError="true">
       <arg value="-jar"/>                <arg value="${closurecompiler.path}"/>
       <arg value="--externs"/>           <arg value="src/js/utils/extern/jquery_1.5_externs.js"/><!-- jQuery externs for CC  -->
-      <arg value="--js"/>                <arg value="src/js/lib/base.js"/>
-      <arg value="--js"/>                <arg value="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
+      <arg value="--externs"/>           <arg value="src/js/lib/cc_exports/externs.js"/>         <!-- Deasciifier externs for CC  -->
+
       <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
       <arg value="--js"/>                <arg value="src/js/website/common.js"/>                 <!-- Base (logs etc)   -->
       <arg value="--js"/>                <arg value="src/js/website/css.js"/>                    <!-- CSS helper        -->
@@ -344,22 +344,23 @@
   <!--
     List of JS files to be combined into a single file for the website.
   -->
-   <filelist id="deasciifyWebsite.js.files">
-    <!--  DeasciifyBox   -->
-    <file name="${deasciifyBox.js.compiled.split.lib}"/>
+   <filelist id="website-files">
+    <file name="${deasciifier.js.lib.release}" />
+    <file name="${deasciifybox.js.lib.release}"/>
+
     <!-- DeasciifyApp for website, uncompiled  -->
-    <file name="src/js/utils/deasciifyApp.js"/>
+    <file name="src/js/website/app.js"/>
   </filelist>
 
   <!--==========================================================================
       Build Appengine website
   ==========================================================================-->
-  <target name="build-website" depends="build-deasciifybox-js">
+  <target name="build-website" depends="build-deasciifier-js, build-deasciifybox-js">
     <echo message="Deploying deasciifier JS code to the website"/>
 
     <!-- Patterns file -->
     <echo>Copy deasciifier.patterns.js</echo>
-    <copy file="${deasciifyBox.js.compiled.split.patterns}"
+    <copy file="${deasciifier.js.patterns.release}"
         tofile="${website.local.jsdir}/deasciifier.patterns.js"
         failonerror="true"/>
 
@@ -367,7 +368,7 @@
     <echo message="Combining all JS files into one"/>
     <delete file="${website.local.jsdir}/allscripts.js"/>
     <concat destfile="${website.local.jsdir}/allscripts.js" append="true">
-        <filelist refid="deasciifyWebsite.js.files" />
+        <filelist refid="website-files" />
     </concat>
   </target>
 
@@ -393,6 +394,8 @@
 
       build-chrome-extension         : Builds the Chrome Extension.
       build-safari-extension         : Builds the Safari Extension.
+
+      build-website                  : Builds Appengine website.
 
       build-all                      : Builds all targets.
       test                           : Runs tests.
