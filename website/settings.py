@@ -3,9 +3,6 @@ from google.appengine.api import users
 
 APP_TITLE = 'Turkish Text Deasciifier'
 
-#DEBUG = True
-#TEMPLATE_DEBUG = DEBUG
-
 ADMINS = (
     ('meacer', 'meacer@gmail.com'),
 )
@@ -34,8 +31,7 @@ SITE_ID = 1
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-#USE_I18N = True
-USE_I18N = False      # mea: We don't need i18n
+USE_I18N = False
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
@@ -52,7 +48,7 @@ MEDIA_URL = ''
 ADMIN_MEDIA_PREFIX = '/media/'
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'hhhhhhhhhffffffffffffddddddddddsssssssssss'
+SECRET_KEY = 'staticsitewithnosecrets(yet)'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -62,41 +58,19 @@ TEMPLATE_LOADERS = (
 
 MIDDLEWARE_CLASSES = (
   'google.appengine.ext.appstats.recording.AppStatsDjangoMiddleware',
-
-#    'django.middleware.common.CommonMiddleware',    # mea: not needed?
-#    'django.contrib.sessions.middleware.SessionMiddleware',
-#    'django.contrib.auth.middleware.AuthenticationMiddleware',
-#    'django.middleware.doc.XViewMiddleware',
-#    'django.middleware.gzip.GZipMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
 ROOT_PATH = os.path.dirname(__file__)
 
 TEMPLATE_DIRS = (
-    # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
-    # Always use forward slashes, even on Windows.
-    # Don't forget to use absolute paths, not relative paths.
     os.path.join(ROOT_PATH, 'templates'),
 )
 
 INSTALLED_APPS = (
-#    'django.contrib.auth',
-#    'django.contrib.contenttypes',    # mea: not needed?
-#    'django.contrib.sessions',
-#    'django.contrib.sites',      # mea: not needed?
 )
 
-# From browserscope:
-# We toggle DEBUG and TEMPLATE_DEBUG based on APP ENGINE's reported env.
 DEBUG = False
 BUILD = 'production'
-#SERVER_SOFTWARE = os.getenv('SERVER_SOFTWARE')
-#if (SERVER_SOFTWARE is not None and 'Dev' in SERVER_SOFTWARE):
-#  BUILD = 'development'
-#  DEBUG = True
-## Logged in admins should get to see stack traces.
-#if users.is_current_user_admin():
-#  DEBUG = True
 
 TEMPLATE_DEBUG = DEBUG
