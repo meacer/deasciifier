@@ -12,37 +12,38 @@
     MEA = {};
   }
   // NOTE: text[i] does not work in IE, always use text.charAt(i)
-  
+
   MEA.TextHelper = {
-    // Returns true if the keycode c is a word seperator 
+    // Returns true if the keycode c is a word seperator
     isSeperatorKeycode:function(c) {
       return (
-        c==32  ||    // space 
+        c==32  ||    // space
         c==13  ||    // enter
-        c==188 || 
-        c==190 || 
-        c==191 || 
-        c==189 || 
-        c==50  || 
-        c==186 || 
-        c==56  || 
-        c==57  || 
+        c==188 ||
+        c==190 ||
+        c==191 ||
+        c==189 ||
+        c==50  ||
+        c==186 ||
+        c==56  ||
+        c==57  ||
         c==48);
     },
-    
+
     // Returns true if the character c is a word seperator
     isSeperatorChar:function(c) {
       return (
         c==' ' || c=='\n' || c=='\r' || c=='.' || c==',' || c==';' || c=='?' || c=='!' ||
-        c=='(' || c==')' || c=='<' || c=='>' || c=='[' || c==']' || c=='{' || c=='}' || 
+        c=='(' || c==')' || c=='<' || c=='>' || c=='[' || c==']' || c=='{' || c=='}' ||
         c=='/' || c=='\\' || c=='+' || c=='-' || c=='*' || c=='&' || c=='@' ||c==':' ||
-        c=='\'' || c=='"' || c=='|' || c=='~' || c=='#' || c=='%' || c=='^');
+        c=='\'' || c=='"' || c=='|' || c=='~' || c=='#' || c=='%' || c=='^'|| c=='=' ||
+        c=='+');
     },
-    
+
     isWhiteSpace:function(c) {
       return c==' ' || c=='\n' || c=='\r' || c=='\t';
     },
-    
+
     getPreviousWhiteSpacePos:function(text, currentPos) {
       for (var i=currentPos; i>=0; i--) {
         if (this.isWhiteSpace(text.charAt(i))) {
@@ -51,7 +52,7 @@
       }
       return -1;
     },
-    
+
     getNextWhiteSpacePos:function(text, currentPos) {
       for (var i=currentPos; i<text.length; i++) {
         if (this.isWhiteSpace(text.charAt(i))) {
@@ -60,7 +61,7 @@
       }
       return -1;
     },
-    
+
     // Finds the first word seperator before the current cursor position.
     // "a str<cursor>ing here" will return the position of "s"
     findPreviousWordSeperatorPos:function(text, cursorPos) {
@@ -71,7 +72,7 @@
       }
       return -1;
     },
-    
+
     // Finds the next word seperator after the current cursor position:
     // "a str<cursor>ing here" will return the position of "g"
     findNextWordSeperatorPos:function(text, cursorPos) {
@@ -82,7 +83,7 @@
       }
       return text.length;
     },
-    
+
     /** Returns true if cursor is inside a word. The following is the truth table:
      *  Cursor pos    | Return
      * ---------------+-------
@@ -98,10 +99,10 @@
       }
       // Only true if the character before, the character after are not seperators
       return (
-        this.isSeperatorChar(text.charAt(cursorPos-1))==false && 
+        this.isSeperatorChar(text.charAt(cursorPos-1))==false &&
         this.isSeperatorChar(text.charAt(cursorPos))==false);
     },
-    
+
     /** Returns the boundaries of the word the cursor is on.
      */
     getWordAtCursor:function(text, cursorPos) {
@@ -113,7 +114,7 @@
       }
       return {start:seperatorBeforeCursor+1, end:seperatorAfterCursor};
     },
-    
+
     /** Returns the boundaries of the word right before the cursor. The very first seperators
      *  before and after the cursor are searched and returned
      */
@@ -128,12 +129,12 @@
       }
       return this.getWordAtCursor(text, cursorPos);
     },
-    
+
     setSubstring:function(text, start, end, substr) {
       return text.substring(0, start) + substr + text.substring(end);
     },
-    
-    /** Returns a list of positions of different characters 
+
+    /** Returns a list of positions of different characters
     */
     getChangedPositions:function(originalText, changedText) {
       var changedPositions = [];
@@ -145,5 +146,5 @@
       return changedPositions;
     }
   }
-  
+
 })();
