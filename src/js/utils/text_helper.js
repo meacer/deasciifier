@@ -14,7 +14,7 @@
   // NOTE: text[i] does not work in IE, always use text.charAt(i)
 
   MEA.TextHelper = {
-    // Returns true if the keycode c is a word seperator
+    /** Returns true if the keycode c is a word seperator. */
     isSeperatorKeycode: function(c) {
       return (c == 32 ||  // space
               c == 13 ||  // enter
@@ -22,7 +22,7 @@
               c == 186 || c == 56 || c == 57 || c == 48);
     },
 
-    // Returns true if the character c is a word seperator
+    /** Returns true if the character c is a word seperator. */
     isSeperatorChar: function(c) {
       return (c == ' ' || c == '\n' || c == '\r' || c == '.' || c == ',' ||
               c == ';' || c == '?' || c == '!' || c == '(' || c == ')' ||
@@ -55,8 +55,9 @@
       return -1;
     },
 
-    // Finds the first word seperator before the current cursor position.
-    // "a str<cursor>ing here" will return the position of "s"
+    /** Finds the first word seperator before the current cursor position.
+     *  "a str<cursor>ing here" will return the position of "s".
+     */
     findPreviousWordSeperatorPos: function(text, cursorPos) {
       for (var i = cursorPos; i >= 0; i--) {
         if (this.isSeperatorChar(text.charAt(i))) {
@@ -66,8 +67,9 @@
       return -1;
     },
 
-    // Finds the next word seperator after the current cursor position:
-    // "a str<cursor>ing here" will return the position of "g"
+    /** Finds the next word seperator after the current cursor position:
+     *  "a str<cursor>ing here" will return the position of "g".
+     */
     findNextWordSeperatorPos: function(text, cursorPos) {
       for (var i = cursorPos; i < text.length; i++) {
         if (this.isSeperatorChar(text.charAt(i))) {
@@ -97,8 +99,7 @@
               this.isSeperatorChar(text.charAt(cursorPos)) == false);
     },
 
-    /** Returns the boundaries of the word the cursor is on.
-     */
+    /** Returns the boundaries of the word the cursor is on. */
     getWordAtCursor: function(text, cursorPos) {
       // We are on a non-seperator character
       var seperatorAfterCursor = this.findNextWordSeperatorPos(text, cursorPos);
@@ -111,8 +112,7 @@
     },
 
     /** Returns the boundaries of the word right before the cursor. The very
-     * first seperators
-     *  before and after the cursor are searched and returned
+     *  first seperators before and after the cursor are searched and returned.
      */
     getWordBeforeCursor: function(text, cursorPos) {
       var seperatorAfterCursor;
@@ -130,8 +130,7 @@
       return text.substring(0, start) + substr + text.substring(end);
     },
 
-    /** Returns a list of positions of different characters
-    */
+    /** Returns a list of positions of different characters. */
     getChangedPositions: function(originalText, changedText) {
       var changedPositions = [];
       for (var i = 0; i < originalText.length && i < changedText.length; i++) {
