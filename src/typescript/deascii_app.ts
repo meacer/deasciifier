@@ -348,6 +348,10 @@ namespace deasciifier {
       }
       this.textEditor.highlightRanges(ranges);
     }
+
+    public hideCorrectionMenu() {
+      this.correctionMenu.hide();
+    }
   }
 
   // The actual app.
@@ -359,6 +363,10 @@ namespace deasciifier {
       this.textEditor = new CodeMirrorEditor(codemirror, this);
       this.deasciiBox = new DeasciiBox(this.textEditor,
         new DeasciifyProcessor(deasciifier_instance));
+    }
+
+    public hideCorrectionMenu() {
+      this.deasciiBox.hideCorrectionMenu();
     }
 
     public onkeyup(keyCode: number) {
