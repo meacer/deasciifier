@@ -12,6 +12,7 @@
         "turkish.ts",
         "correction_menu.ts",
         "deasciifier.ts",
+        "keyboard.ts",
         "deascii_app.ts"
     ]
 }
