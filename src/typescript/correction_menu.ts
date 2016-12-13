@@ -109,7 +109,7 @@ namespace deasciifier {
       this.el = document.createElement("div");
       this.el.className = "correction-menu";
       this.el.style.display = 'none';
-      this.el.style.zIndex = 999999999;
+      this.el.style.zIndex = 99;
       this.el.style.position = "absolute";
       document.body.appendChild(this.el);
       this.view = new CorrectionMenuView(this.el, correction_callback);
@@ -130,8 +130,8 @@ namespace deasciifier {
 
     public show(pos: Position, text: string) {
       this.el.innerHTML = "";
-      this.el.style.top = pos.top;
-      this.el.style.left = pos.left;
+      this.el.style.top = pos.top + "px";
+      this.el.style.left = pos.left + "px";
       this.el.style.display = 'block';
       this.createMenu(text);
     }
