@@ -47,105 +47,21 @@ namespace deasciifier {
     keyMap: KeyMap;
   }
 
-
-  interface SpecialKey {
-    text: string;
-    tooltip: string;
-    value: KeyboardKey;
+  interface Key {
+    type: KeyType;
+    value: string;
   }
 
-  const SPECIAL_KEYS: { [key: string]: SpecialKey } = {
-    "tab": <SpecialKey>{
-      text: "Tab",
-      tooltip: "tab",
-      value: KeyboardKey.TAB
-    },
-    "backspace": <SpecialKey>{
-      text: "\u2190",
-      tooltip: "Backspace",
-      value: KeyboardKey.BACKSPACE
-    },
-    "caps": <SpecialKey>{
-      text: "Caps",
-      tooltip: "Caps lock",
-      value: KeyboardKey.CAPS_LOCK
-    },
-    "enter": <SpecialKey>{
-      text: "Enter",
-      tooltip: "Enter",
-      value: KeyboardKey.ENTER
-    },
-    "shift_l": <SpecialKey>{
-      text: "Shift",
-      tooltip: "Shift",
-      value: KeyboardKey.SHIFT
-    },
-    "shift_r": <SpecialKey>{
-      text: "Shift",
-      tooltip: "Shift",
-      value: KeyboardKey.SHIFT
-    },
-    "space": <SpecialKey>{
-      text: "",
-      tooltip: "Space Bar",
-      value: KeyboardKey.SPACE
-    },
-    "empty": <SpecialKey>{
-      text: null,
-      tooltip: null,
-      value: null
-    }
+  const SPECIAL_KEY_TEXTS: { [key: string]: string } = {
+    "tab": "tab",
+    "backspace": "\u2190",
+    "caps": "caps",
+    "enter": "enter",
+    "shift": "shift",
+    "space": "",
   };
 
   const KeyboardLayout = {
-    /*specialKeys: {
-      "tab": {
-        text: "Tab",
-        tooltip: "Tab",
-        style: { 'width': '32px', 'textAlign': 'left' },
-        callback: onTabPressed
-      },
-      "backspace": {
-        text: "\u2190",
-        tooltip: "Backspace",
-        style: { 'width': '25px', 'textAlign': 'right' },
-        callback: onBackspacePressed
-      },
-      "caps": {
-        text: "Caps",
-        tooltip: "Caps Lock",
-        style: { 'width': '42px', 'textAlign': 'left' },
-        callback: onCapsLockPressed
-      },
-      "enter": {
-        text: "Enter",
-        tooltip: "Enter",
-        style: { 'width': '42px', 'textAlign': 'right' },
-        callback: onEnterPressed
-      },
-      "shift_l": {
-        text: "Shift",
-        tooltip: "Shift",
-        style: { 'width': '55px', 'textAlign': 'left' },
-        callback: onShiftPressed
-      },
-      "shift_r": {
-        text: "Shift",
-        tooltip: "Shift",
-        style: { 'width': '55px', 'textAlign': 'right' },
-        callback: onShiftPressed
-      },  // TODO: if shift is toggled, change button style
-      "space": {
-        text: "",
-        tooltip: "Space Bar",
-        style: { 'width': '140px' },
-        callback: onSpaceBarPressed
-      },
-      "empty": {
-        style: { 'visibility': 'hidden', 'display': 'block', 'width': '100px' }
-      }
-    },*/
-
     TR_Q: {
       id: "TR_Q",
       name: "T\u00FCrk\u00E7e Q",
@@ -165,8 +81,8 @@ namespace deasciifier {
             TR_s, "_i", ":", "enter"
           ],
           [
-            "shift_l", "z", "x", "c", "v", "b", "n", "m",
-            TR_o, TR_c, ",", ".", "shift_r"
+            "shift", "z", "x", "c", "v", "b", "n", "m",
+            TR_o, TR_c, ",", ".", "shift"
           ],
           [CIRC_a, CIRC_e, CIRC_i, "space", CIRC_o, CIRC_u]
         ],
@@ -180,10 +96,10 @@ namespace deasciifier {
             TR_S, TR_I, ":", "enter"
           ],
           [
-            "shift_l", "Z", "X", "C", "V", "B", "N", "M",
-            TR_O, TR_C, ",", ".", "shift_r"
+            "shift", "Z", "X", "C", "V", "B", "N", "M",
+            TR_O, TR_C, ",", ".", "shift"
           ],
-          [CIRC_A, CIRC_E, CIRC_I, CIRC_O, CIRC_U, "space"]
+          [CIRC_A, CIRC_E, CIRC_I, "space", CIRC_O, CIRC_U]
         ]
       }
     },
@@ -199,103 +115,31 @@ namespace deasciifier {
           // underscore are special keys
           // and they should have an entry in specialKeys map
           [
-            "tab",
-            "f",
-            "g",
-            TR_g,
-            TR_i,
-            "o",
-            "d",
-            "r",
-            "n",
-            "h",
-            "p",
-            "q",
-            "w",
-            "x",
-            "backspace"
+            "tab", "f", "g", TR_g, TR_i, "o", "d", "r",
+            "n", "h", "p", "q", "w", "x", "backspace"
           ],
           [
-            "caps",
-            "u",
-            "_i",
-            "e",
-            "a",
-            TR_u,
-            "t",
-            "k",
-            "m",
-            "l",
-            "y",
-            TR_s,
-            ":",
-            "enter"
+            "caps", "u", "_i", "e", "a", TR_u, "t", "k",
+            "m", "l", "y", TR_s, ":", "enter"
           ],
           [
-            "shift_l",
-            "j",
-            TR_o,
-            "v",
-            "c",
-            TR_c,
-            "z",
-            "s",
-            "b",
-            ",",
-            ".",
-            ";",
-            "shift_r"
+            "shift_l", "j", TR_o, "v", "c", TR_c, "z", "s",
+            "b", ",", ".", ";", "shift_r"
           ],
           [CIRC_a, CIRC_e, CIRC_i, CIRC_o, CIRC_u, "space"]
         ],
         capsOn: [
           [
-            "tab",
-            "F",
-            "G",
-            TR_G,
-            "_I",
-            "O",
-            "D",
-            "R",
-            "N",
-            "H",
-            "P",
-            "Q",
-            "W",
-            "X",
-            "backspace"
+            "tab", "F", "G", TR_G, "_I", "O", "D", "R",
+            "N", "H", "P", "Q", "W", "X", "backspace"
           ],
           [
-            "caps",
-            "U",
-            TR_I,
-            "E",
-            "A",
-            TR_U,
-            "T",
-            "K",
-            "M",
-            "L",
-            "Y",
-            TR_S,
-            ":",
-            "enter"
+            "caps", "U", TR_I, "E", "A", TR_U, "T", "K",
+            "M", "L", "Y", TR_S, ":", "enter"
           ],
           [
-            "shift_l",
-            "J",
-            TR_O,
-            "V",
-            "C",
-            TR_C,
-            "Z",
-            "S",
-            "B",
-            ",",
-            ".",
-            ";",
-            "shift_r"
+            "shift_l", "J", TR_O, "V", "C", TR_C, "Z",
+            "S", "B", ",", ".", ";", "shift_r"
           ],
           [CIRC_A, CIRC_E, CIRC_I, CIRC_O, CIRC_U, "space"]
         ]
@@ -303,14 +147,116 @@ namespace deasciifier {
     }
   };
 
-  let isInstalled = false;
-
-  interface KeyboardCallback {
+  export interface KeyboardCallback {
     onKey(text: string): void;
   }
 
-  export class Keyboard {
-    private currentLayout = KeyboardLayout.TR_F;
+  function createButton(
+    text: string, value: string, callback: KeyboardCallback): HTMLDivElement {
+    var btn = document.createElement("div");
+    btn.textContent = text;
+    btn.onclick = function () {
+      callback.onKey(value);
+    }
+    return btn;
+  }
+
+  function createKey(
+    text: string, value: string, is_special: boolean,
+    callback: KeyboardCallback): HTMLDivElement {
+    if (!is_special) {
+      // Letter key.
+      return createButton(text, value, callback);
+    }
+    // Special key:
+    text = SPECIAL_KEY_TEXTS[value];
+    var btn = createButton(text, value, callback);
+    btn.className += " mea-keyboard-special-key";
+    return btn;
+  }
+
+  function createKeyRow(keys: Array<any>, callback: KeyboardCallback,
+    toggledKeys: { [key: string]: boolean }) {
+
+    let row = document.createElement("div");
+    row.className = "mea-keyboard-key-row";
+
+    for (let i = 0; i < keys.length; i++) {
+      let key = keys[i];
+      let cell: HTMLDivElement = null;
+
+      if (key.length == 1 ||
+        (key.length > 1 && key.charAt(0) == "_")) {
+        // Letter key:
+        let isSpecialLetter = (key.length > 1 && key.charAt(0) == "_");
+        let text = (isSpecialLetter) ? key.substring(1) : key;
+        cell = createKey(text, text, false, callback);
+        if (isSpecialLetter) {
+          cell.className += " mea-keyboard-key-emphasized";
+        }
+      } else {
+        // Special key:
+        cell = createKey(null, key, true, callback);
+        if (i == keys.length - 1) {
+          cell.className += " mea-keyboard-key-last";
+        }
+      }
+      cell.className += " mea-keyboard-key";
+      if (key == "caps" && toggledKeys[key]) {
+        cell.className += " mea-keyboard-key-active";
+      } else if (key == "shift_l" && toggledKeys[key]) {
+        cell.className += " mea-keyboard-key-active";
+      }
+      cell.tabIndex = 1;
+      row.appendChild(cell);
+    }
+    return row;
+  }
+
+  function createKeyTable(
+    keys, callback: KeyboardCallback,
+    toggledKeys: { [key: string]: boolean }) {
+
+    let table = document.createElement("div");
+    for (let i = 0; i < keys.length; i++) {
+      table.appendChild(createKeyRow(keys[i], callback, toggledKeys));
+
+
+    }
+    table.className = "mea-keyboard-btn-table";
+    return table;
+  }
+
+  function createKeyLayout(
+    layoutContainer: HTMLDivElement, keyMap, callback: KeyboardCallback,
+    toggledKeys: { [key: string]: boolean }) {
+    layoutContainer.innerHTML = "";
+
+    var table = createKeyTable(keyMap, callback, toggledKeys);
+    let container = document.createElement("div");
+    container.appendChild(table);
+
+    layoutContainer.appendChild(container);
+  }
+
+  function createDOM(
+    container: HTMLDivElement, caps: boolean, callback: KeyboardCallback,
+    toggledKeys: { [key: string]: boolean }): void {
+    container.innerHTML = "";
+    container.className = "mea-keyboard-main";
+
+    let layoutContainer = document.createElement("div");
+    createKeyLayout(layoutContainer,
+      caps ? KeyboardLayout.TR_Q.keys.capsOn : KeyboardLayout.TR_Q.keys.capsOff,
+      callback, toggledKeys);
+    layoutContainer.className = "mea-keyboard-layout";
+
+    container.appendChild(layoutContainer);
+  }
+
+  export class Keyboard implements KeyboardCallback {
+    private callback: KeyboardCallback;
+    private currentLayout = KeyboardLayout.TR_Q;
     private capsLockOnContainer: HTMLDivElement = null;
     private capsLockOffContainer: HTMLDivElement = null;
     private toggledKeys: { [key: string]: boolean } = {
@@ -318,36 +264,50 @@ namespace deasciifier {
       "shift": false
     }
 
-    constructor(private callback: KeyboardCallback, private container: HTMLDivElement) {
+    constructor(private container: HTMLDivElement) {
     }
 
-    /*getTarget() {
-      return this.target;
-    }*/
-    /*
-        install(textArea, layoutID, position, parent) {
-          //this.target = textArea;
-          createDOM(position, parent);
-          setKeyboardLayout(layoutID || KeyboardLayout.TR_Q.id);
-          isInstalled = true;
-        }
-      isInstalled(): boolean {
-          return isInstalled;
-        }
-        
-        position(position) {
-          this.container.style.top = position.top + "px";
-          this.container.style.left = position.left + "px";
-        }
-    
-        getDimensions() { return CSS.getDimensions(this.container); }
-    
-        isVisible() { return this.container.style.display != "none"; }
-    */
-    create() {
-      createDOM(this.container, null, null);
+    // KeyboardCallback method:
+    onKey(text: string): void {
+      switch (text) {
+        case "enter":
+          this.callback.onKey("\n");
+          return;
+        case "space":
+          this.callback.onKey(" ");
+          return;
+        case "tab":
+          this.callback.onKey("\t");
+          return;
+        case "caps":
+          this.toggledKeys["caps"] = !this.toggledKeys["caps"];
+          this.toggleCaps();
+          return;
+        case "shift_l":
+        case "shift_r":
+          this.toggledKeys["shift"] = !this.toggledKeys["shift"];
+          this.toggleCaps();
+          return;
+      }
+      if (this.toggledKeys["shift"]) {
+        this.toggledKeys["shift"] = false;
+        this.toggleCaps();
+      }
+      this.callback.onKey(text);
     }
 
+    create(callback: KeyboardCallback) {
+      this.callback = callback;
+      createDOM(
+        this.container, this.toggledKeys["caps"], this, this.toggledKeys);
+    }
+
+    toggleCaps() {
+      createDOM(
+        this.container,
+        this.toggledKeys["caps"] !== this.toggledKeys["shift"],
+        this, this.toggledKeys);
+    }
 
     show() {
       if (this.container) {
@@ -360,259 +320,6 @@ namespace deasciifier {
         this.container.style.display = "none";
       }
     }
-
   }
-
-
-  function onSpecialKeyPressed(key: KeyboardKey) {
-
-  }
-
-  function onCapsLockPressed() {
-    toggledKeys["caps"] = !toggledKeys["caps"];
-    updateCapsLockState();
-  }
-
-  function onShiftPressed() {
-    toggledKeys["shift"] = !toggledKeys["shift"]
-    // Change caps lock state and update keyboard:
-    toggledKeys["caps"] = !toggledKeys["caps"];
-    updateCapsLockState();
-  }
-
-  // TODO: Simulate key press instead of changing text
-  function sendKeys(key) {
-    //$(KEYBOARD.getTarget()).focus();
-    //TEXT_SELECTION.setSelectionText(KEYBOARD.getTarget(), key);
-  }
-
-  function onEnterPressed() {
-    // TODO: \r\n for IE:
-    sendKeys("\n");
-  }
-
-  function onTabPressed() { sendKeys("\t"); }
-
-  function onSpaceBarPressed() { sendKeys(" "); }
-
-  function onBackspacePressed() {
-    //$(KEYBOARD.getTarget()).focus();
-    //TEXT_SELECTION.deleteSelectionText(KEYBOARD.getTarget());
-  }
-
-  /*function updateCapsLockState(layout) {
-    if (toggledKeys["caps"]) {
-      capsLockOnContainer.style.display = "block";
-      capsLockOffContainer.style.display = "none";
-    } else {
-      capsLockOnContainer.style.display = "none";
-      capsLockOffContainer.style.display = "block";
-    }
-  }*/
-
-  function onSpecialKey(target, callback) { callback(target); }
-
-  function getOnLetterHandler(keyValue) {
-    return function () {
-      if (toggledKeys["shift"]) {
-        onShiftPressed();
-      }
-      sendKeys(keyValue);
-    }
-  }
-
-  /**
-   * @param {string} value
-   * @param {function()} callback
-   * @param {string=} className
-   */
-  function createButton(text: string, callback, className) {
-    //var btn = document.createElement("input");
-    //var btn = document.createElement("button");
-    var btn = document.createElement("div");
-    //btn.type = "button";
-    //btn.value = text;
-    btn.textContent = text;
-    //if (className) {
-    //  CSS.addClass(btn, className);
-    //}
-    //if (callback) {
-    //  EVENT_HANDLER.bindEvent(btn, "click", callback);
-    //}
-    return btn;
-  }
-
-  function createLetterKey(value: string) {
-    // Some letters start with an underscore.
-    var isSpecialLetter = (value.length > 1 && value.charAt(0) == "_");
-    var keyValue = (isSpecialLetter) ? value.substring(1) : value;
-    var btn = createButton(keyValue, getOnLetterHandler(keyValue));
-    if (isSpecialLetter) {
-      //CSS.setStyles(btn, { "fontWeight": "bolder" });
-    }
-    return btn;
-  }
-
-  function createSpecialKey(value: string) {
-    var specialKey = SPECIAL_KEYS[value];
-    var btn = createButton(specialKey.text, specialKey.callback);
-    if (specialKey.style) {
-      //CSS.setStyles(btn, specialKey.style);
-    }
-    btn.className += " mea-keyboard-special-key";
-    if (specialKey.tooltip) {
-      btn.title = specialKey.tooltip;
-    }
-    return btn;
-  }
-
-  function createPlaceholder() {
-    var placeholder = SPECIAL_KEYS["empty"];
-    var span = document.createElement("span");
-    //CSS.setStyles(span, placeholder.style);
-    return span;
-  }
-
-  var layoutSelectBox = document.createElement("select");
-  function setKeyboardLayout(layoutID) {
-    for (var layoutItem in KeyboardLayout) {
-      var layout = KeyboardLayout[layoutItem];
-      if (layout.id && layout.id == layoutID) {
-        Keyboard.currentLayout = layout;
-        createKeyLayout();
-      }
-    }
-  }
-
-  function onChangeKeyboardLayout() {
-    setKeyboardLayout(
-      layoutSelectBox.options[layoutSelectBox.selectedIndex].value);
-  }
-
-  function createOptionsBox() {
-    //EVENT_HANDLER.bindEvent(layoutSelectBox, "change", onChangeKeyboardLayout);
-    layoutSelectBox.options[0] =
-      new Option(KeyboardLayout.TR_Q.name, KeyboardLayout.TR_Q.id);
-    layoutSelectBox.options[1] =
-      new Option(KeyboardLayout.TR_F.name, KeyboardLayout.TR_F.id);
-    return layoutSelectBox;
-  }
-
-  /*function onCloseButton() {
-    // TODO: Minimize etc.
-    keyboard.hide();
-  }*/
-
-  function createControlBar() {
-    var node = document.createElement("div");
-    //CSS.setClass(node, "mea-keyboard-main-controls");
-    node.appendChild(createOptionsBox());
-
-    // Add close button:
-    //var closeBtn =
-    //  createButton("x", onCloseButton, "mea-keyboard-main-btn-close");
-    //node.appendChild(closeBtn);
-    return node;
-  }
-
-  function createKeyTable(keys) {
-    //let table: HTMLTableElement = document.createElement("table");
-    let table = document.createElement("div");
-    //table.cellPadding = 0;
-    //table.cellSpacing = 0;
-
-    for (let i = 0; i < keys.length; i++) {
-      //let rowTable = document.createElement("table");
-      //let rowTable = document.createElement("div");
-      //rowTable.className = "mea-keyboard-key-row";
-      //rowTable.cellPadding = 0;
-      //rowTable.cellSpacing = 0;
-
-      //let row = rowTable.insertRow(0);
-      let row = document.createElement("div");
-      row.className = "mea-keyboard-key-row";
-      table.appendChild(row);
-
-      for (var k = 0; k < keys[i].length; k++) {
-        //var cell = row.insertCell(k);
-        //var cell = document.createElement("div");
-        //cell.className = "mea-keyboard-key";
-        var key = keys[i][k];
-        let cell = null;
-        if (key == "empty") {  // empty place holder
-          cell = createPlaceholder();
-        } else if (key.length == 1 ||
-          (key.length > 1 && key.charAt(0) == "_")) {  // normal letter
-          cell = createLetterKey(key);
-        } else {  // special key
-          cell = createSpecialKey(key);
-        }
-        cell.className += " mea-keyboard-key";
-
-        row.appendChild(cell);
-      }
-      //var rowCell = table.insertRow(i).insertCell(0);
-
-      // rowTable.style.width = "100%";
-      //rowTable.align = "left";
-      //rowCell.appendChild(rowTable);
-    }
-    //CSS.setClass(table, "mea-keyboard-btn-table");
-    table.className = "mea-keyboard-btn-table";
-    return table;
-  }
-
-  function createKeyLayout(layoutContainer: HTMLDivElement, layout) {
-    let capsLockOnContainer = document.createElement("div");
-    let capsLockOffContainer = document.createElement("div");
-    capsLockOnContainer.innerHTML = "";
-    capsLockOffContainer.innerHTML = "";
-    layoutContainer.innerHTML = "";
-
-    // Create CAPS on and off tables and by default show caps off:
-    var tableCapsOff = createKeyTable(layout.keys.capsOff);
-   // var tableCapsOn = createKeyTable(layout.keys.capsOn);
-
-    // TODO: Default should be actual keyboard state:
-    capsLockOffContainer.appendChild(tableCapsOff);
-    //capsLockOnContainer.appendChild(tableCapsOn);
-
-    layoutContainer.appendChild(capsLockOffContainer);
-    layoutContainer.appendChild(capsLockOnContainer);
-    //updateCapsLockState();
-  }
-
-
-  function createDOM(container: HTMLDivElement, position, parent): void {
-    //this.container = document.createElement("div");
-    //CSS.setClass(KEYBOARD.container, "mea-keyboard-main");
-    container.className = "mea-keyboard-main";
-
-    let layoutContainer = document.createElement("div");
-    createKeyLayout(layoutContainer, KeyboardLayout.TR_Q);
-    layoutContainer.className = "mea-keyboard-layout";
-
-    container.appendChild(createControlBar());
-    container.appendChild(layoutContainer);
-
-    //parent.appendChild(this.container);
-    //this.container.style.top = position.top + "px";
-    //this.container.style.left = position.left + "px";
-  }
-
-  //Keyboard keyboard = new Keyboard();
-  //keyboard.create();
-
-  /*
-    MEA.Keyboard = KEYBOARD;
-    KEYBOARD["install"] = KEYBOARD.install;
-    KEYBOARD["isInstalled"] = KEYBOARD.isInstalled;
-    KEYBOARD["position"] = KEYBOARD.position;
-    KEYBOARD["getDimensions"] = KEYBOARD.getDimensions;
-    KEYBOARD["isVisible"] = KEYBOARD.isVisible;
-    KEYBOARD["show"] = KEYBOARD.show;
-    KEYBOARD["hide"] = KEYBOARD.hide;
-  
-    window["MEA"]["Keyboard"] = MEA.Keyboard;*/
 
 }
