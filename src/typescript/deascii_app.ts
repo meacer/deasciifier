@@ -20,17 +20,26 @@ namespace deasciifier {
 
     // Returns absolute coordinates of the character at |index|.
     getPosition(index: number): Position;
-
+    // Returns the line height in pixel.
     getLineHeight(): number;
+
+    // Simulates typing |text| at the cursor position.
+    putAtCursor(text: string): void;
+    // Simulates pressing backspace key at the cursor position.
+    deleteCursor(): void;
+
+    // Set focus to the editor.
+    focus(): void;
   }
 
-  interface EventListener {
+  interface TextEditorEventListener {
     onkeyup(keyCode: number): void;
     onclick(): void;
   }
 
   class CodeMirrorEditor implements TextEditor {
-    constructor(private editor: any, private eventListener: EventListener) {
+    constructor(
+      private editor: any, private eventListener: TextEditorEventListener) {
       editor.getWrapperElement().onkeyup = function (e: any) {
         eventListener.onkeyup(e.keyCode);
       }
@@ -82,6 +91,19 @@ namespace deasciifier {
 
     getLineHeight(): number {
       return this.editor.defaultTextHeight();
+    }
+
+
+    putAtCursor(text: string) {
+      let selection = this.getSelection();
+      this.setText(text, selection);
+    }
+    deleteCursor(): void {
+      this.editor.execCommand("delCharBefore");
+    }
+
+    focus(): void {
+      this.editor.focus();
     }
   }
 
@@ -239,7 +261,6 @@ namespace deasciifier {
 
   class CorrectionCallbackImpl implements CorrectionCallback {
     constructor(private box: DeasciiBox) { }
-
     onchange(text: string) {
       this.box.oncorrectiontextchange(text);
     }
@@ -249,6 +270,7 @@ namespace deasciifier {
     private options_: Options;
     private correctionMenu: CorrectionMenu;
     private correctionMenuSelection: TextRange;
+
     constructor(
       private textEditor: TextEditor, private textProcessor: TextProcessor) {
       this.options_ = new Options(true);
@@ -265,6 +287,10 @@ namespace deasciifier {
       if (TextHelper.isSeperatorChar(String.fromCharCode(keyCode))) {
         this.deasciifyCursor();
       }
+    }
+
+    public onVirtualKeyboardKey(key: string) {
+      alert("Pressed " + key);
     }
 
     public onclick() {
@@ -292,10 +318,15 @@ namespace deasciifier {
 
       let startCoords = this.textEditor.getPosition(wordBoundary.start);
       let endCoords = this.textEditor.getPosition(wordBoundary.end);
-      startCoords.top += this.textEditor.getLineHeight();
+
+      let middleX = (startCoords.left + endCoords.left) / 2;
+      let menuCoords = <Position>{
+        left: middleX,
+        top: startCoords.top + this.textEditor.getLineHeight()
+      }
 
       this.correctionMenuSelection = wordBoundary;
-      this.correctionMenu.show(startCoords, wordText);
+      this.correctionMenu.show(menuCoords, wordText);
     }
 
     private deasciifyCursor() {
@@ -354,15 +385,35 @@ namespace deasciifier {
     }
   }
 
+
+
+  export class KeyboardHandler implements KeyboardCallback {
+    constructor(private app: App, private editor: TextEditor) { }
+    onKey(key: string) {
+      this.app.hideCorrectionMenu();
+      this.editor.focus();
+      if (key == "backspace") {
+        this.editor.deleteCursor();
+        return;
+      }
+      this.editor.putAtCursor(key);
+    }
+  }
+
   // The actual app.
-  export class App implements EventListener {
+  export class App implements TextEditorEventListener {
     private textEditor: TextEditor;
     private deasciiBox: DeasciiBox;
+    private keyboardHandler: KeyboardHandler;
 
-    constructor(codemirror: any, deasciifier_instance: Deasciifier) {
+    constructor(codemirror: any, deasciifier_instance: Deasciifier,
+      keyboard: Keyboard) {
       this.textEditor = new CodeMirrorEditor(codemirror, this);
       this.deasciiBox = new DeasciiBox(this.textEditor,
         new DeasciifyProcessor(deasciifier_instance));
+
+      this.keyboardHandler = new KeyboardHandler(this, this.textEditor);
+      keyboard.create(this.keyboardHandler);
     }
 
     public hideCorrectionMenu() {

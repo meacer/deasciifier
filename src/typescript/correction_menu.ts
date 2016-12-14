@@ -20,7 +20,7 @@ namespace deasciifier {
   }
 
   class CorrectionTextView {
-    private dynamic_divs: Array<HTMLDivElement>;
+    private dynamic_divs: Array<Array<HTMLDivElement>>;
     private text: string;
     constructor(
       private container: any, public correction_callback: CorrectionCallback) {
@@ -42,7 +42,7 @@ namespace deasciifier {
         let alternative = CORRECTION_TABLE[ch];
         if (alternative) {
           // Character has an alternative.
-          let divs: Array<HTMLDivElement>[] = [];
+          let divs: Array<HTMLDivElement> = [];
           div.className += " correction-menu-item-dynamic";
 
           // Add the actual character.
@@ -89,12 +89,20 @@ namespace deasciifier {
   }
 
   class CorrectionMenuView {
-    private container: any;
     private textView: CorrectionTextView;
 
-    constructor(private el: any, correction_callback: CorrectionCallback) {
-      let menuContainer = document.createElement("div");
-      this.textView = new CorrectionTextView(el, correction_callback);
+    constructor(
+      container: HTMLDivElement, correction_callback: CorrectionCallback) {
+      let arrow = document.createElement("div");
+      arrow.className = "correction-menu-arrow";
+      container.appendChild(arrow);
+
+      let textContainer = document.createElement("div");
+      textContainer.className = "correction-menu-text";
+      container.appendChild(textContainer);
+
+      this.textView =
+        new CorrectionTextView(textContainer, correction_callback);
     }
 
     public buildDom(text: string) {
@@ -103,16 +111,16 @@ namespace deasciifier {
   }
 
   export class CorrectionMenu {
-    private el: any;
+    private container: HTMLDivElement;
     private view: CorrectionMenuView;
     constructor(private correction_callback: CorrectionCallback) {
-      this.el = document.createElement("div");
-      this.el.className = "correction-menu";
-      this.el.style.display = 'none';
-      this.el.style.zIndex = 99;
-      this.el.style.position = "absolute";
-      document.body.appendChild(this.el);
-      this.view = new CorrectionMenuView(this.el, correction_callback);
+      this.container = document.createElement("div");
+      this.container.className = "correction-menu";
+      this.container.style.display = "none";
+      this.container.style.zIndex = "99";
+      this.container.style.position = "absolute";
+      document.body.appendChild(this.container);
+      this.view = new CorrectionMenuView(this.container, correction_callback);
     }
 
     public static hasCorrections(text: string): boolean {
@@ -129,16 +137,14 @@ namespace deasciifier {
     }
 
     public show(pos: Position, text: string) {
-      this.el.innerHTML = "";
-      this.el.style.top = pos.top + "px";
-      this.el.style.left = pos.left + "px";
-      this.el.style.display = 'block';
       this.createMenu(text);
+      this.container.style.top = pos.top + "px";
+      this.container.style.left = pos.left + "px";
+      this.container.style.display = 'block';
     }
 
     public hide() {
-      this.el.style.display = 'none';
-      this.el.innerHTML = "";
+      this.container.style.display = "none";
     }
   }
 }
