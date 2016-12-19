@@ -10,7 +10,7 @@ namespace deasciifier {
 
   interface TextEditor {
     getText(): string;
-    setText(text: string, range?: TextRange): void;
+    setText(text: string, range?: common.TextRange): void;
 
     getSelection(): TextRange;
     setSelection(range: TextRange): void;
@@ -428,5 +428,4 @@ namespace deasciifier {
       this.deasciiBox.onclick();
     }
   }
-
 }  // namespace deasciifier
