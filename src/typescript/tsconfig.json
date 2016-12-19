@@ -1,18 +1,6 @@
 {
+    "extends": "./tsconfig-base",
     "compilerOptions": {
-        "module": "commonjs",
-        "noImplicitAny": true,
-        "removeComments": false,
-        "preserveConstEnums": true,
-        "sourceMap": false,
         "outFile": "../../website/static/ts/all.js"
-    },
-    "files": [
-        "common.ts",
-        "turkish.ts",
-        "correction_menu.ts",
-        "deasciifier.ts",
-        "keyboard.ts",
-        "deascii_app.ts"
-    ]
+    }
 }

@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "removeComments": false,
+    "preserveConstEnums": true,
+    "sourceMap": false
+  },
+  "files": [
+    "common.ts",
+    "turkish.ts",
+    "correction_menu.ts",
+    "deasciifier.ts",
+    "keyboard.ts",
+    "app.ts"
+  ]
+}
