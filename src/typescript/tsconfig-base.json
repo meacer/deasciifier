@@ -3,7 +3,8 @@
     "noImplicitAny": true,
     "removeComments": false,
     "preserveConstEnums": true,
-    "sourceMap": false
+    "sourceMap": false,
+    "outDir": "out/"
   },
   "files": [
     "common.ts",

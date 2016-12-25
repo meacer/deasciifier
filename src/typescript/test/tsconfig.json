@@ -4,8 +4,7 @@
     "types": ["chai", "mocha"],
     "typeRoots": [
             "../node_modules/@types"
-    ],
-    "module": "commonjs"
+    ]
   },
   "files": [
     "test.ts"
