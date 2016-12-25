@@ -7,8 +7,6 @@ import {
 } from "./common"
 import { TURKISH_ASCIIFY_TABLE, TURKISH_CHAR_ALIST } from "./turkish"
 
-//namespace deasciifier {
-
 class SkipList implements TextFilter {
   constructor(private skipRegions: Array<TextRange>) { }
 
@@ -75,7 +73,7 @@ export const URL_REGEX: RegExp
   = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
 
 class DefaultSkipFilter {
-  public getSkipRegions(
+  static getSkipRegions(
     options: TextProcessingOptions, text: string): SkipList {
     // TODO: Better algorithm here if number of regions grow large
     let regexps: Array<RegExp> = [];
@@ -261,7 +259,7 @@ export class Deasciifier implements TextProcessor {
 
   turkish_match_pattern(
     text: string, pos: number, decision_list: any): boolean {
-    // TODO: Figure out if this should be negative. When positive, the default 
+    // TODO: Figure out if this should be negative. When positive, the default
     // behavior is to deasciify the character (e.g. no pattern matches and
     // rank remains equal to Number.MAX_VALUE)
     let rank: number = Number.MAX_VALUE;
@@ -271,7 +269,7 @@ export class Deasciifier implements TextProcessor {
     let len: number = str.length;
 
     // Selects the pattern with the smallest absolute non-zero rank.
-    // E.g. A rank of -1 or 1 will have more priority than a rank of 2 or -2. 
+    // E.g. A rank of -1 or 1 will have more priority than a rank of 2 or -2.
     while (start <= TURKISH_CONTEXT_SIZE) {
       let end: number = TURKISH_CONTEXT_SIZE + 1;
       while (end <= len) {
@@ -340,9 +338,9 @@ export class Deasciifier implements TextProcessor {
   }
 
   build_skip_list(text: string, options: TextProcessingOptions): SkipList {
-    //if (options.skipURLs) {
-    //  return new DefaultSkipFilter.getSkipRegions(skipOptions, text);
-    //}
+    if (options && options.skipURLs) {
+      return DefaultSkipFilter.getSkipRegions(options, text);
+    }
     return null;
   }
 
@@ -381,9 +379,7 @@ export class Deasciifier implements TextProcessor {
         }
         patternMap[key][pattern] = rank;
       }
-      //patternMap[key]["length"] = char_patterns.length;
     }
-    // This is precompiled:
     this.turkish_pattern_table = patternMap;
     this.initialized = true;
   }
@@ -410,5 +406,3 @@ export class Deasciifier implements TextProcessor {
       text, <TextRange>{ start: 0, end: text.length }, options);
   }
 }
-
-//} // namespace deasciifier
