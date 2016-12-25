@@ -2,7 +2,15 @@
 /// <reference path="./deasciifier.ts" />
 /// <reference path="./correction_menu.ts" />
 
-namespace deasciifier {
+import {
+  TextRange, Position, TextProcessor, TextProcessingOptions,
+  TextResult, KeyCode
+} from "./common"
+import { Deasciifier, Asciifier } from "./deasciifier"
+import { CorrectionCallback, CorrectionMenu } from "./correction_menu"
+import { KeyboardCallback, Keyboard } from "./keyboard"
+
+export module DeasciifierApp {
 
   class Options {
     public constructor(public highlightChanges: boolean) { }
@@ -10,7 +18,7 @@ namespace deasciifier {
 
   interface TextEditor {
     getText(): string;
-    setText(text: string, range?: common.TextRange): void;
+    setText(text: string, range?: TextRange): void;
 
     getSelection(): TextRange;
     setSelection(range: TextRange): void;
@@ -57,19 +65,23 @@ namespace deasciifier {
         this.editor.setValue(text);
       }
     }
+
     public getText(): string {
       return this.editor.getValue();
     }
+
     public getSelection(): TextRange {
       let start = this.editor.indexFromPos(this.editor.getCursor(true));
       let end = this.editor.indexFromPos(this.editor.getCursor(false));
       return new TextRange(start, end);
     }
+
     public setSelection(range: TextRange) {
       let rangeStart = this.editor.posFromIndex(range.start);
       let rangeEnd = this.editor.posFromIndex(range.end);
       this.editor.setSelection(rangeStart, rangeEnd);
     }
+
     public highlightRanges(ranges: Array<TextRange>) {
       for (let range of ranges) {
         let rangeStart = this.editor.posFromIndex(range.start);
@@ -79,44 +91,62 @@ namespace deasciifier {
           { readOnly: true, className: 'test-css' });
       }
     }
+
     public clearHighlights() {
       // Not implemented
     }
 
-    getPosition(index: number): Position {
+    public getPosition(index: number): Position {
       let linech = this.editor.posFromIndex(index);
       let coords = this.editor.charCoords(linech);
       return <Position>{ left: coords.left, top: coords.top };
     }
 
-    getLineHeight(): number {
+    public getLineHeight(): number {
       return this.editor.defaultTextHeight();
     }
 
-
-    putAtCursor(text: string) {
+    public putAtCursor(text: string) {
       let selection = this.getSelection();
       this.setText(text, selection);
     }
-    deleteCursor(): void {
+
+    public deleteCursor(): void {
       this.editor.execCommand("delCharBefore");
     }
 
-    focus(): void {
+    public focus(): void {
       this.editor.focus();
     }
   }
 
+  enum TextProcessorMode {
+    DEASCIIFY,
+    ASCIIFY
+  }
+
   class DeasciifyProcessor implements TextProcessor {
-    constructor(private deasciifier: Deasciifier) { }
+    private processor: TextProcessor;
+    constructor(
+      private deasciifier: Deasciifier, private asciifier: Asciifier) {
+      this.processor = deasciifier;
+    }
+
+    public setMode(mode: TextProcessorMode) {
+      if (mode == TextProcessorMode.DEASCIIFY)
+        this.processor = this.deasciifier;
+      else
+        this.processor = this.asciifier;
+    }
 
     public processRange(
       text: string, range: TextRange,
       options: TextProcessingOptions): TextResult {
-      return this.deasciifier.processRange(text, range, options);
+      return this.processor.processRange(text, range, options);
     }
+
     public process(text: string, options: TextProcessingOptions): TextResult {
-      return null;
+      return this.processor.process(text, options);
     }
   }
 
@@ -272,7 +302,8 @@ namespace deasciifier {
     private correctionMenuSelection: TextRange;
 
     constructor(
-      private textEditor: TextEditor, private textProcessor: TextProcessor) {
+      private textEditor: TextEditor,
+      private textProcessor: DeasciifyProcessor) {
       this.options_ = new Options(true);
       this.correctionMenuSelection = null;
       this.correctionMenu =
@@ -287,10 +318,6 @@ namespace deasciifier {
       if (TextHelper.isSeperatorChar(String.fromCharCode(keyCode))) {
         this.deasciifyCursor();
       }
-    }
-
-    public onVirtualKeyboardKey(key: string) {
-      alert("Pressed " + key);
     }
 
     public onclick() {
@@ -383,11 +410,21 @@ namespace deasciifier {
     public hideCorrectionMenu() {
       this.correctionMenu.hide();
     }
+
+    public processSelection(mode: TextProcessorMode) {
+      let range = this.textEditor.getSelection();
+      if (range.start == range.end) {
+        range = <TextRange>{ start: 0, end: this.textEditor.getText().length };
+      }
+      this.textProcessor.setMode(mode);
+      let result =
+        this.textProcessor.processRange(this.textEditor.getText(), range, null);
+      this.textEditor.setText(result.text, range);
+      this.highlightChanges(result.changedPositions, false);
+    }
   }
 
-
-
-  export class KeyboardHandler implements KeyboardCallback {
+  class KeyboardHandler implements KeyboardCallback {
     constructor(private app: App, private editor: TextEditor) { }
     onKey(key: string) {
       this.app.hideCorrectionMenu();
@@ -405,15 +442,35 @@ namespace deasciifier {
     private textEditor: TextEditor;
     private deasciiBox: DeasciiBox;
     private keyboardHandler: KeyboardHandler;
+    private deasciifier_instance: Deasciifier;
+    private asciifier_instance: Asciifier;
+    private keyboard: Keyboard;
 
-    constructor(codemirror: any, deasciifier_instance: Deasciifier,
-      keyboard: Keyboard) {
+    constructor(
+      codemirror: any, pattern_list: any, keyboard_container: HTMLDivElement) {
+      this.deasciifier_instance = new Deasciifier();
+      this.deasciifier_instance.init(pattern_list);
+      this.asciifier_instance = new Asciifier();
+
       this.textEditor = new CodeMirrorEditor(codemirror, this);
-      this.deasciiBox = new DeasciiBox(this.textEditor,
-        new DeasciifyProcessor(deasciifier_instance));
+      this.deasciiBox =
+        new DeasciiBox(
+          this.textEditor,
+          new DeasciifyProcessor(
+            this.deasciifier_instance, this.asciifier_instance));
+
+      this.keyboard = new Keyboard(keyboard_container);
 
       this.keyboardHandler = new KeyboardHandler(this, this.textEditor);
-      keyboard.create(this.keyboardHandler);
+      this.keyboard.create(this.keyboardHandler);
+    }
+
+    public deasciifySelection() {
+      this.deasciiBox.processSelection(TextProcessorMode.DEASCIIFY);
+    }
+
+    public asciifySelection() {
+      this.deasciiBox.processSelection(TextProcessorMode.ASCIIFY);
     }
 
     public hideCorrectionMenu() {
@@ -428,4 +485,4 @@ namespace deasciifier {
       this.deasciiBox.onclick();
     }
   }
-}  // namespace deasciifier
+} // module DeasciifierApp
