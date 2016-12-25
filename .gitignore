@@ -1,6 +1,6 @@
 *.pyc
 
-src/js/node_modules/**
+node_modules/
 
 logs/
 output/
