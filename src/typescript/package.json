@@ -1,0 +1,38 @@
+{
+  "name": "deasciifier",
+  "version": "2.0.0",
+  "description": "Turkish text deasciifier",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "pretest": "tsc --project test/",
+    "test": "mocha test/",
+    "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
+    "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js"
+  },
+  "devDependencies": {
+    "@types/chai": "^3.4.34",
+    "@types/mocha": "^2.2.33",
+    "browserify": "^13.1.1",
+    "chai": "^3.5.0",
+    "mocha": "^3.2.0",
+    "tsify": "^2.0.7",
+    "typescript": "^2.1.4",
+    "uglify": "^0.1.5",
+    "watchify": "^3.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/meacer/deasciifier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/meacer/deasciifier/issues"
+  },
+  "homepage": "https://deasciifier.com",
+  "author": "meacer",
+  "license": "MIT",
+  "dependencies": {
+    "google-closure-compiler": "^20161201.0.0"
+  }
+}
