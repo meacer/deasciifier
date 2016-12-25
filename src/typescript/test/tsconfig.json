@@ -1,0 +1,14 @@
+{
+  "extends": "../tsconfig-base",
+  "compilerOptions": {
+    "types": ["chai", "mocha"],
+    "typeRoots": [
+            "../node_modules/@types"
+    ],
+    "module": "commonjs"
+  },
+  "files": [
+    "../common.ts",
+    "test.ts"
+  ]
+}

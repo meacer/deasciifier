@@ -1,6 +1,3 @@
 {
-    "extends": "./tsconfig-base",
-    "compilerOptions": {
-        "outFile": "../../website/static/ts/all.js"
-    }
+    "extends": "./tsconfig-base"
 }
