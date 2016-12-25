@@ -1,8 +1,7 @@
 *.pyc
-
 node_modules/
-
 logs/
 output/
 .svn
 .DS_Store
+src/typescript/out/
