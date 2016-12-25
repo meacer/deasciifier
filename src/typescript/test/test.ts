@@ -1,5 +1,3 @@
-//// <reference path="../common.ts" />
-
 import { TextRange, TextProcessingOptions } from '../common';
 import * as deasciifier from '../deasciifier'
 import * as testdata from './testdata';
@@ -178,12 +176,12 @@ describe('Deasciifier', function () {
     expect(result.changedPositions).to.eql([1, 3]);
   });
 
-  it ('should skip URLs', function() {
+  it('should skip URLs', function () {
     let deasc = new deasciifier.Deasciifier();
     deasc.init(PATTERNS);
 
-  let options = <TextProcessingOptions>{ skipURLs: true};
-  let result = deasc.process("http://agaca.com agaca",  options);
+    let options = <TextProcessingOptions>{ skipURLs: true };
+    let result = deasc.process("http://agaca.com agaca", options);
     assert.equal("http://agaca.com ağaça", result.text);
     expect(result.changedPositions).to.eql([18, 20]);
   });

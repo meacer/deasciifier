@@ -7,7 +7,7 @@
   },
   "scripts": {
     "pretest": "tsc --project test/",
-    "test": "mocha out/test/",
+    "test": "mocha out/test/test.js && karma start karma.conf.js",
     "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
     "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js"
   },
@@ -16,7 +16,16 @@
     "@types/mocha": "^2.2.33",
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
+    "codemirror": "^5.22.0",
+    "karma": "^1.3.0",
+    "karma-browserify": "^5.1.0",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^2.0.0",
+    "karma-commonjs-require": "0.0.3",
+    "karma-mocha": "^1.3.0",
+    "karma-requirejs": "^1.1.0",
     "mocha": "^3.2.0",
+    "requirejs": "^2.3.2",
     "tsify": "^2.0.7",
     "typescript": "^2.1.4",
     "uglify": "^0.1.5",
@@ -33,6 +42,7 @@
   "author": "meacer",
   "license": "MIT",
   "dependencies": {
+    "@types/codemirror": "0.0.35",
     "google-closure-compiler": "^20161201.0.0"
   }
 }
