@@ -32,9 +32,10 @@
         dir="${basedir}"
         failonerror="true"
         failifexecutionfails="true">
-
       <!-- Compilation script -->
       <arg value="${basedir}/build/compile_patterns.py"/>
+      <!-- Pattern version 1 -->
+      <arg value="pattern_v1"/>
       <!-- Source patterns (input) -->
       <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
 
@@ -43,6 +44,26 @@
 
       <!-- Compiled patterns (output) -->
       <arg value="${basedir}/src/js/lib/patterns/_generated_patterns.js"/>
+    </exec>
+
+    <!-- Same as above, except with Pattern Version 2 -->
+    <exec
+        executable="python"
+        dir="${basedir}"
+        failonerror="true"
+        failifexecutionfails="true">
+      <!-- Compilation script -->
+      <arg value="${basedir}/build/compile_patterns.py"/>
+      <!-- Pattern version 1 -->
+      <arg value="pattern_v2"/>
+      <!-- Source patterns (input) -->
+      <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
+
+      <!-- Pattern template (input) -->
+      <arg value="${basedir}/src/js/lib/patterns/template.js"/>
+
+      <!-- Compiled patterns (output) -->
+      <arg value="${basedir}/src/js/lib/patterns/_generated_patterns_v2.js"/>
     </exec>
   </target>
 
@@ -209,10 +230,6 @@
       <equals arg1="${config.name}" arg2="Debug"/>
     </condition>
     <antcall target="${build-deasciifier-js-targetname}" />
-  </target>
-
-  <target name="test4">
-    <exec executable="mocha" dir="src/js" />
   </target>
 
   <!--==========================================================================
