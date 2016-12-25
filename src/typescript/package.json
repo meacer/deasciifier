@@ -7,7 +7,7 @@
   },
   "scripts": {
     "pretest": "tsc --project test/",
-    "test": "mocha test/",
+    "test": "mocha out/test/",
     "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
     "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js"
   },
