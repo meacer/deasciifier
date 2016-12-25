@@ -1,4 +1,5 @@
 import { TextRange, TextProcessingOptions } from '../common';
+import { TextHelper } from '../text_helper';
 import * as deasciifier from '../deasciifier'
 import * as testdata from './testdata';
 
@@ -184,5 +185,81 @@ describe('Deasciifier', function () {
     let result = deasc.process("http://agaca.com agaca", options);
     assert.equal("http://agaca.com ağaça", result.text);
     expect(result.changedPositions).to.eql([18, 20]);
+  });
+});
+
+describe('TextHelper', function () {
+  it('isCursorInsideWord', function () {
+    class TestCase {
+      constructor(
+        public readonly index: number, public readonly expected: boolean) { }
+    }
+    const TEST_STRING = "abc de  f   g";
+    const test_cases: Array<TestCase> = [
+      new TestCase(0, false),   // *abc de  f   g
+      new TestCase(1, true),    //  a*bc de  f   g
+      new TestCase(2, true),    //  ab*c de  f   g
+      new TestCase(3, false),   //  abc* de  f   g
+      new TestCase(4, false),   //  abc *de  f   g
+      new TestCase(5, true),    //  abc d*e  f   g
+      new TestCase(6, false),   //  abc de*  f   g
+      new TestCase(7, false),   //  abc de * f   g
+      new TestCase(8, false),   //  abc de  *f   g
+      new TestCase(9, false),   //  abc de   f*  g
+      new TestCase(10, false),  //  abc de   f * g
+      new TestCase(11, false),  //  abc de   f  *g
+      new TestCase(12, false),  //  abc de   f   g*
+      // Before the string:
+      new TestCase(-1, false),  // *|abc de  f   g
+      // Beyond the end of the string:
+      new TestCase(13, false),  //   abc de  f   g|*
+    ];
+    for (let test_case of test_cases) {
+      assert.equal(
+        test_case.expected,
+        TextHelper.isCursorInsideWord(TEST_STRING, test_case.index),
+        "Wrong result for index " + test_case.index);
+    }
+  });
+
+  it('getWordAtCursor', function () {
+    class TestCase {
+      constructor(
+        public readonly index: number,
+        public readonly expected_start: number,
+        public readonly expected_end: number) { }
+    }
+    const TEST_STRING = "abc de  f   g";
+    const test_cases: Array<TestCase> = [
+      // abc
+      new TestCase(0, 0, 3),
+      new TestCase(1, 0, 3),
+      new TestCase(2, 0, 3),
+      // space
+      new TestCase(3, 0, 3),
+      // de
+      new TestCase(4, 4, 6),
+      new TestCase(5, 4, 6),
+      // spaces
+      new TestCase(6, 4, 6),
+      new TestCase(7, 7, 7),
+      // f
+      new TestCase(8, 8, 9),
+      // spaces
+      new TestCase(9, 8, 9),
+      new TestCase(10, 10, 10),
+      new TestCase(11, 11, 11),
+      // g
+      new TestCase(12, 12, 13),
+      // past end of string
+      // TODO: Fix, should return empty range.
+      new TestCase(13, 12, 13),
+    ];
+    for (let test_case of test_cases) {
+      expect(
+        TextHelper.getWordAtCursor(TEST_STRING, test_case.index)).to.eql(
+        new TextRange(test_case.expected_start, test_case.expected_end),
+        "Wrong result for index " + test_case.index);
+    }
   });
 });
