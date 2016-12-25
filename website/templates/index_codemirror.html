@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<meta name="google" value="notranslate">
+<link rel="icon" type="image/png" href="static/favicon.png">
+
+<!-- jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<!-- Bootstrap -->
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+  crossorigin="anonymous">
+<!-- Optional theme -->
+<!--
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
+  crossorigin="anonymous">
+  -->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+  crossorigin="anonymous"></script>
+
+<!-- Material design icons -->
+<link rel="stylesheet" href="https://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css">
+
+<!-- CodeMirror -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.js"></script>
+
+<!-- Deasciifier -->
+<script src="/static/ts/bundle.js"></script>
+
+<style type="text/css">
+  /* Material design icons */
+  
+  i.mdi::before,
+  span.mdi::before,
+  button.mdi::before {
+    font-size: 24px;
+    line-height: 13px;
+  }
+  
+  .btn.mdi::before,
+  .btn .mdi::before {
+    position: relative;
+    top: 4px;
+  }
+  
+  .btn-xs.mdi::before,
+  .btn-xs .mdi::before {
+    font-size: 18px;
+    top: 3px;
+  }
+  
+  .btn-sm.mdi::before,
+  .btn-sm .mdi::before {
+    font-size: 18px;
+    top: 3px;
+  }
+  
+  .dropdown-menu .mdi {
+    width: 18px;
+  }
+  
+  .dropdown-menu .mdi::before {
+    position: relative;
+    top: 4px;
+    left: -8px;
+  }
+  
+  .nav .mdi::before {
+    position: relative;
+    top: 4px;
+  }
+  
+  .navbar .navbar-toggle .mdi::before {
+    position: relative;
+    top: 4px;
+    color: #FFF;
+  }
+  
+  .breadcrumb .mdi::before {
+    position: relative;
+    top: 4px;
+  }
+  
+  .breadcrumb a:hover {
+    text-decoration: none;
+  }
+  
+  .breadcrumb a:hover span {
+    text-decoration: underline;
+  }
+  
+  .alert .mdi::before {
+    position: relative;
+    top: 4px;
+    margin-right: 2px;
+  }
+  
+  .input-group-addon .mdi::before {
+    position: relative;
+    top: 3px;
+  }
+  
+  .navbar-brand .mdi::before {
+    position: relative;
+    top: 2px;
+    margin-right: 2px;
+  }
+  
+  .list-group-item .mdi::before {
+    position: relative;
+    top: 3px;
+    left: -3px
+  }
+  /* Material design icons end */
+  /** BOOTSTRAP: */
+  
+  @media (min-width: 768px) {
+    .navbar-nav {
+      float: none;
+      margin: 0 auto;
+      display: table;
+      table-layout: fixed;
+    }
+  }
+  
+  .navbar-brand {
+    display: inline-block;
+    padding: 0;
+    vertical-align: middle;
+  }
+  
+  .navbar-brand img {
+    display: inline-block;
+  }
+  
+  .navbar {
+    background: rgb(241, 241, 241);
+    border-bottom: 1px solid #888;
+    /*height: 8vh;
+    margin-bottom: 0;*/
+  }
+/*
+@media (min-width: 768px) {
+ .navbar-nav li a {
+    line-height: 4em;
+    height: 4em;
+    padding-top: 0;
+    font-size: 2em;
+    min-width: 4em;
+    text-align: center;
+}
+}*/
+  
+  @media (max-width: 767px) {
+    .navbar {
+      height: 10vh;
+    }
+  }
+  
+  .heading {
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    color: #333;
+    text-shadow: 0 0 10px #222;
+    text-shadow: none;
+  }
+  
+  .list-group-item {
+    border: 0;
+  }
+  
+  .navbar-li-active {
+    background: rgb(33, 150, 243);
+    color: white;
+    font-weight: bold;
+  }
+  
+  .navbar-li-active:hover {
+    background: orange;
+  }
+  
+  .navbar-default .navbar-nav>li>a {
+    color: #444;
+  }
+  
+  .navbar-default .navbar-nav>li>a:hover {
+    background: orange;
+    color: white;
+  }
+  
+  .checkbox {
+    margin: 0;
+  }
+  
+  .list-group {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+  }
+  
+  .panel {
+    font-size: 1.2em;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #888;
+    padding: 5px;
+  }
+  /* Overrides */
+  
+  html {
+    font-family: 'Proxima Nova', Arial, Helvetica, sans-serif;
+    height: 100%;
+    font-size: 1.2em;
+  }
+  
+  body {
+    padding-top: 70px;
+    height: 100%;
+    background: rgb(222, 222, 222);
+  }
+  
+  .CodeMirror {
+    border: 1px solid #eee;
+    height: auto;
+    font-family: Roboto;
+    font-size: 1.5em;
+  }
+  
+  .CodeMirror-scroll {
+    min-height: 80vh;
+  }
+  
+  .test-css {
+    font-weight: bold;
+    color: #333;
+    background: lightgreen;
+  }
+  
+  .container {
+    width: 90%;
+    margin: 0 auto;
+  }
+  
+  .text-container {
+    width: 900px;
+    margin: 0 auto;
+    padding: 1px;
+    box-shadow: 0 0 8px #888;
+  }
+  /* Correction menu */
+  
+  .correction-menu {
+    font-size: 1.4em;
+    border-radius: 4px;
+    cursor: default;
+    user-select: none;
+    outline: none;
+    box-sizing: border-box;
+    font-family: Courier New, Courier, monospace;
+    transform: translateX(-50%);
+  }
+  
+  .correction-menu-arrow {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid black;
+    position: relative;
+    margin: 0 auto;
+  }
+  
+  .correction-menu-item {
+    display: inline-block;
+    border-left: 0;
+    border-right: 0;
+    width: 1em;
+    text-align: center;
+    vertical-align: top;
+    background: black;
+    color: white;
+  }
+  
+  .correction-menu-item-first {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-left: 1px solid lightblue;
+  }
+  
+  .correction-menu-item-last {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    border-right: 1px solid lightblue;
+  }
+  
+  .correction-menu-item-alternative {
+    cursor: pointer;
+    border: 1px solid lightblue;
+    border-top: 0;
+  }
+  
+  .correction-menu-item-alternative:hover {
+    background: blue;
+    color: white;
+  }
+  /*
+@media only screen and (max-width: 600px) { 
+  .heading { 
+    display: none; 
+  } 
+}*/
+  
+  .mea-keyboard-main {
+    font-size: 1.5em;
+    margin: 0 auto;
+    width: 100%;
+    position: fixed;
+    z-index: 199;
+    bottom: 0;
+  }
+  
+  .mea-keyboard-layout {
+    width: 900px;
+    margin: 0 auto;
+    background: #EfEfEf;
+    background: #111;
+    box-shadow: 0 0 5px #888;
+    border: 1px solid #888;
+  }
+  
+  .mea-keyboard-btn-table {
+    /*padding: 2px 2px;*/
+    padding: 0;
+    margin: 0;
+  }
+  
+  .mea-keyboard-btn-table input {
+    /* Default style for buttons in the table */
+    margin: 0;
+    padding: 0.2em;
+    cursor: pointer;
+    /*width: 2em;
+    height: 2em;*/
+    text-align: center;
+    /*border: 1px solid #333;*/
+    border-right: 1px solid #333;
+    border-bottom: 1px solid #333;
+    /*border-radius: 3px;
+    background: -moz-linear-gradient(top, white, #DDD);
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#fff), to(#ddd));
+    */
+  }
+  
+  .mea-keyboard-btn-table input:active {
+    background: #888;
+    color: -moz-only-whitespace;
+  }
+  
+  .mea-keyboard-key-row {
+    clear: both;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .mea-keyboard-key {
+    display: inline-block;
+    padding: 0.2em 0.2em;
+    background: #ccc;
+    margin: 1px 1px;
+    /*text-align: center;*/
+    border-radius: 0;
+    min-width: 2.5em;
+    min-height: 2.5em;
+    line-height: 2.5em;
+    user-select: none;
+    color: #333;
+    /*margin: 0.1em 0.1em;
+    border-radius: 4px;*/
+  }
+  
+  .mea-keyboard-key:focus {
+    color: lightblue;
+  }
+  
+  .mea-keyboard-key-emphasized {
+    font-weight: bold;
+    background: #e8e8e8;
+  }
+  
+  .mea-keyboard-key-active {
+    background: orange;
+  }
+  
+  .mea-keyboard-special-key {
+    display: flex;
+    flex-grow: 1;
+  }
+  
+  .mea-keyboard-key:hover {
+    background: orange;
+    cursor: pointer;
+  }
+  
+  .mea-keyboard-btn-table input:hover {
+    box-shadow: 0px 0px 3px #888;
+  }
+  
+  .mea-keyboard-main-controls {
+    text-align: right;
+    padding: 1px;
+  }
+  
+  .mea-keyboard-key-last {
+    text-align: right;
+  }
+  /*
+  .mea-keyboard-main-btn-close {
+    display: inline-block;
+    border: 1px solid #888;
+    vertical-align: top;
+    margin: 2px 2px;
+    width: 16px;
+    height: 16px;
+    background: url(static/img/v2.0/close_icon.png);
+    font-size: 0;
+  }*/
+
+  .navbar-btn {
+    background: none;
+    color: none;
+    border: 0;
+    border-radius: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-left: 1em;
+    padding-right: 1em;
+    font-size: 1.2em;
+    min-width: 4em;
+  }
+  .navbar-btn:hover {
+    background: orange;
+    color: white;
+  }
+  .navbar-li-active .navbar-btn {
+    color: white;
+  }
+</style>
+
+<nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+
+    <a class="navbar-brand" href="#">
+      <!-- <img src="static/img/v2.0/g-logo.png" height="48">
+      -->
+      <img src="static/favicon.png" height="100%">
+      <h3 class="heading hidden-sm">deasciifier.com</h3>
+    </a>
+
+    <div class="collapse navbar-collapse navbar-right">
+      <ul class="nav navbar-nav">
+        <li class=" navbar-li-active">
+          <button id="deasciify-btn" class="btn btn-default navbar-btn"
+            data-toggle="tooltip" data-placement="bottom" title="Undo">
+              Deasciify
+          </button>
+        </li>
+        <li>
+          <button id="asciify-btn" class="btn btn-default navbar-btn"
+            data-toggle="tooltip" data-placement="bottom" title="Undo">
+              Asciify
+          </button>
+        </li>
+        <li style="border-left: 1px solid #ccc">
+          <button id="undo-btn"  class="btn btn-default navbar-btn"
+            data-toggle="tooltip" data-placement="bottom" title="Undo">
+            <i class="mdi mdi-undo" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li style="border-left: 1px solid #ccc">
+          <button id="redo-btn" class="btn btn-default navbar-btn"
+            data-toggle="tooltip" data-placement="bottom" title="Redo">
+            <i class="mdi mdi-redo" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li style="border-left: 1px solid #ccc">
+          <button id="keyboard-btn" class="btn btn-default navbar-btn"
+            data-toggle="tooltip" data-placement="bottom" title="Keyboard">
+            <i class="mdi mdi-keyboard" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li style="border-left: 1px solid #ccc">
+          <button id="settings-btn" class="btn btn-default navbar-btn"
+          data-toggle="tooltip" data-placement="bottom" title="Settings">
+            <i class="mdi mdi-settings" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li style="border-left: 1px solid #ccc; border-right: 1px solid #ccc">
+          <button id="benchmark-btn" class="btn btn-default navbar-btn"
+           data-toggle="tooltip" data-placement="bottom" title="More">
+            <i class="mdi mdi-dots-horizontal" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <!-- /.container-fluid -->
+</nav>
+<div id="benchmark-result"></div>
+<div id="status"></div>
+<div id="keyboard" style="display: none"></div>
+<div class="panel panel-default" style="width: 900px; margin: 0 auto; display: block" id="settings-panel">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <div class="checkbox">
+              <label>
+                  <input type="checkbox" value="">
+                  Yazarken cevir
+                </label>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="checkbox">
+              <label>
+                  <input type="checkbox" value="">
+                  Duzeltme menusunu goster
+                </label>
+            </div>
+          </li>
+          <li class="list-group-item">
+            <div class="checkbox">
+              <label>
+                  <input type="checkbox" value="">
+                  Satir numaralarini goster
+                </label>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-md-6" style="border-left: 1px solid #ccc">
+        <ul class="list-group">
+          <li class="list-group-item">
+            <a href="https://google.com">Chrome eklentisi</a></li>
+          <li class="list-group-item">Firefox eklentisi</li>
+          <li class="list-group-item">Safari eklentisi</li>
+          <li class="list-group-item">Github</li>
+          <li class="list-group-item">Geribildirim</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br>
+
+<div class="progress" id="progress-bar">
+  <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="100%" aria-valuemin="0"
+    aria-valuemax="100" style="width: 100%">
+    <span class="sr-only">45% Complete</span>
+  </div>
+</div>
+
+<div class="text-container">
+  <textarea id="txt">
+    arkadaslarla agaca ciktik arkadaslarla agaca ciktik arkadaslarla agaca ciktik
+  </textarea>
+</div>
+<div style="margin: 0 auto; width: 100%; text-align: center; margin-top: 2em; margin-bottom: 1em">
+  deasciifier.com - 2016
+</div>
+<script>
+var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
+  lineNumbers: false,
+  viewportMargin: Infinity,
+  lineWrapping: true,
+  minHeight: 900,
+  height: "dynamic",
+  autofocus: true
+});
+/*
+function markTextAt(lineCh) {
+  var coords = editor.charCoords(lineCh);
+  editor.markText(
+      lineCh,
+      {line: lineCh.line, ch: lineCh.ch + 1},
+      {readOnly: true, className: 'test-css'});
+}
+
+function showMenuAt(lineCh) {
+  var index = editor.indexFromPos(lineCh);
+  var coords = editor.charCoords(lineCh);
+
+  var range = MEA.TextHelper.getWordAtCursor(editor.getValue(), index);
+  var word = editor.getValue().substring(range.start, range.end);
+
+  var rangeStart = editor.posFromIndex(range.start);
+  var rangeEnd = editor.posFromIndex(range.end);
+  var startPos = editor.charCoords({line: rangeStart.line,
+                                    ch: rangeStart.ch});
+  var endPos = editor.charCoords({line: rangeEnd.line,
+                                    ch: rangeEnd.ch});
+  var coords = {top: startPos.top + editor.defaultTextHeight(),
+                left: startPos.left,
+                bottom: startPos.bottom + editor.defaultTextHeight(),
+                right: endPos.right};
+  menu.displayAt(coords, word);
+}
+*/
+var app;
+var deasc = null;
+var app = null;
+window.Deasciifier = {}
+
+window.Deasciifier.onPatternListLoaded = function(patternList) {
+  //deasc = new deasciifier.Deasciifier();
+  //$("#loading").hide();
+  //enableControls(true);
+  //document.getElementById("btn_deasciify").style.visibility = "visible";
+  //document.getElementById("btn_asciify").style.visibility = "visible";
+
+  /*DeasciifyApp.init({
+    "textbox": textArea,
+    "keyboard_toggle_btn": "btn_keyboard"
+  });
+  textArea.onclick = on_focus_handler; // TODO: This will be overriden by suggestions popup menu?
+  textArea.onfocus = on_focus_handler;*/
+  //document.getElementById("status").textContent = "LOADED";
+  //deasc.init(patternList);
+  document.getElementById("progress-bar").style.display = "none";
+
+  app = new DeasciifierApp.DeasciifierApp.App(editor, patternList, document.getElementById("keyboard"));
+}
+
+function deasciify() {
+  //var txt = document.getElementById("txt");
+  editor.operation(function() {
+    var result = Deasciifier.deasciify(editor.getValue());
+    console.log(result);
+    editor.setValue(result.text);
+    for (var i = 0; i < result.changedPositions.length; i++) {
+      var pos = result.changedPositions[i];
+      var lineCh = editor.posFromIndex(pos);
+      //editor.replaceRange(result.text.charAt(pos),
+       //                   lineCh,
+       //                   {line: lineCh.line, ch: lineCh.ch + 1});
+      markTextAt(lineCh);
+    }
+  });
+}
+
+$("#deasciify-btn").click(function() {
+  app.deasciifySelection();
+});
+
+$("#asciify-btn").click(function() {
+  app.asciifySelection();
+});
+
+$("#settings-btn").click(function() {
+  $("#settings-panel").slideToggle({duration: 200});
+});
+
+$("#undo-btn").click(function() {
+  app.hideCorrectionMenu();
+  editor.execCommand("undo");
+});
+
+$("#redo-btn").click(function() {
+  app.hideCorrectionMenu();
+  editor.execCommand("redo");
+});
+
+$("#keyboard-btn").click(function() {
+  $("#keyboard").slideToggle({duration: 200});
+});
+
+$("#benchmark-btn").click(function() {
+  $("#benchmark-result").html("");
+  var text = document.getElementById("test-text").value;
+  editor.setValue(text);
+
+  var start = new Date();
+  var result = deasc.process(text);
+  var time = new Date() - start;
+
+  editor.setValue(result.text);
+
+  $("#benchmark-result").html("Deasciified: " + time + " milliseconds");
+});
+</script>
+
+<!-- Pattern list (very large) -->
+<script type="text/javascript">
+// New
+(function(){
+  var sc = document.createElement("script"); sc.type = "text/javascript"; sc.async = true;
+  ///sc.src = "/static/js/deasciifier.patterns.js?2";
+  sc.src = "/static/js/_generated_patterns.js?2";
+  var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sc, s);
+})();
+// Old
+/*
+(function(){
+  var sc = document.createElement("script"); sc.type = "text/javascript"; sc.async = true;
+  sc.src = "/static/js/deasciifier.patterns.js?2";
+  //sc.src = "/static/js/_generated_patterns.js?2";
+  var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(sc, s);
+})();*/
+
+$(function () {
+  $('[data-toggle="tooltip"]').tooltip({
+    delay: { "show": 500, "hide": 0 }
+  });
+})
+</script>
+<!-- /Pattern list -->
+
+
+
+<textarea id="test-text" style="display: none">
+Bu bir seckin maddedir. Daha fazla bilgi icin buraya tiklayin.
+Orhan Veli Kanik
+Vikipedi, ozgur ansiklopedi
+Orhan Veli Kanik
+Orhan Veli KANIK.jpg
+Dogum Orhan Veli
+13 Nisan 1914
+Istanbul, Osmanli Imparatorlugu
+Olum  14 Kasim 1950 (36 yasinda)
+Istanbul, Turkiye
+Takma ad  Mehmet Ali Sel
+Meslek  Sair
+Donem Cumhuriyet donemi Turk edebiyati (1936 - 1950)
+Edebî akim  Garip akimi
+Etkilendikleri
+Ilk donem eserlerinde
+Charles Baudelaire, Necip Fazil Kisakurek, Ahmet Hamdi Tanpinar, Ahmet Muhip Diranas[1]
+Garip ve Garip sonrasinda
+Paul Eluard, Arthur Rimbaud, Verlaine, Stéphane Mallarmé, Guillaume Apollinaire[2]
+Imza
+Orhan Veli Kanik (13 Nisan 1914 – 14 Kasim 1950), daha cok Orhan Veli olarak bilinen Turk sair. Melih Cevdet ve Oktay Rifat ile birlikte yenilikci Garip akiminin kurucusu olan Kanik, Turk siirindeki eski yapiyi temelinden degistirmeyi amaclayarak sokaktaki adamin soyleyisini siir diline tasidi.[3] Sair otuz alti yillik yasamina siirlerinin yani sira hikâye, deneme, makale ve ceviri alaninda bircok eser sigdirdi.[4]
+
+Yeni bir zevk ortaya cikarabilmek icin eski olan her seyden uzak duran Orhan Veli, hece ve aruz olculerini kullanmayi reddetti. Kafiyeyi ilkel; mecaz, tesbih, mubalaga gibi edebi sanatlari gereksiz buldugunu acikladi. "Gecmis edebiyatlarin ogrettigi her seyi, butun gelenegi atmak" amaciyla yola cikan Kanik'in bu arzusu siirinde kullanabilecegi teknik olanaklari azaltsa da sair, ele aldigi konular, bahsettigi kisiler ve kullandigi sozcuklerle kendine yeni alanlar olusturdu.[5] Yalin bir anlatimi benimseyerek siir dilini konusma diline yaklastirdi. 1941 yilinda, arkadaslariyla birlikte cikardiklari Garip adli siir kitabinda bu fikirlerinin ornekleri olan siirleri yayinlandi ve Garip akiminin dogmasina sebep oldu. Bu akim ozellikle 1940-1950 yillari arasinda Cumhuriyet donemi siirinde buyuk etki birakti.[6] Garip siiri hem yikici hem de yapici ozelligi ile Turk siirinde bir mihenk tasi kabul edilir.[7]
+
+Kanik, siire getirdigi bu yenilikler yuzunden onceleri buyuk olcude yadirgandi, cok sert elestiriler aldi ve kucumsendi.[I][6][8][9] Geleneklerin disina cikan eserleri, once saskinlik ve yadirgama, daha sonra eglenme ve asagilamayla karsilansa da hep ilgi uyandirdi.[5] Bu ilgi ise kisa zamanda saire duyulan anlayis, sevgi ve hayranligin artmasina yol acti.[5] Sait Faik Abasiyanik da Orhan Veli'nin bu yonune dikkat cekerek onu "uzerinde en cok durulmus, zaman zaman alaya alinmis, zaman zaman kendini kabul ettirmis, tekrar inkâr, tekrar kabul edilmis; zamaninda hem iyi hem kotu sohrete ermis bir sair" olarak tanimladi.[10]
+
+Her ne kadar Garip doneminde yazdigi siirleriyle one ciksa da Orhan Veli "tek tur" siirler yazmaktan kacinmisti. Durmadan arayan, kendini yenileyen, kisa yasami boyunca uzun bir siir seruveni yasayan Kanik'in edebiyat hayati farkli asamalardan olusmaktadir.[11] Oktay Rifat bu durumu "Orhan Fransiz sairlerinin birkac nesillik siir macerasini kisacik omrunde yasadi. Turk siiri onun kalemi sayesinde Avrupa siiriyle atbasi geldi." ve "Birkac neslin belki arka arkaya basarabilecegi bir degismeyi o birkac yilin icinde tamamladi." sozleriyle acikladi.[12][13]
+
+Icindekiler
+1 Hayati
+1.1 Cocuklugu ve egitimi
+1.2 Sonraki Yasami ve Sanat Hayati
+1.3 Olumu
+1.4 Olumunden sonra
+2 Kisiligi ve fiziksel ozellikleri
+3 Sanat hayati
+3.1 Sairligi
+3.1.1 Garip oncesi
+3.1.1.1 Eski siirleri
+3.1.1.2 Yeni siirleri
+3.1.2 Garip donemi
+3.1.3 Garip sonrasi
+3.2 Diger calismalari
+3.2.1 Cevirileri
+3.2.2 Nesir yazilari
+3.3 Kullandigi temalar
+3.4 Takma adi
+4 Etkileri
+5 ‎Secme bibliyografi
+6 Ceviriler
+7 Ayrica bakiniz
+8 Notlar
+9 Kaynakca
+9.1 Kaynak notlari
+10  Dis baglantilar
+Hayati[kaynagi degistir]
+Cocuklugu ve egitimi[kaynagi degistir]
+
+Rumelihisari sahilinde bulunan Orhan Veli heykeli. Heykelde, elinde kitap tutan saire bir marti eslik etmektedir.
+Orhan Veli Kanik, 13 Nisan 1914'te Beykoz'a bagli Yalikoyu'nde bulunan Ishak Aga Yokusu'ndaki Cayir Sokaginda 9 numarali konakta dunyaya geldi.[14] Babasi Izmirli tuccar Fehmi Bey'in oglu Mehmet Veli, annesi ise Beykozlu Haci Ahmet Bey'in kizi Fatma Nigar Hanim'dir.[15] Nufus tezkeresi suretine gore asil ismi Ahmet Orhan olan sairin babasinin adi Veli oldugu icin, sanatci Soyadi Kanunu'ndan once Orhan Veli olarak tanindi.[14] Orhan Veli'nin babasi evlendigi sirada Mizika-yi Humayun'da klarnist idi. Cumhuriyet'in ilanindan sonra ise Cumhurbaskanligi Senfoni Orkestrasi'nin sefi oldu.[16] Veli Kanik, hem bu yeni gorevi hem de Musiki Muallim Mektebinde (Ankara Konservatuvari) armoni profesoru olmasi dolayisiyla 1923-1948 yillari arasinda Ankara'da yasadi.[16] Bu donemde bir sure Ankara Radyosu'nda mudurluk de yapan Veli Bey, daha sonraki yillarda Istanbul Konservatuvarinda ilmî kurul uyesi ve Istanbul Radyosu'nda ses uzmani olarak calisti.[16] Orhan Veli'nin kendisinden kucuk iki kardesi vardi. Bunlar Vatan Gazetesi muhabirlerinden Adnan Veli Kanik ve Furuzan Yolyapandir.[17] Sairin ayrica, bir yasinda iken Ankara'da olen Ayse Zerrin isminde bir kiz kardesi de vardir.[18][19]
+
+Orhan Veli'nin cocuklugu Beykoz, Besiktas ve Cihangir'de gecti. Mutareke sirasinda Akaretler'de bulunan Anafartalar Ilkokulunun ana sinifina devam etti.[16] Bir sene sonra ise bu okuldan alinarak Galatasaray Lisesi'ne yatili olarak verildi.[20][21] Yedi yasindayken Halife Abdulmecit'in Yildiz Sarayi'nda duzenledigi bir dugunde sunnet edildi.[15] 1925'te dorduncu sinifi tamamladiginda babasinin istegi ile Galatasaray Lisesi'nden ayrilarak annesiyle birlikte Ankara'ya tasindi. Orada, Gazi Ilkokulu'na yazildi. Bir yil sonra Ankara Erkek Lisesi'ne (bugunku adiyla Ankara Ataturk Lisesi) yatili girdi.[22] Kanik, cocuklugunda bazi hastaliklar ve tehlikeler de yasadi. Ornegin, bes yasinda yanma tehlikesi gecirdi ve uzun sure tedavi gordu.[20] Sair dokuz yasinda kizamik, on yedi yasinda ise kizil hastaligina tutuldu.[23]
+
+Kanik'in edebiyata olan meraki ilkokul siralarinda basladi.[22] Bu donemde Cocuk Dunyasi isimli dergide bir hikâyesi basildi.[24] Ortaokulun yedinci sinifindayken Oktay Rifat Horozcu ile tanisti.[25] Birkac yil sonra ise bir musamere sirasinda halk evinde Melih Cevdet Anday ile arkadas oldu.[26] Lisenin ilk yilinda edebiyat ogretmeni Ahmet Hamdi Tanpinar'di.[25] Tanpinar, ogretmeni oldugu surece Kanik'a ogutler verdi ve onu yonlendirdi.[25] Sair, lise doneminde arkadaslari Oktay Rifat ve Melih Cevdet'le birlikte Sesimiz isimli bir dergi cikardi.[24] Sanatcinin yasaminin bu evresi aruz vezni kurallarini ve ahengini kavradigi ve ilk siirlerini yazdigi donem oldu.[27]
+
+Kanik, yine lisede tiyatro calismalarina katildi. Ornegin, Rasit Riza'nin oynadigi Aktor Kin oyununda rol aldi.[25] Ankara Halkevi'nde Ercument Behzat Lav'in sahneledigi Ahmet Vefik Pasa'nin Molière'den uyarladigi Zor Nikah'ta Ustâd-i Sanî'yi, Maurice Maeterlinck'in Monna Vanna'sinda ise baba rolunu ustlendi.[24] Kanik, sonraki yillarda tiyatro alanindaki calismalarina cevirmen olarak devam etti ve pek cok oyunu Turkce'ye cevirdi.[II]
+
+Sair 1932 yilinda, liseden mezun oldu. Istanbul Universitesi Edebiyat Fakultesi'nin felsefe bolumune kaydini yaptirdi.[28] 1933 yilinda Edebiyat Fakultesi Talebe Cemiyeti baskani secildi. 1935 yilina kadar devam ettigi universiteyi bitirmeden okuldan ayrildi.[28] Istanbul Universitesi'ne giderken bir yandan surdurdugu Galatasaray Lisesi'ndeki ogretmen yardimciligi gorevine, okuldan ayrildiktan sonra bir sene daha devam etti.[29]
+
+Sonraki Yasami ve Sanat Hayati[kaynagi degistir]
+Kanik, daha sonra, Ankara'ya giderek PTT Umum Mudurlugu, Telgraf Isleri Reisligi, Milletlerarasi Nizamlar burosuna girdi.[28] Sair, Ankara'ya dondukten sonra eski arkadaslari Oktay Rifat ve Melih Cevdet'le tekrar bir araya geldi ve bu uclu, benzer tarzda siirler yazmaya basladi. 1936 yilinda, Nahid Sirri Orik'in siirlerini yayinlatmalari onerisinin ardindan, Varlik dergisinde Orhan Veli'nin, Oaristys, Ebabil, Eldorado, Dusuncelerimin Basucunda isimli siirleri yayinlandi.[30] Dergide, Orhan Veli ve arkadaslari edebiyat dunyasina soyle tanitilmisti:[31]
+
+“ Varlik'in siir kadrosu yeni ve kuvvetli genc imzalarla zenginlesmektedir. Asagida dort siirini okuyacaginiz Orhan Veli, simdiye kadar yazilarini nesretmemis olmasina ragmen olgun bir sanat sahibidir. Gelecek sayilarimizda onun ve arkadaslari Oktay Rifat, Melih Cevdet ve Mehmet Ali Sel'in siirimize getirdikleri yeni havayi daha iyi belirtecektir. ”
+Bu ilk siirlerini, bir kismi Mehmet Ali Sel mahlasini tasiyan diger siirleri takip etti. 1936 - 1942 yillari arasinda Varlik'in yani sira Insan, Ses, Genclik, Kulluk, Inkilâpci Genclik dergilerinde siirleri ve yazilari basildi.[32] Orhan Veli, bu donemin ilk yillarinda yazdigi siirlerin sekli, yapisi ve icerigi dolayisiyla hece sairi olarak kabul edildi. 1937 yilindan sonra ise hem Kanik hem de Anday ve Horozcu yeni tarzda siirlerini yayinlamaya basladilar.[33]
+
+
+Kanik'in Rumelihisari sahilinde bulunan heykelinin detayi
+1939 yilinda, arkadasi Melih Cevdet Anday'la birlikte araba kazasi gecirdi. Bu olayin sonucunda yirmi gun komada kaldi.[32] Kazanin sebebi, Anday'in surdugu arabanin Cubuk Baraji tepesinden asagi yuvarlanmasiydi. 1941 yilinin Mayis ayinda Garip seckisi yayinlandi. Bu kitapta sairin yirmi dort siirinin yani sira Melih Cevdet'in on alti, Oktay Rifat'in ise yirmi bir siiri yer aldi.[34] Kitabin icindeki siirler kadar ses getiren onsozunu ise Orhan Veli yazdi.[34] Bu kitap sonradan Birinci Yeni olarak da anilacak Garip akiminin baslangici oldu.[35] Garip akiminin kuruculari olan Kanik, Horozcu ve Anday, radikal bir tutumla kendilerinden once gelen hececilerin ve Ahmet Hasim'in siirleriyle, Nazim Hikmet'in toplumcu-gercekci siirlerini reddettiler.[36] Kitaptaki siirler ve onsoz edebiyat dunyasinda buyuk tartismalara sebep oldu. Ozellikle Orhan Veli'nin yazdigi "Yazik Oldu Suleyman Efendi'ye" misrasi uzerinde duruldu. Bu misrayi kimileri tenkit ederken[III], kimileri calinti oldugunu iddia etti.[IV][36] Bir diger grup ise Turkcede yazilmis en guzel dizelerden biri oldugunu soyledi. Bu munakasalar sonucunda misra cok populer oldu,[36] hatta Nurullah Atac'in deyisi ile "vapurlara, tramvaylara, kahvehanelere kadar" girdi ve bir deyim niteligi kazandi.[37] Orhan Veli'nin "Yazik oldu Suleyman Efendi'ye" kadar meshur olarak gundelik dile giren bir diger dizesi ise Ahmet Hasim'in "Gollerde bu dem bir kamis olsam" misrasini hicvetmek icin yazdigi "Raki sisesinde balik olsam" idi.[V][38][39][40]
+
+Sair, PTT'deki gorevinden askerlik sebebiyle 1942 senesinde ayrildi. 1945 yilina kadar Gelibolu'nun Kavak Koyu'nde askerligini yapti.[29] Bu donemde sadece alti siiri yayimlandi.[34] 1945 yilinda tegmen rutbesiyle terhis oldu ve Milli Egitim Bakanligi'nin Tercume Burosu'nda calismaya basladi.[29] Fransizca'dan yaptigi ceviriler bakanligin klasikler serisinden yayinlandi.[29] Sair Subat 1945'te Vazgecemedigim isimli siir kitabini, Nisan 1945'te ise Garip'in sadece kendi siirlerini iceren ikinci baskisini cikardi.[34] Bu kitaplari 1946 yilinda yayimlanan Destan Gibi ve 1947'de basilan Yenisi takip etti.[41]
+
+1946 secimlerinden sonra Hasan Âli Yucel'in Milli Egitim Bakanligi gorevinden ayrilmasi sonucunda Yucel'in kurdugu Tercume Burosu da onemini yitirdi. Kisa bir sure sonra Kanik istifa etti. Ileriki yillarda ayrilisina neden olarak Resat Semsettin Sirer'in bakan olmasindan sonra olusan baskici havadan rahatsiz olmasini gosterdi.[41][42] Bu istifanin sebebini Orhan Veli'nin memuriyete uyum saglayamamasi olarak yorumlayanlar da oldu.[43] Ayrilmasinin ardindan Mehmet Ali Aybar'in cikardigi Hur ve Zincirli Hurriyet gazetelerinde denemeler ve elestiriler yazdi. 1948'de La Fontaine'nin masallarini Turkceye cevirdi, Ulus gazetesinde Yolcu Notlari'ni yayinladi.
+
+Bakanliktaki degisimin ardindan kendisiyle benzer durumda kalan Bedri Rahmi Eyuboglu, Abidin Dino, Necati Cumali, Sabahattin Eyuboglu, Oktay Rifat ve Melih Cevdet gibi arkadaslariyla bulusmalari sonucunda 1948 yili sonunda bir dergi cikartmaya karar verdiler.[34] Masraflarini Mahmut Dikerdem'in karsiladigi Yaprak isimli bu dergi on bes gunde bir yayinlaniyordu.[44] Dikerdem'in yardimlarina ragmen derginin sahibi ve yazi isleri muduru Orhan Veli'ydi. Bu yuzden zaman zaman ortaya cikan para problemleriyle kendisi ilgilendi ve dergiye devam edebilmek icin paltosunu satmak zorunda bile kaldi.[34] Son sayiyi yayinlayabilmek icin ise Abidin Dino'nun kendine hediye ettigi resimleri elden cikardi.[34] Ilk sayisi 1 Ocak 1949'da cikan, Cahit Sitki Taranci, Sait Faik Abasiyanik, Fazil Husnu Daglarca, Cahit Kulebi gibi yazar ve sairlerin eserleri yayinlanan Yaprak, 1 Haziran 1950'ye kadar 28 sayi yayinlandi.[29] Yaprak'la birlikte Orhan Veli'nin sairliginin yani sira fikir adamligi yonu de ortaya cikti. Sairin yaklasan secimlerle ilgili fikirleri bu dergide yayinlandi. Ayrica, Melih Cevdet ve Oktay Rifat'in toplumsal siirleri de Yaprak'ta yer buldu. Ayni gunlerde Orhan Veli, Oktay Rifat ve Melih Cevdet, Nazim Hikmet'in hapishaneden cikartilmasi icin acilan kampanyaya katilarak uc gun aclik grevi de yaptilar.[45] Orhan Veli, Yaprak'in yayinlandigi 1949 yili boyunca Nasreddin Hoca hikâyelerini siirlestirdi, Karsi isimli son siir kitabini yayinladi ve Charles Lamb'in uyarladigi Shakespeare'in Hamlet ve Venedik Taciri isimli eserlerini Sehbal Erdeniz'le birlikte Turkceye cevirdi.[46][47]
+
+Olumu[kaynagi degistir]
+
+Orhan Veli'nin Abidin Dino tarafindan tasarlanan ve Nevzat Kemâl tarafindan insa edilen Asiyan Mezarligi'ndaki mezar tasi. Mezar tasindaki Emin Barin tarafindan yazilan Orhan Veli/1914-1950 yazisi sairin siirde karsi ciktigi kafiyeden vefatiyla bile kurtulamadiginin bir kaniti gibidir.[48]
+Orhan Veli, Yaprak'in kapanmasinin ardindan Istanbul'a geri dondu. Ayni yil 10 Kasim'da bir haftaligina geldigi Ankara'da belediyenin kazdigi bir cukura dustu ve basindan hafifce yaralandi.[48] Iki gun sonra Istanbul'a dondu. 14 Kasim gunu bir arkadasinin evinde ogle yemegi yerken fenalik geciren sair hastaneye kaldirildi. Beyinde damar catlamasi yuzunden baslayan rahatsizligin sebebi doktor tarafindan anlasilamadi ve Kanik'a alkol zehirlenmesi teshisiyle tedavi uygulandi,[49][VI] ancak beyin kanamasi gecirdigi sonradan anlasildi.[50] Ayni aksam sekizde komaya giren sair gece 23.20'de komadan cikamayarak Cerrahpasa Hastanesi'nde hayata veda etti.
+
+Lisedeki edebiyat hocasi Ahmet Hamdi Tanpinar, Kanik'i hastanede ziyaret etme firsati buldu ve bu olayi soyle anlatti:
+
+“ Daha orta mektebin birinci sinifinda talebem olan Orhan'i Cerrahpasa Hastanesi'nde son defa oksijen cadirinin altinda yari ciplak, guclukle nefes alir ve o kadar guzel hayallerin yakaladigi dunyamizi yalniz aki gorunen gozlerinden bosanirken gordugum gunu hicbir zaman unutamam. Siirimize tatli anlasmazligi ve lezzeti getiren zeka, kendisi olmaktan cikmisti.[51] ”
+16 Kasim gunu morgda yapilan otopsiden once Sanat Dostlari Cemiyeti tarafindan Orhan Veli'nin yuzunun mulaji alindi.[29] 36 yasinda olen sairin cenazesi 17 Kasim 1950'de, Beyazit Camii'nden kaldirildi. Cenaze, akademisyenler, yazar ve sanatcilardan olusan kalabalik tarafindan Sirkeci'ye kadar tasindi, oradan bir otomobil ile Asiyan Mezarligi'na goturulerek defnedildi. Rahatsizlandigi sirada ustunde bulunan ceketin cebinden bir dis fircasinin sarili oldugu kâgida yazilmis Ask Resmi Gecidi isimli siiri cikti. 1 Subat 1951'de arkadaslari tarafindan anisina Son Yaprak cikarildi. Tek sayi olarak basilan bu dergide Orhan Veli'nin daha once yayinlanmamis Ask Resmi Gecidi siiri de yer buldu.[7]
+
+Olumunden sonra[kaynagi degistir]
+Kaynak ve Varlik dergileri tarafindan "Orhan Veli'nin mezari" kampanyasi baslatildi.[52] Suat Taser, Osman Attilâ gibi bircok ismin kampanyaya destek vermesinin ardindan Abidin Dino, Orhan Veli icin bir mezar projesi hazirladi. Nevzat Kemâl ise bu mezari insa etti.[53] Olumunun ardindan, sair icin, dostlarindan Halim Sefik Guzelson Otopsi,[47] Ercument Behzat Lav Cilelim, Oktay Rifat ise Agit isimli siirler yazdilar.[54] Yuksel Pazarkaya ve Helmut Vader tarafindan Almanca'ya cevrilmis olan secilmis 49 siiri, 1965 yilinda Frankfurt'taki Suhrkamp Verlag yayinevi tarafindan Poesie ismiyle yayinlandi.[55] Sair hakkinda Almanca bir kitap da bulunmaktadir. Orhan Veli'nin siirleri Ingilizce ve Ozbekce'ye de cevrildi.[55]
+
+Orhan Veli'nin cevirdigi Jean Anouilh'ten Antigone ve Jean-Paul Sartre'dan Saygili Yosma olumunden once yayinlanamamisti. Bu eserlerden Antigone sairin vefatindan sonra Istanbul Devlet Tiyatrosu'nca sergilendi. Saygili Yosma ise 1950 sonunda "Saat 6 Tiyatrosu" tarafindan bir kez temsil edildi.[46]
+
+1988 yilinda yapilan Orhan Veli heykeli Rumelihisari sahilindeki ufak bir parka kondu.[56] Bu heykelde sairin elinde bir kitap, hemen arkasinda ise bir marti durmaktadir. Orhan Veli ise Bogazici'ni seyretmektedir.
+
+Kisiligi ve fiziksel ozellikleri[kaynagi degistir]
+Orhan Veli'nin kisiligi ve fiziki ozelliklerinin siirleri ve sanat anlayisi ile baglantili oldugu dusunulmektedir.[57] Cemal Sureya, Kanik'la ilgili olarak "Yeni siirimizin, islev olarak kurucusu olan bu adam kuramini yazilariyla degil, baska iki seyiyle yapti: Hayatiyla (yasam bicimiyle) ve siirleriyle" aciklamasini yapti.[58] Orhan Veli, Garip akimini sadece siirleriyle degil, gunluk hayatiyla, gonul iliskileriyle, cevresinde kendisi ile ilgili cikan dedikodularla, fizigi ile yeni bir sair tipi yaratarak olusturdu.[31]
+
+Kardesi Adnan Veli'nin "Vucudu oldukca kemikli, kollariyla bacaklari epey uzundu. Gogsunu one dogru egerek hafifce yaylanarak yururdu. Elleri gayet ince, beyazdi. Parmaklari adam akilli uzun, tirnaklari pembe, uzun ve yuvarlakti. Genis bir alni, sivri bir cenesi vardi. Dudaklari eni konu etliydi. Burnu tumsekliydi. Yuzu genclikte cikardigi ergenlik sivilceleri sebebiyle purtukluydu."[59] olarak anlattigi Orhan Veli'yi, yazar arkadasi Sait Faik ise bir roportajinda soyle betimledi:
+
+“ Iki incecik bacak, kisaca bir trenckot, kanarya sarisi bir kaskol, muselles bir yuz, sisirilmis bir goguse benzeyen bir sirt, -denebilirse- ergenlik bozugu bir yuz: Iste gorunuste Orhan Veli.[60] ”
+Herkesle iyi gecinen, kimsenin kalbini kirmayan, cevresindeki insanlara saygi gosteren Orhan Veli'nin yakin arkadaslari arasinda Oktay Rifat, Melih Cevdet, Bedri Rahmi Eyuboglu, Sait Faik, Suat Taser, Fikret Adil, Agop Arad gibi isimler yer aliyordu. Son gunlerinde en yakin oldugu isim ise Sabahattin Eyuboglu'ydu.[61] Garip akimini yalniz yazdiklariyla degil, hayata karsi durusuyla aciklayan sair, fizigini bile bu ugurda kullanmaktan cekinmedi. Bu yuzden siirinin hayatinin sonucu olduguna degil, aksine hayatini siirine gore yasadigina inanilir.[31]
+
+Sanat hayati[kaynagi degistir]
+Sairligi[kaynagi degistir]
+
+Orhan Veli'nin edebiyat dunyasina girdigi gunlerde etkilendigi isimlerin basinda Baudelaire, Verlaine, Rimbaud gibi Fransiz sairler vardi. Onlarin, ozellikle de sembolistlerin Turkiye'deki temsilcilerinden biri olmustu.[62]
+Orhan Veli Kanik'in 1936 yilinda basladigi siir hayati uc donemde incelenebilir: Garip oncesi (1936-1941), Garip donemi (1941) ve Garip sonrasi.
+
+Garip oncesi[kaynagi degistir]
+Bu donemdeki siirleri eski ve yeni siirleri olmak uzere iki devrede incelenebilir.[63]
+
+Eski siirleri[kaynagi degistir]
+Orhan Veli'nin ilk siirleri 1 Aralik 1936 tarihinde Varlik Dergisi'nde yayinlandi. O gunlerde Ahmet Hamdi Tanpinar, Ahmet Muhip Diranas, Ahmet Kutsi Tecer, Necip Fazil Kisakurek gibi sairler Ahmet Hasim'in Fransiz sembolistlerinden ilham alarak olusturdugu simgelerin gucunden yararlanan siirlerinin takipcisiydi.[64] Ahmet Hasim'in saf siir anlayisini benimseyen bir diger sair olan Cahit Sitki Taranci ise diger donemdaslarindan aksine gundelik yasami da siirlerinin icine almaya calisiyordu.[64] Nazim Hikmet Ran ve Ercument Behzat Lav ise bicim ve ozde yenilik yaparak vezinsiz, serbest ve toplumcu siirler yaziyorlardi.[65]
+
+Kanik'in ilk siirleri, Necip Fazil, Ahmet Muhip, Ahmet Hamdi ve Cahit Sitki kusagina baglidir.[66] Bu eserler, icerik, bicim, dil ve tarz olarak klasik ve gelenege bagli olarak yazildilar. Daha sonraki calismalarinin aksine siirlerinde uyak da kullanan Orhan Veli ayrica benzetmelere ve sifatlara geleneksel bir sekilde yer verdi.[63] Olum, doga, ruya, zaman, ask gibi temalarin islendigi bu donem eserlerinde hic ironiye rastlanmaz. Sair henuz kendine ait bir dil gelistiremedigi icin siir anlayisi ve misra yapisinda Baudelaire'in; konu, isleyis, dil ve uslupta ise Necip Fazil'in etkisi altindaydi.[67]
+
+Gun Doguyor, Oaristys, Ebabil, Eldorado, Kurt, Zeval gibi eserlerini iceren ilk donem siirlerinde sair, yalniz ve mutsuz bir kisinin yasamini anlatti, acilarini, isteklerini, asklarini dile getirdi. Orhan Veli eski siirlerinde akildan cok duyguya, gerceklikten cok romantiklige, toplumsalliktan cok bireysellige onem verdi.[68] Bu acidan da Kanik'in edebiyat dunyasina girisi okudugu ve sevdigi yabanci sairlerin etkilenerek ve Turkiye'de onlari takip eden sairlerin arasina katilarak oldu.[69]
+
+Su kavga bir bitse dersin,
+Acikmasam dersin,
+Yorulmasam dersin;
+Cisim gelmese dersin,
+Uykum gelmese dersin;
+Olsem desene!
+
+—"Rahat" siiri.
+Yeni siirleri[kaynagi degistir]
+Sair, 1937 yilindan sonra eski siir anlayisindan uzaklasarak Garip akiminin habercisi olan yeni bir tarz benimsedi.[63] Kanik'in bu yeni siirleri 1937 - 1941 yillari arasinda Varlik, Insan, Inkilâpci Genclik gibi dergilerde ve olumunun ardindan Vatan (1952) ve Papirus'te (1967) yayinlandi.[70] Sayilari 51'i bulan Garip'in ilk ornekleri olan bu eserler, abartili bir dille yazilmistir.
+
+Donemin siirlerinden farkli yapitlar ortaya koymaya karar veren Orhan Veli, ilk olarak olcu ve uyagi daha sonra ise tasviri, sairaneligi, hayali, susu ve zekâ oyunlarini siirinden cikartti.[71] Sadelik ve basitligi onemseyen sanatci, duygudan cok akla onem vermeye basladi.[72] Halkin kullandigi kelimeleri tercih etmeye baslayan Kanik hayat karsisinda kotumser, ironik, umitsiz, inancsiz gorunmektedir.[72] Yeni siirlerinin temalari ise cogunlukla tabiat, insan, ask, cocukluk, savas, hayat, sarhosluk ve seyahat oldu.[73] Sair bu donemde, cogunlukla kisa siirler yazmayan basladi. Nurullah Atac bu calismalarin Fransiz surrealistlerin yazilarini ve Japon haikularini animsattigini soyledi.[74] Orhan Veli de o yillarda arkadaslariyla birlikte Fransiz gercekustuculeri sik sik okuduklarini aciklamistir.[75] Yine de sanatci, noktalama isaretleri kullanmasi, imgeyle simgeden kacinmasi, siiri insanin duyularina degil aklina hitap eden bir sanat haline getirmeye calismasi gibi ozellikleriyle surrealistlerden ayrilir.[76]
+
+Kanik'in bazi siirlerinde olusturmaya calistigi yeni tarzla ilgili acemiligi ortaya cikar. Bu siirlerde misralar yan yana yazilinca bir nesir olusur.[74] Sairin bu donemine ait eserleri arasinda Fena Cocuk, Agac, Kus ve Bulut, Tereyagi, Gangster, Pazar Aksamlari gelir.
+
+Garip donemi[kaynagi degistir]
+
+Orhan Veli (soldan birinci), Garip akiminin kurucusu olan diger iki sair Oktay Rifat (soldan ucuncu) ve Melih Cevdet (soldan dorduncu) ile birlikte. Uclunun yanindaki diger isim Sinasi isimli bir arkadaslaridir.[77]
+1941 yilinda Orhan Veli, Melih Cevdet ve Oktay Rifat'la birlikte Garip adli siir kitabini yayinladi. Bu kitapla birlikte sairin tarzinin onceki donemine gore daha tutarlilasmis ve gelismis oldugu dusunulur.[78] Kanik, kitabin onsozunu kendi yazdi ve siir hakkindaki dusuncelerini acikladi. Bu onsoz Garip akiminin manifestosu kabul edilir.[72] Orhan Veli, o gunlerin aydinlarinin siir anlayisi sebebiyle kendisine "garip" gozuyle baktiklarini aciklamistir. Akimin adinin da bu bakis acisindan geldigi sanilmaktadir.[36] Garip akimi kendisinden onceki siir anlayisina bir tepki olarak dogdu.[36] Kanik ve arkadaslari Ahmet Hasim'in eserlerini, Nazim Hikmet'in toplumcu siirlerini ve hececileri reddetmislerdi.
+
+Sair bu donemdeki siirlerinde klasik uyak duzenini ve vezni kullanmadi. Ona gore hakiki siir icin vezin ve kafiye mutlak gerekli olan seyler degildi.[72] Kanik, kafiyeyi reddetse de duzensiz ses yinelemelerine sik sik basvurdu ve onlara anlam vurgusunu olusturan temel bir islev yukledi.[79] Eserleri incelendiginde sanatcinin ses yinelemeleri, sozcuk obegi yinelemeleri, soz dizimsel yinelemeler, ek yinelemeleri ve dizelerin aynen yinelenmesi gibi tekrarlara basvurdugu gorulebilir.[80]
+
+Garip donemi siirlerinin bir diger ortak ozelligi ise Orhan Veli'nin konusma dilinin dogalligini, sokak Turkcesini ve hatta halk argosunu eserlerine tasimis olmasiydi.[81] "Kiliksiz", "cigara", "ispanak", "raki", "Hitler", "boyaci sandigi" gibi sozcukler kullanan sairin Kitabe-i Seng-i Mezar isimli siirinde kullandigi "nasir" kelimesi buyuk tartismalara sebep oldu.[79] Kanik, boylece hem divan hem de halk siirinde egemen olan romantizm anlayisini da yikmis oluyordu.[82] Ote yandan tesbih ve istiareyi terk ettigi icin siirinde yalin bir dil ortaya cikti.[83] Orhan Veli'nin Garip hareketiyle getirdigi yeniliklerin diger ikisi ise Turk siirinde oteden beri soyut olarak dile getirilen evrensel humanizmin yerine somut ve belirgin bir humanizm koymasi ve belirli kisileri hedef alan taslama gelenegini ilk kez bir sair olarak kendisine yoneltmesiydi.[82]
+
+Orhan Veli, o gunlerde kisisel siirler yazdigi kadar sosyal konulara da egildi[36] ve dar gorusler ile torelerin gulunclugunu alayli sozcukler kullanarak anlatmaya calisti.[81] Ayrica, sairin hece ve sozcuk bakimindan boyutunu ve siirdeki sayisini azaltarak dizenin siirdeki egemenligini ortadan kaldirdigi da soylenir.[84]
+
+Garip sonrasi[kaynagi degistir]
+Orhan Veli, "Garip sonrasi" olarak adlandirilan 1945-1950 yillari arasinda dort kitap yayinladi: Vazgecemedigim (1945), Destan Gibi (1946), Yenisi (1947) ve Karsi (1949). Ayrica, sairin 1949-1950 yillari arasinda yazilmis fakat vefati sebebiyle yayinlanamamis siirleri de mevcuttur. Kanik'in garip sonrasi donemde yazdigi siirler "garibin devami" ve "garipten farkli" olarak iki ana grupta toplanabilir.[85] Sair sanatindaki degisimi 1945 yilinda ikinci baskisi yapilan Garip'in onsozunde "Onlari bes sene once yazmistim. Bes sene sonra da ayni seyleri soyleyecek olduktan sonra neden yasadim" diyerek acikladi.[40]
+
+Bu donemde dusunceleriyle birlikte eserleri de farklilasmaya baslayan Orhan Veli'nin yikiciliktan ayrilarak yapiciliga yonlendigi ve siirinin estetik yonunu zenginlestirmeye calistigi gozlemlenebilir.[86] Degisiminin goze carpan yanlarindan biri de sairin Vazgecemedigim ile birlikte uyak kullanmaya baslamasi oldu. Bu doneminin en ayirt edici ozelligi ise sairin halk siirine duydugu ilginin eserlerine yansimasiydi.[87] Bu konuda Vazgecemedigim icinde yer alan Istanbul Turkusu isimli siir bir donum noktasi kabul edilmektedir.[87] Destan Gibi icinde yer alan Yol Turkusu isimli uzun siir de sanatcinin bu tarza olan yonelisinin bir ornegidir. Orhan Veli bu donemdeki siirlerinde gulmece ogelerini azaltti. Halk siiri tarzinda yazdigi eserlerinin konusu cogunlukla kisisel duygular olsa da ozellikle Yenisi ve Karsi'da toplumsal konulara da degindi. Asim Bezirci, Orhan Veli'nin bu tarz konulara egilmeye baslamasinin sebebinin Ikinci Dunya Savasi ardindan pahalilik ve yoksullugun alt tabaka kadar orta ve ust sinifi da etkilemesi oldugunu iddia etti.[88]
+
+Kanik'in kelime kullanimi, dize ve cumle yapisi halk siiri ozellikleri tasiyan eserleri disinda benzer sekilde devam etti. Ote yandan ilk donem siirlerinde sik rastlanan yinelemeleri halk siirine yaklasmasi ile daha da fazla kullanmaya basladi.[89] Sairin halk kulturune olan bu yakinlasmasi vefati sebebiyle yarim kalmistir.[90]
+
+Diger calismalari[kaynagi degistir]
+
+Sair, 1948 yilinda La Fontaine'den 49 fabli manzum olarak Turkceye cevirdi. Bu ceviriler Dogan Kardes Yayinlari tarafindan iki cilt olarak yayinlandi.[46]
+Cevirileri[kaynagi degistir]
+Orhan Veli, Turkceye siir, hikâye ve oyun cevirileri yapti.[91] Ilk kez 1947 yilinda Varlik Yayinlari tarafindan basilan Fransiz Siirleri Antolojisi'nin onsozu ve kitapta yer alan sairlerin biyografileri de sanatci tarafindan yazildi. Oktay Rifat ve Melih Cevdet'le birlikte calistigi Batidan Siirler isimli kitaptaki 31 siirin alti tanesi Kanik tarafindan cevrilmisti.[91] 1948 yilinda, Dogan Kardes Yayinlari'ndan cikan La Fontaine'den Masallar'da ise La Fontaine'nin 49 masalini cevirdi. Sairin hayat gorusu ile La Fontaine'nin felsefesi arasinda yakin iliski olduguna inanilir.[90] Orhan Veli'nin siirlerinin de hikâye karakteri tasimasi ve sanatcinin yasama karsi alayci durusu bu inanci destekler.[90]
+
+Orhan Veli, 1937-1941 yillari arasinda Ki-Ka-Ku isimli Japon sairinin 30 haikusunu Turkceye cevirdi.[92] Bu siirler araliklarla Varlik Dergisi'nde basildi. 19 Mart 1946'da ise Tercume Dergisi'nin Siir Ozel Sayisi'nda Hai-Kai'ler basligi altinda tumu yayimlandi.[93] 1945 yilinda yayimlanan Uc Hikâye isimli kitapta Gogol'un uc oykusu bulunuyordu. Bunlardan Burun ve Fayton'u Orhan Veli cevirmisti.[55] Charles Lamb tarafindan cocuklar icin hikâyelestirilmis William Shakespeare'in Venedik Taciri'ni ise 1949 yilinda Sehbal Erdeniz'le birlikte cevirdi.[55]
+
+Kanik ilk oyun tercumesini Oktay Rifat ile birlikte 1943 yilinda Alfred de Musset'nin Bir Kapi Ya Acik Durmali Ya Kapali isimli eserini cevirerek yapti.[94] Ertesi yil ayni yazarin Barberina'sini Turkceye kazandirdi. Bu ceviri Milli Egitim Bakanligi Dunya Edebiyatindan Tercumeler serisinin 53. kitabi olarak yayimlandi.[94] Sanatci, 1944'te Moliere'in uc oyununu cevirdi. Orhan Veli'nin cevirisini yaptigi Jean Anouilh'in Antiogone isimli oyunu ise sairin olumunden once basilamadi. Bu oyun sairin vefatinin ardindan Istanbul Devlet Tiyatrosu'nca sergilendi.[46] Olumunun ardindan basilan ve sergilenen bir diger cevirisi ise Jean-Paul Sartre'in Saygili Yosma'si oldu. Kanik, son olarak Irène Nemirovsky'nin Les Chiens et les Loups adli oyununu Itlerle Kurtlar ismiyle Turkceye tercume ediyordu. Sanatci, 245 sayfalik bu eserin 105. sayfasini cevirmesinin ardindan hayata gozlerini yumdu.[46] Orhan Veli'nin tamamlayamadigi diger iki calisma ise Moliere'in Elit Prenses'i ve Madame de Sévigné'nin secme mektuplariydi.[59]
+
+Nesir yazilari[kaynagi degistir]
+Orhan Veli hikâye yazmaya 1947 yilinda basladi ve olumune kadar alti oyku yazdi.[95] Bu eserler Tanin, Secilmis Hikâyeler ve kendi cikardigi Yaprak dergilerinde yayinlandi. Sair, oykulerinde de tipki siirlerinde oldugu gibi siradan insanlari ve gunluk hayati konu edindi. Zaman zaman ise toplumsal elestirilerde bulundu.[95] Bu oykuler, Hosgor Koftecisi basligi ile 2012 yilinda yayimlandi.
+
+Kanik'in 21 makale, 6 oyku ve 7 elestiri yazisi kitap olarak, ilk kez 1953 yilinda Varlik Yayinevi'nce Nesir Yazilari ismiyle yayinlandi.[96] Daha sonraki yillarda ise Asim Bezirci, sairin nesirlerini bir araya getirerek farkli kitaplar olarak yayinladi. Bu kitaplardan ikisi 1975 yilinda yayinlanan Edebiyat Dunyamiz ve 1982 yilinda yayinlanan Butun Yazilari'dir.
+
+Kullandigi temalar[kaynagi degistir]
+Her seyin siire konu edinilebilecegine inanan Orhan Veli ve arkadaslarinin Turk siirine yaptigi en buyuk katkilardan biri de bu inanclarini eserlerinde uygulamalari oldu.[97] Bunun icin de ilk olarak siradan insani kendilerine konu edindiler. Boylece, eski siirlerdeki kahramanlastirilan ideal insan tipinin yikilmasini sagladilar. Divan siirinde insan, askin arayicisi olan kusursuz ve soyut bir varlik; Namik Kemal, Tevfik Fikret ve Mehmet Akif gibi sairlerin eserlerinde toplumu icin mucadele eden bir kahraman iken Orhan Veli'nin siirlerinde gundelik sorunlarin pesinde kosan siradan bir vatandasti.[97] Ornegin Kitabe-i Seng-i Mezar siirinin kahramani olan Suleyman Efendi, hayattaki en onemli sorunu nasir olan, Allah'in adini sik anmasa da gunahkar sayilmayan, varolus problemi yasamayan bir adamdi.[98] Suleyman Efendi'yle ilgili olarak Orhan Veli: "Ben hayati sadelik icinde gecmis basit bir adamin hayatindan bahsetmek istedim. Acayiplik olsun diye yazmadim siiri, nesretmeden evvel de bu kadar yadirganacagini tahmin etmiyordum." dedi. Nasiri onemseyip edebiyata soktugu icin elestirenlere ise su cevabi verdi: "Hayatindan daha buyuk manevi izdiraplari olmayan bir insan icin nasirin muhim oldugunu telakki ediyorum".
+
+Toplum elestirisi temasi da Orhan Veli tarafindan sik sik kullanildi.[99] Fakat sair, bu konuyu kendisinden once bu turun orneklerini veren Namik Kemal, Nazim Hikmet ya da Tevfik Fikret gibi isimlerin aksine ironi ve parodi tekniklerini kullanarak isliyordu. Hardalname, Cimbizli Siir, Vatan Icin, Bedava ve Kuyruklu Siir'in ornek olarak verilebilecegi siirlerinde sadece durum tespiti yapip herhangi bir ideolojiyi savunmamasi sebebiyle sanatci burjuva sairi olmakla da suclandi.[100]
+
+Orhan Veli Dedikodu, Soz, Tahattur, Sanolu Siir, Sereserpe, Eski Karim, Ask Resmigecidi gibi pek cok siirinde ise ask ve cinsellik konusunu isledi. Ote yandan cocukluk sairin hem Garip oncesi hem de Garip doneminde sik sik kullandigi temalardan biriydi. Bu temanin ornekleri arasinda Agac, Kus ve Bulut, Ruya, Robenson sayilabilir. Sanatcinin cocuk algisiyla yazdigi siirlerde duygu tonu diger siirlerine gore cok daha fazladir.[101]
+
+Sairin isledigi diger temalar arasinda yasama sevinci (Ne Kadar Guzel, Sokakta Giderken, Guzel Havalar, Birdenbire), savas (Bizim Gibi, Tereyagi, Gangster), yolculuk (Yolculuk, Seyahat) gelir. Talât Sait Halman'a gore varolmanin ve yasamin sevincini Turk edebiyatina sistemli olarak yerlestiren isim Orhan Veli olmustur.[82] Ayrica, Kanik, Nedim ve Yahya Kemal ile birlikte Turk siirinin sayili Istanbul sairlerinden biri kabul edilmektedir.[102]
+
+Takma adi[kaynagi degistir]
+Orhan Veli, Mehmet Ali Sel ismini takma ad olarak kullandi ve pek cok siirini bu isimle yayimladi.[103] Ornegin, ilk siirlerinin yayimladigi Varlik Dergisi'nin Aralik 1936'da cikan sayisinda "Varlik'in siiri kadrosu yeni ve kuvvetli genc imzalarla zenginlesmektedir. Asagida dort siirini okuyacaginiz Orhan Veli, simdiye kadar yazilarini nesretmemis olmasina ragmen olgun bir sanat sahibidir. Gelecek sayimizda onun ve arkadaslari Oktay Rifat, Melih Cevdet ve Mehmet Ali Sel'in siirimize getirdikleri yeni havayi daha iyi belirtecektir." dendi.[104] Arkadasi Oktay Rifat, bu isimle ilgili olarak "galiba yirtmaya kiyamadigi siirlerini bu adla cikarirdi" aciklamasini yapti.[104] Orhan Veli ise Baki Suha Ediboglu'nun konuyla ilgili sorusunu su sekilde yanitlamisti:
+
+O zamanlar cok siir yayinliyordum. Adimin her zaman gorunmesi hem benim icin hem de dergi icin dogru degildi. Bir de su var: Mehmet Ali Sel benim bazi tecrubelerime alet olmus bir isimdir.[104]
+
+Etkileri[kaynagi degistir]
+Orhan Veli'nin oncusu oldugu Garip akimi donemin genc sairlerine ornek oldugu gibi bircok unlu sairini de etkiledi.[105] Kanik'in vefatinin ardindan Oktay Rifat ve Melih Cevdet yeni bir siir gelistirmeye yonlenseler de 1950'ler boyunca Garip'in Turk edebiyat dunyasi uzerindeki etkisi devam etti.[106] Dergilerde bu akimin kopyasi olan siirlere sik sik rastlaniyordu.[107] Mehmet Dogan bu tarz siirlerle ilgili "Imzalar olmasa hangi siirin kime ait oldugu anlasilmamaktadir" yorumunu yapti.[108] Muzaffer Erdost'un Ikinci Yeni adini verdigi siir hareketi de o gunlerde Garip'e tepki olarak dogdu.[109] Akimin one cikan isimleri arasinda Ilhan Berk, Cemal Sureya, Edip Cansever, Turgut Uyar, Sezai Karakoc ve Ece Ayhan yer aliyordu. Birinci Yeni olarak adlandirilan Garip akimi gibi Ikinci Yeni de Turk siirinin gelisimine buyuk katkida bulundu.[109] Ikinci Yeniciler, Garipcilerin aksine anlasilirlik yerine anlamca kapaliligi, somuta karsilik soyutlamayi, imgeci ve bicimci bir siir anlayisini savundular.[106]
+
+
+Beyoglu'ndaki Imam Adnan Sokak'ta yer alan Orhan Veli Siir Evi
+Ikinci Yeni'nin onde gelen bazi isimleri siire ilk basladiklari gunlerde Garip etkisinin altinda siirler de yazmislardi. Ornegin, Edip Cansever'in ilk denemeleri, yasama sevincini dile getirdigi bu tarzda eserlerdi.[110] Turgut Uyar'in 1958 yilinda buyuk kente yerlesmesinin ardindan degisen kultur ve iliski ortami siirine de yansimisti. Uyar, bu degisimin Orhan Veli etkisinden uzaklasmasini nasil sagladigini su cumlelerle acikladi: "Beni yazdigim siiri yazmaya iten neden cevremin degistigini gormemdi. Birdenbire kentlesen dunya, birdenbire karsilastigim neon lambalari, buyuk oteller, bir takim yeni gelismeleri haber veren durumlar beni artik Orhan Veli siiri yazmakla kurtarmiyordu."[111]
+
+Ahmet Oktay, Orhan Veli ve Garip akiminin Rifat Ilgaz'dan Suphi Tashan'a pek cok farkli sairi degisik derecelerde etkiledigini soyledi.[112] Oktay'a gore Cahit Irgat'in imgelerinin altinda dahi Garip siirinden cok sey bulunabilir.[113] Ayrica, Sabahattin Kudret Aksal, Salâh Birsel, Behcet Necatigil, Suat Taser, Metin Eloglu, Rustu Onur, Necati Cumali gibi isimler de Orhan Veli ve onun onderlik ettigi Garip akiminin etki alanindan gecmislerdir.[114]
+
+Sairin pek cok siiri farkli sanatcilarca bestelendi. Anlatamiyorum Alpay, Humeyra ve Banu, Bedava Yasiyoruz Cem Karaca, Ozdemir Erdogan, Dedikodu Levent Yuksel, Pireli Siir Timur Selcuk ve Vesikali Yarim Edip Akbayram tarafindan seslendirildi.[115] Klasik Turk muzigi sarkisi olarak bestelenen Istanbul Turkusu ise Ahmet Ozhan tarafindan okundu.[116] Murathan Mungan, Orhan Veli'nin siirlerini Bir Garip Orhan Veli ismiyle oyunlastirdi. Oguz Aral'in yonettigi ve Musfik Kenter'in rol aldigi tek kisilik oyun 1980 yilindan beri Kent Oyunculari tarafindan sergilenmektedir.[117][118] Oyunun, Musfik Kenter'in sesinden bir albumu de yayinlanmistir. Metin Ustundag ise 2002 yilinda Orhan Veli'lemeler isimli bir kitap yayinladi.[VII]
+
+1989 yilinda Ramazan Uren'in yazi isleri mudurlugunde Sunay Akin ve Akgun Akova'nin destekleriyle Yeni Yaprak dergisi cikmaya basladi.[119] Bu derginin logosu Orhan Veli'nin Yaprak'i ile ayniydi ve ilk sayisinda tipki Yaprak'in ilk sayisinda oldugu gibi Orhan Veli'nin Alis-Veris siiri yer aliyordu.[119]
+
+Sairin 50. olum yildonumu olan 14 Kasim 2000'de M. Seref Ozsoy tarafindan Beyoglu'nda acilan Orhan Veli Siir Evi, Orhan Veli'nin arsivinin sergilenmesi dusuncesiyle acilan; siir ve fotograf alaninda etkinlikler duzenlenen bir mekandir[120] (2014 yilinda kapandi[121]). Ayrica, sairin olum yildonumu olan 14 Kasim'da 1996 yilindan beri Orhan Veli yuruyusu duzenlenmektedir. Yurumeyi cok sevdigi bilinen Kanik'in anisina sevenleri o gunde Taksim'den sanatcinin mezarinin bulundugu Asiyan'a kadar hep birlikte yurumektedirler.[122]
+
+2014 yilinin Ocak ayinda, Nahit Firatli'ya yazdigi mektuplardan Yalniz Seni Ariyorum adli bir kitap derlenmistir.
+
+‎Secme bibliyografi[kaynagi degistir]
+Siir kitaplari
+
+Garip (1941, Resimli Ay Matbaasi)
+Vazgecemedigim (1945, Marmara Yayinevi)
+Destan Gibi (1946, Olmez Eserler Yayini)
+Yenisi (1947, Inkilâp Yayinevi)
+Karsi (1949, Guney Matbaacilik ve Gazetecilik)
+Butun Siirleri (1951, Varlik Yayinlari)
+Hikâye
+
+Hosgor Koftecisi (2012, Yapi Kredi Yayinlari)
+Hikâye/Siir
+
+Nasreddin Hoca Hikâyeleri (1949, Dogan Kardes Yayinlari)
+Yazilar
+
+Nesir Yazilari (1953, Varlik Yayinlari)
+Edebiyat Dunyamiz (1975, Bilgi Yayinlari. Hazirlayan: Asim Bezirci)
+Butun Yazilari (1982, Can Yayinlari)
+Mektuplar
+
+Yalniz Seni Ariyorum (2014, Yapi Kredi Yayinlari)
+Ceviri
+
+Bir Kapi Ya Acik Durmali Ya Kapali, Alfred de Musset (1943, Maarif Basimevi)
+Barbarine, Alfred de Musset (1944, Maarif Basimevi)
+Scapin'in Dolaplari, Molière (1944, Maarif Basimevi)
+Versailles Tûluati, Molière (1944, Maarif Basimevi, Azra Erhat'la birlikte)
+Sicilyali Yahut Resimli Muhabbet, Molière (1944, Maarif Basimevi)
+Tartuffe, Molière (1944, Maarif Basimevi)
+Uc Hikâye, Nikolay Gogol (1945, Alaaddin Kiral Basimevi, Erol Guney'le birlikte)
+Turcaret, Alain Rene Lesage (1946, Milli Egitim Basimevi)
+Fransiz Siir Antolojisi, (1947, Varlik Yayinevi)
+La Fontaine'in Masallari, La Fontaine (1948, Dogan Kardes Yayinlari)
+Hamlet, William Shakespeare (1949, Charles Lamb uyarlamasi, Dogan Kardes Yayinlari)
+Venedik Taciri, William Shakespeare (1949, Charles Lamb uyarlamasi, Dogan Kardes Yayinlari)
+Saygili Yosma. Jean-Paul Sartre (1961, Atac Yayinevi)
+Batidan Siirler (1963, Yeditepe Yayinlari)
+Butun Ceviri Siirleri (1982, Can Yayinlari)
+Ceviriler[kaynagi degistir]
+1. Gunes/Sol, Leonardo da Fonseca (Trans.), (n.t.) Revista Literária em Traducão, nº 2 (mar/2011), Fpolis/Brasil, ISSN 2177-5141
+
+Ayrica bakiniz[kaynagi degistir]
+Cumhuriyet donemi Turk edebiyati
+Garip akimi
+Oktay Rifat Horozcu
+Melih Cevdet Anday
+Notlar[kaynagi degistir]
+I. ^  Mehmet Kaplan ileriki yillarda o gunlerde Orhan Veli'ye olan tepkisini "Yeniye karsi olan kuvvetli temayulume ragmen Orhan Veli ve arkadaslarini bir turlu sair olarak kabul edemiyordum." diyerek acikladi. Cemil Meric ise Kanik hakkinda "Sevimli ama gulunc ve zavalli. Kartaldan cok bir kumes hayvanina benziyor bu siir. Yumurtasi olmayan garip bir kumes hayvani. Orhan nesli yeni fetihlere kosmadi. Goz boyaciligini, jonglorlugu, ucuzu erisilemeyene tercih etti. Fikret'in, Hamit'in hatta Hasim'in kanat cirpislari yok onlarda. Ya kolej talebesinin kucuk sikayetleri, ya gazete fikrasi. Hangi bati, hangi yenilik? Bir cuceler edebiyati. Bir mikro edebiyat." diye yazdi. Yahya Kemal 1956 yilinda verdigi bir roportajda "Ahmet Hasim siirden ne anlar... Nazim Hikmet sair degildir... Halit Ziya hicbir sey degildir... Sait Faik cok sisirildi... Oktay Rifat da Orhan Veli de cahil ve geri kimselerdir." diyerek bircok sair ve yazarla birlikte Orhan Veli ve arkadaslarini da elestirmistir.
+II. ^  Kanik'in Turkceye cevirdigi oyunlar arasinda Oktay Rifat'la birlikte cevirdigi Alfred de Musset'nin Bir Kapi Ya Acik Durmali Ya Kapali'si, Jean-Paul Sartre'in Saygili Yosma'si, Moliere'in Tartuffe'u gibi oyunlar yer alir.
+
+III. ^  Yusuf Ziya Ortac, Akbaba Dergisi'de sert bir elestiri yazisi yayinladi. Derginin 28 Mart 1940 tarihinde cikan yazisinda "Vezin gitti, kafiye gitti, manâ gitti... Turk siirinin berceste misrai diye "Yazik oldu Suleyman Efendi'ye!" rezaletini alkisladilar... Goguslerinde cehennemler yanan sanat cucelerinin kinalar yakip, ziller takip sikir sikir oynadiklarini gorduk! Sanatin darulâcezesiyle timarhanesi el ele verdi, birkac mecmuanin sahifesinde saltanat kurdular! (...) Ey Turk gencligi! Sizi bu hayasizligin suratina tukurmeye devam ediyorum." diye yazdi.
+IV. ^  Misranin Verlaine'in "Priez pour le pauvre Gaspard" misrasindan alindigini soyleyenler oldugu gibi Baki'nin "Berbâb kildi taht-i Suleymân-i rûzigâr" misrasindan esinlenerek yazildigini iddia edenler de vardir.
+V. ^  Ahmet Hasim'in ilgili dizesi Piyale isimli kitabinda yer alan Bir Gunun Son Arzusu siirindedir. Bu siirin son dortlugu su sekildedir: "Aksam, yine aksam, yine aksam / Bir sirma kemerdir suya baksam / Aksam, yine aksam, yine aksam / Gollerde bu dem bir kamis olsam!". Divan sairi Nedim'in ise Ahmet Hasim'e esin kaynagi olan "Destide kadehte doyamam gormeye bârî/Ey gevher-i seffaf senin mahzenin olsam" dizelerini yazdigi bilinmektedir.
+VI. ^  Sairin olum sebebi tedavi eden doktorlarca alkol zehirlenmesi olarak gosterildi. Adli tip raporu veren doktorlara gore ise Orhan Veli, Ankara'da dustugu cukurda basini vurmus ve bu sirada beyin damarlarindan biri catlamisti.
+VII. ^  Ustundag'in Orhan Veli'lemeler isimli kitabi Sel Yayinlari tarafindan 2002 yilinda yayinlandi. Eserin ISBN'i 9755701699'dur.
+Kaynakca[kaynagi degistir]
+Bezirci, Asim (1972), Orhan Veli, Olus Yayinevi
+Bezirci, Asim (1977), Orhan Veli ve Secme Siirleri, Cem Yayinevi Egitim Dizisi
+Bezirci, Asim (1991), Orhan Veli: Yasami, Kisiligi, Sanati, Eserleri, Altin Kitaplar Yayinevi, ISBN 975-405-239-5
+Ercilasun, Bilge (2004), Orhan Veli Kanik, Hayati, Sanati, Eserlerinden Secmeler, Milli Egitim Bakanligi Yayinlari, ISBN 975-11-0789-X
+Fuat, Memet (2000), Orhan Veli, Adam Yayinlari, 9789754186420
+Halman, Talât Sait (14 Kasim 1975), "Orhan Veli'nin edebiyatimiza katkilari ve siirlerindeki yenilik boyutlari", Milliyet Sanat Dergisi (158)
+Kanik, Adnan Veli (1953), Orhan Veli Icin, Yeditepe Yayinlari
+Karpat, Kemal H. (2004), Studies on Turkish politics and society: selected articles and essays, Brill, ISBN 978-90-04-13322-8
+Kurnaz, Cemal; Tatci, Mustafa (2000), Olumunun 50. Yilinda Belgelerle Orhan Veli, Milli Egitim Bakanligi Yayinlari, ISBN 975-11-2080-2
+Oral, Haluk (Kasim 2015), Bir Roman Kahramani Olarak Orhan Veli, Yapi Kredi Yayinlari, ISBN 9789750835155
+Ostle, Robin (1991), Modern literature in the Near and Middle East 1850-1970, Taylor & Francis, ISBN 978-0-415-05822-3* Ostle, Robin (1991), Modern literature in the Near and Middle East 1850-1970, Taylor & Francis, ISBN 978-0-415-05822-3
+Ozdemir, Emin (1994), Turk ve Dunya Edebiyati, T.C. Kultur Bakanligi yayinlari, ISBN 9751714540
+Ozkirimli, Atilla; Baraz, Turhan (1993), Cagdas Turk Edebiyati, Anadolu Universitesi Yayinlari, ISBN 9789754923711
+Ozsoy, M. Serif (2002), Kanik'sadigim Biri Orhan Veli, Ayna Yayinlari, ISBN 9789758297160
+Saglam, Nuri (2002), Orhan Veli Kanik: Hayati, Sanati, Eserleri, Eserlerinden Secmeler, Hikmet Yayinlari, ISBN 975-6524-85-5
+Tascioglu, Yilmaz (2004), Turk Siirinde Bir Garip Adam: Orhan Veli Kanik, Beykoz Belediye Baskanligi Yayinlari
+Uyguner, Muzaffer (1967), Orhan Veli Kanik : hayati, sanati, eserleri, Varlik Yayinlari
+Kaynak notlari[kaynagi degistir]
+^ Ozkirimli, Atilla. 25. olum yildonumunde Orhan Veli: Kendisinden onceki siir ne degilse onu yazmaya calisan sair. Milliyet Sanat Dergisi. 14 Kasim 1975. Sayi: 158, Sayfa 6.
+^ Uyguner 1967, s. 9
+^ Iz Birakanlar: Orhan Veli. Hurriyet Gazetesi. Sayfa 4
+^ Saglam 2002, s. 7
+^ a b c Bezirci 1991, s. 140
+^ a b Saglam 2002, s. 8
+^ a b Théma Larousse: Tematik Ansiklopedi, Milliyet, 1993-1994. Cilt 6. Sayfa 92.
+^ Arslanoglu, Kaan. Memleketimden karakter manzaralari. Ithaki Yayinlari, 2006. ISBN 978-975-273-202-5. Sayfa 306
+^ Bezirci 1991, s. 59
+^ Abasiyanik, Sait Faik. Orhan Veli Kanik. Yedigun Dergisi, 2 Subat 1947
+^ Bezirci 1991, s. 139
+^ Rifat, Oktay. Orhan Veli Kanik. Yeditepe Dergisi, 1 Subat 1950
+^ Rifat, Oktay. Orhan Veli Kanik. Vatan, 16 Kasim 1952
+^ a b Kurnaz 2000, s. 3
+^ a b Uyguner 1967, s. 3
+^ a b c d Tascioglu 2004, s. 23
+^ Kanik 1953, s. 8
+^ Ercilasun 2004, s. 15
+^ Oral 2015, s. 12
+^ a b Bezirci 1991, s. 15
+^ Oral 2015, s. 285
+^ a b Bezirci 1991, s. 16
+^ Uyguner 1967, s. 4
+^ a b c Ercilasun 2004, s. 16
+^ a b c d Bezirci 1991, s. 17
+^ Anday, Melih Cevdet. Acikliga Dogru. 1984, sayfa 10.
+^ Tascioglu 2004, s. 26
+^ a b c Kanik 1953, s. 9
+^ a b c d e f Ercilasun 2004, s. 17
+^ Bezirci 1972, s. 10
+^ a b c Kaynak hatasi: Gecersiz <ref> etiketi; Ozkirimli5 isimli refler icin metin temin edilmemis (Bkz: Kaynak gosterme)
+^ a b Bezirci 1991, s. 18
+^ Tascioglu 2004, s. 29
+^ a b c d e f g Tascioglu 2004, s. 32
+^ Okay, Orhan. Siir Sanati Dersleri, Cumhuriyet Devri Poetikasi. Erzurum, 1984.
+^ a b c d e f Bezirci 1991, s. 23 Kaynak hatasi: Gecersiz <ref> etiketi: "Ercilasun23" adi farkli icerikte birden fazla tanimlanmis. (Bkz: Kaynak gosterme)
+^ Bezirci 1972, s. 42
+^ Ercilasun 2004, s. 28
+^ Bezirci 1991, s. 84
+^ a b Bezirci 1991, s. 85
+^ a b Bezirci 1994, s. 19
+^ Onger, Fahri. Orhan Veli Kanik. Yenilik Dergisi. Aralik 1953
+^ Kurnaz 2000, s. 8
+^ Sazyek, Hakan. Cumhuriyet Donemi Turk Siirinde Garip Hareketi. Turkiye Is Bankasi Kultur Yayinlari. 1996. Sayfa 257.
+^ Dogan, Mehmet H., Yaprak doneminde Orhan Veli. Turk Dili, sayi 291. Aralik 1975, sayfa 722 - 731
+^ a b c d e Kanik 1953, s. 13
+^ a b Bezirci 1991, s. 20
+^ a b Tascioglu 2004, s. 33
+^ Sonmez, Cemil ve Ozdamar Necmettin. Aci bir Olum Olayi. Antoloji. Sayi 1, 1981. Sayfa 36.
+^ Altindis, Ceyla - NTV Tarih - Sayi 34 - Kasim 2011 - Istanbul 1308-7878
+^ Tanpinar, Ahmet Hamdi. Edebiyat Uzerine Makaleler. Hazirlayan: Zeynep Kerman. Istanbul, 1977. Sayfa 447-448.
+^ Ozsoy 2002, s. 246
+^ Ercilasun 2004, s. 18
+^ Kanik 1953, s. 89
+^ a b c d Ercilasun 2004, s. 34
+^ Ozsoy 2002, s. 226
+^ Ozkirimli, Atilla. 25. olum yildonumunde Orhan Veli: Kendisinden onceki siir ne degilse onu yazmaya calisan sair. Milliyet Sanat Dergisi, sayi 158. 14 Kasim 1975, sayfa 4.
+^ Sureya, Cemal. Papirus, 1967. Sayfa 8
+^ a b Kanik 1953, s. 14
+^ Abasiyanik, Sait Faik. Orhan Veli Kanik. Yedigun Dergisi. 2 Subat 1947
+^ Kanik 1953, s. 15
+^ Bezirci 1991, s. 133
+^ a b c Ercilasun 2004, s. 21
+^ a b Tascioglu 2004, s. 63
+^ Ozkirimli, Atilla. 25. olum yildonumunde Orhan Veli: Kendisinden onceki siir ne degilse onu yazmaya calisan sair. Milliyet Sanat Dergisi. 14 Kasim 1975. Sayi: 158, Sayfa 7.
+^ Bezirci 1977, s. 14
+^ Bezirci 1991, s. 34
+^ Bezirci 1991, s. 37
+^ Bezirci 1991, s. 35
+^ Bezirci 1972, s. 23
+^ Bezirci 1972, s. 25
+^ a b c d Ercilasun 2004, s. 22
+^ Bezirci 1972, s. 38
+^ a b Bezirci 1972, s. 27
+^ Bezirci 1972, s. 34
+^ Bezirci 1972, s. 35
+^ Théma Larousse: Tematik Ansiklopedi, Milliyet, 1993-1994. Cilt 6. Sayfa 93.
+^ Bezirci 1991, s. 64
+^ a b Tascioglu 2004, s. 70
+^ Tascioglu 2004, s. 75
+^ a b Bezirci 1991, s. 72
+^ a b c Halman 1975, s. 9
+^ Tascioglu 2004, s. 68
+^ Tascioglu 2004, s. 71
+^ Ercilasun 2004, s. 24
+^ Bezirci 1991, s. 86
+^ a b Tascioglu 2004, s. 86
+^ Bezirci 1991, s. 88
+^ Tascioglu 2004, s. 87
+^ a b c Ercilasun 2004, s. 30
+^ a b Ercilasun 2004, s. 33
+^ Fuat 2000, s. 99
+^ Fuat 2000, s. 124
+^ a b Kanik 1953, s. 12
+^ a b Saglam 2002, s. 41
+^ Ercilasun 2004, s. 35
+^ a b Tascioglu 2004, s. 91
+^ Tascioglu 2004, s. 94
+^ Tascioglu 2004, s. 96
+^ Halman 1975, s. 8
+^ Tascioglu 2004, s. 101
+^ Ercilasun 2004, s. 27
+^ Ozsoy 2002, s. 23
+^ a b c Ozsoy 2002, s. 14
+^ Ozkirimli & Barez 1993, s. 91
+^ a b Ozkirimli & Barez 1993, s. 139
+^ Ozdemir 1994, s. 221
+^ Ozkirimli & Barez 1993, s. 145
+^ a b Ozkirimli & Barez 1993, s. 148
+^ Ozkirimli & Barez 1993, s. 144
+^ Oktay, Ahmet. Imkansiz Poetika. Ithaki Yayinlari, 2008. Sayfa 510. ISBN 978-975-273-390-9
+^ Oktay, Ahmet. Toplumcu Gercekciligin Kaynaklari. Ithaki Yayinlari. ISBN 978-975-273-405-0. Sayfa 41
+^ Oktay, Ahmet. Toplumcu Gercekciligin Kaynaklari. Ithaki Yayinlari. ISBN 978-975-273-405-0. Sayfa 42
+^ Bezirci 1991, s. 142
+^ "Orhan Veli'nin Bestelenmis Siirleri" (Turkce). orhanveli.net. 23 Haziran 2010 tarihinde kaynagindan arsivlendi. Erisim tarihi: 23 Haziran 2010.
+^ Fuat 2000, s. 78
+^ "Bir Garip Orhan Veli" (Turkce). milliyet.com.tr. 23 Haziran 2010 tarihinde kaynagindan arsivlendi. Erisim tarihi: 23 Haziran 2010.
+^ "Bir Garip Orhan Veli" (Turkce). tiyatrom.com. 23 Haziran 2010 tarihinde kaynagindan arsivlendi. Erisim tarihi: 23 Haziran 2010.
+^ a b Ozsoy 2002, s. 259
+^ "Neden Siir Evi" (Turkce). orhanveli.net. 23 Haziran 2010 tarihinde kaynagindan arsivlendi. Erisim tarihi: 23 Haziran 2010.
+^ 'Orhan Veli Evi dayanamadi, Milliyet gazetesi, 01.04.2015
+^ Ozsoy 2002, s. 219
+Dis baglantilar[kaynagi degistir]
+  Wikimedia Commons'ta Orhan Veli Kanik ile ilgili medyalari bulabilirsiniz.
+  Vikisoz'de Orhan Veli Kanik ile ilgili sozleri bulabilirsiniz.
+Orhanveli.net
+g t d Orhan Veli Kanik
+Siir
+Garip (1941) • Vazgecemedigim (1945) • Destan Gibi (1946) • Yenisi (1947) • Karsi (1949) • Butun Siirleri (1951)
+Yazilar
+Nesir Yazilari (1953) • Hosgor Koftecisi (2012) • Yalniz Seni Ariyorum (2014)
+Akim
+Garip akimi • Melih Cevdet Anday • Oktay Rifat Horozcu
+Aile
+Veli Kanik • Adnan Veli Kanik
+g t d Cumhuriyet donemi Turk edebiyati
+Bes Hececiler
+Faruk Nafiz Camlibel Yusuf Ziya Ortac Enis Behic Koryurek Halit Fahri Ozansoy Orhan Seyfi Orhon
+Yedi Mesaleciler
+Sabri Esat Siyavusgil Vasfi Mahir Kocaturk Yasar Nabi Nayir Cevdet Kudret Solok Kenan Hulusi Muammer Lutfi Ziya Osman Saba
+Garipciler (Birinci Yeniler)
+Orhan Veli Kanik Melih Cevdet Anday Oktay Rifat Horozcu
+Ikinci Yeniler
+Turgut Uyar Cemal Sureya Edip Cansever Ilhan Berk Ece Ayhan Sezai Karakoc Ulku Tamer Oktay Rifat Horozcu
+Milli Edebiyat Zevk ve Anlayisini Surduren Siir
+Ahmet Kutsi Tecer Arif Nihat Asya Orhan Saik Gokyay Kemalettin Kamu Omer Bedrettin Usakli Bedri Rahmi Eyuboglu Behcet Kemal Caglar Necmettin Halil Onan Zeki Omer Defne Coskun Ertepinar
+Serbest Nazim ve Toplumcu Siir
+Nazim Hikmet Ran Rifat Ilgaz Aziz Nesin Ceyhun Atuf Kansu Ahmed Arif Ercument Behzat Lav Arif Damar Sevket Sureyya Aydemir Vedat Nedim Tor Enver Gokce Sukran Kurdakul Mehmet Basaran
+II. Yeni Sonrasi Toplumcu Siir
+Ismet Ozel Ataol Behramoglu Sureyya Berfe Nihat Behram Refik Durbas Ahmet Oktay
+Roman • Oyku • Siir • Arastirma • Derleme
+Otorite kontrolu
+WorldCat VIAF: 9913290 LCCN: nr87000791 ISNI: 0000 0000 8088 8214 GND: 118776657 SUDOC: 031833578 BNF: cb12297494m (data) MusicBrainz: 1a419b79-ecfd-4253-a9cb-2b09a9be5418
+
+Kategoriler: Orhan Veli Kanik1914 dogumlularBeykoz dogumlularTurk sairlerGaripcilerBeyin kanamasindan olenlerAsiyan Mezarligi'na defnedilenlerIstanbul'da olenler1950 yilinda olenlerIstanbul dogumlu yazarlar
+Gezinti menusu
+Oturum acik degilBu IP'ye mesaj yazKatkilarHesap olusturGiris yapMaddeTartismaOkuKaynagi degistirGecmisi gorAra
+
+Ara
+AraGit
+Ana Sayfa
+Hakkimizda
+Icindekiler
+Rastgele madde
+Seckin icerik
+Katilim
+Wikimedia dukkâni
+Bagis yapin
+Deneme tahtasi
+Is birligi projesi
+Koy cesmesi
+Son degisiklikler
+Topluluk portali
+Yardim
+Yazdir/disa aktar
+Bir kitap olustur
+PDF olarak indir
+Basilmaya uygun gorunum
+Diger projelerde
+Wikimedia Commons
+Wikiquote
+Araclar
+Sayfaya baglantilar
+Ilgili degisiklikler
+Ozel sayfalar
+Kalici baglanti
+Sayfa bilgisi
+Vikiveri ogesi
+Sayfayi kaynak goster
+Diger diller
+العربية
+Azərbaycanca
+Brezhoneg
+Deutsch
+Ελληνικά
+English
+Español
+Euskara
+فارسی
+Francais
+Ladino
+Svenska
+Baglantilari duzenle
+Bu sayfa son olarak 11 Aralik 2016 tarihinde ve 19:01 saatinde guncellenmistir.
+Metin Creative Commons Atif- Paylasim Lisansi altindadir; ek kosullar uygulanabilir. Bu siteyi kullanarak, Kullanim Sartlarini ve Gizlilik Politikasini kabul etmis olursunuz.
+Vikipedi® (ve Wikipedia®) kâr amaci gutmeyen kurulus olan Wikimedia Foundation, Inc. tescilli markasidir.
+Gizlilik politikasiVikipedi hakkindaSorumluluk reddiGelistiricilerCerez bildirgesiMobil gorunumWikimedia Foundation Powered by MediaWiki
+
+</textarea>

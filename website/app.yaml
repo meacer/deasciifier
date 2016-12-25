@@ -51,6 +51,9 @@ handlers:
 - url: /js
   static_dir: static/js
 
+- url: /ts
+  static_dir: static/ts
+
 - url: /css
   static_dir: static/css
 
