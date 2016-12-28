@@ -175,7 +175,7 @@ class DeasciiBox {
   }
 
   public onkeyup(keyCode: number) {
-    if (TextHelper.isSeperatorChar(String.fromCharCode(keyCode))) {
+    if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
       this.deasciifyCursor();
     }
   }
@@ -222,7 +222,7 @@ class DeasciiBox {
     let text = this.textEditor.getText();
     if (selectionRange.start == selectionRange.end) {
       // No text selected. Get the boundaries of the last word that is
-      // seperated by space, enter etc.
+      // separated by space, enter etc.
       rangeToDeasciify =
         TextHelper.getWordBeforeCursor(text, selectionRange.start);
     } else {

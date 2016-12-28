@@ -211,7 +211,7 @@ describe('TextHelper', function () {
       new TestCase(12, false),  //  abc de   f   g*
       // Before the string:
       new TestCase(-1, false),  // *|abc de  f   g
-      // Beyond the end of the string:
+      // Past the end of the string:
       new TestCase(13, false),  //   abc de  f   g|*
     ];
     for (let test_case of test_cases) {
@@ -231,33 +231,69 @@ describe('TextHelper', function () {
     }
     const TEST_STRING = "abc de  f   g";
     const test_cases: Array<TestCase> = [
-      // abc
-      new TestCase(0, 0, 3),
-      new TestCase(1, 0, 3),
-      new TestCase(2, 0, 3),
-      // space
-      new TestCase(3, 0, 3),
-      // de
-      new TestCase(4, 4, 6),
-      new TestCase(5, 4, 6),
-      // spaces
-      new TestCase(6, 4, 6),
-      new TestCase(7, 7, 7),
-      // f
-      new TestCase(8, 8, 9),
-      // spaces
-      new TestCase(9, 8, 9),
-      new TestCase(10, 10, 10),
-      new TestCase(11, 11, 11),
-      // g
-      new TestCase(12, 12, 13),
-      // past end of string
+      new TestCase(0, 0, 3),    // *abc de  f   g
+      new TestCase(1, 0, 3),    // a*bc de  f   g
+      new TestCase(2, 0, 3),    // ab*c de  f   g
+      new TestCase(3, 0, 3),    // abc* de  f   g
+      new TestCase(4, 4, 6),    // abc *de  f   g
+      new TestCase(5, 4, 6),    // abc d*e  f   g
+      new TestCase(6, 4, 6),    // abc de*  f   g
+      new TestCase(7, 7, 7),    // abc de * f   g
+      new TestCase(8, 8, 9),    // abc de  *f   g
+      new TestCase(9, 8, 9),    // abc de  f*   g
+      new TestCase(10, 10, 10), // abc de  f *  g
+      new TestCase(11, 11, 11), // abc de  f  * g
+      new TestCase(12, 12, 13), // abc de  f   *g
+      new TestCase(13, 12, 13), // abc de  f    g*
+      // Before the string.
       // TODO: Fix, should return empty range.
-      new TestCase(13, 12, 13),
+      new TestCase(-1, 0, 3),   // *|abc de  f   g
+      // Past the end of string.
+      // TODO: Fix, should return empty range.
+      new TestCase(14, 12, 13), //   abc de  f   g|*
     ];
     for (let test_case of test_cases) {
       expect(
         TextHelper.getWordAtCursor(TEST_STRING, test_case.index)).to.eql(
+        new TextRange(test_case.expected_start, test_case.expected_end),
+        "Wrong result for index " + test_case.index);
+    }
+  });
+
+  it('getWordBeforeCursor', function () {
+    class TestCase {
+      constructor(
+        public readonly index: number,
+        public readonly expected_start: number,
+        public readonly expected_end: number) { }
+    }
+    const TEST_STRING = "abc de  f   g";
+    const test_cases: Array<TestCase> = [
+      new TestCase(0, 0, 3),    // *bc de  f   g
+      new TestCase(1, 0, 3),    // a*c de  f   g
+      new TestCase(2, 0, 3),    // ab* de  f   g
+      new TestCase(3, 0, 3),    // abc*de  f   g
+      new TestCase(4, 4, 6),    // abc *e  f   g
+      new TestCase(5, 4, 6),    // abc d*  f   g
+      new TestCase(6, 4, 6),    // abc de* f   g
+      new TestCase(7, 4, 6),    // abc de *f   g
+      new TestCase(8, 8, 9),    // abc de  *   g
+      new TestCase(9, 8, 9),    // abc de  f*  g
+      new TestCase(10, 8, 9),   // abc de  f * g
+      new TestCase(11, 8, 9),   // abc de  f  *g
+      new TestCase(12, 12, 13), // abc de  f   *
+      new TestCase(13, 12, 13), // abc de  f   g*
+
+      // Before the string.
+      // TODO: Fix, should return empty range.
+      new TestCase(-1, 0, 3),   // *|abc de  f   g
+      // Past the end of string.
+      // TODO: Fix, should return empty range.
+      new TestCase(14, 12, 13), //   abc de  f   g|*
+    ];
+    for (let test_case of test_cases) {
+      expect(
+        TextHelper.getWordBeforeCursor(TEST_STRING, test_case.index)).to.eql(
         new TextRange(test_case.expected_start, test_case.expected_end),
         "Wrong result for index " + test_case.index);
     }

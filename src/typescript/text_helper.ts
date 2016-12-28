@@ -1,8 +1,8 @@
 import { TextRange, KeyCode } from "./common"
 
 export class TextHelper {
-  // Returns true if the character c is a word seperator
-  static isSeperatorChar(c: string): boolean {
+  // Returns true if the character c is a word separator
+  static isSeparatorChar(c: string): boolean {
     return (
       c == ' ' || c == '\n' || c == '\r' || c == '.' || c == ',' ||
       c == ';' || c == '?' || c == '!' || c == '(' || c == ')' || c == '<' ||
@@ -28,41 +28,40 @@ export class TextHelper {
       return false;
     }
     // Only true if the character before, the character after are not
-    // seperators.
-    return this.isSeperatorChar(text.charAt(cursorPos - 1)) == false &&
-      this.isSeperatorChar(text.charAt(cursorPos)) == false;
+    // separators.
+    return this.isSeparatorChar(text.charAt(cursorPos - 1)) == false &&
+      this.isSeparatorChar(text.charAt(cursorPos)) == false;
   }
 
   /** Returns the boundaries of the word the cursor is on.
    */
-  static getWordAtCursor(text: string, cursorPos: number): TextRange {
-    // We are on a non-seperator character
-    let seperatorAfterCursor = this.findNextWordSeperatorPos(text, cursorPos);
-    let seperatorBeforeCursor = 0;
-    if (seperatorAfterCursor > 0) {
-      seperatorBeforeCursor =
-        this.findPreviousWordSeperatorPos(text, seperatorAfterCursor - 1);
+  static getWordAtCursor(text: string, index: number): TextRange {
+    let separator_after = this.findNextWordSeparatorIndex(text, index);
+    let separator_before = 0;
+    if (separator_after > 0) {
+      separator_before =
+        this.findPreviousWordSeparatorIndex(text, separator_after - 1);
     }
-    return new TextRange(seperatorBeforeCursor + 1, seperatorAfterCursor);
+    return new TextRange(separator_before + 1, separator_after);
   }
 
-  /** Returns the boundaries of the word right before the cursor. The very
-   * first seperators before and after the cursor are searched and returned.
+  /** Returns the boundaries of the word before or at the given index.
+   * If the character at index is a separator, moves back until finding a non-
+   * separator character.
    */
-  static getWordBeforeCursor(text: string, cursorPos: number): TextRange {
-    // Move back until we find a non-seperator character:
-    if (cursorPos >= text.length) {
-      cursorPos = text.length - 1;
+  static getWordBeforeCursor(text: string, index: number): TextRange {
+    // Move back until finding a non-separator character:
+    if (index >= text.length) {
+      index = text.length - 1;
     }
-    while (cursorPos >= 0 && this.isSeperatorChar(text.charAt(cursorPos))) {
-      cursorPos--;
+    while (index >= 0 && this.isSeparatorChar(text.charAt(index))) {
+      index--;
     }
-    return this.getWordAtCursor(text, cursorPos);
+    return this.getWordAtCursor(text, index);
   }
 
-
-  // Returns true if the keycode c is a word seperator
-  private static isSeperatorKeycode(c: number): boolean {
+  // Returns true if the keycode c is a word separator
+  private static isSeparatorKeycode(c: number): boolean {
     return (
       c == KeyCode.SPACE ||    // space
       c == KeyCode.ENTER ||    // enter
@@ -81,8 +80,8 @@ export class TextHelper {
     return c == ' ' || c == '\n' || c == '\r' || c == '\t';
   }
 
-  private static getPreviousWhiteSpacePos(text: string, currentPos: number): number {
-    for (let i: number = currentPos; i >= 0; i--) {
+  private static getPreviousWhiteSpaceIndex(text: string, index: number): number {
+    for (let i: number = index; i >= 0; i--) {
       if (this.isWhiteSpace(text.charAt(i))) {
         return i;
       }
@@ -90,8 +89,8 @@ export class TextHelper {
     return -1;
   }
 
-  private static getNextWhiteSpacePos(text: string, currentPos: number): number {
-    for (let i: number = currentPos; i < text.length; i++) {
+  private static getNextWhiteSpaceIndex(text: string, index: number): number {
+    for (let i: number = index; i < text.length; i++) {
       if (this.isWhiteSpace(text.charAt(i))) {
         return i;
       }
@@ -99,23 +98,23 @@ export class TextHelper {
     return -1;
   }
 
-  // Finds the first word seperator before the current cursor position.
-  // "a str<cursor>ing here" will return the position of "s"
-  private static findPreviousWordSeperatorPos(
-    text: string, cursorPos: number): number {
-    for (let i: number = cursorPos; i >= 0; i--) {
-      if (this.isSeperatorChar(text.charAt(i))) {
+  // Returns the index of the first word separator before the given index.
+  // E.g. "a str*ing here" returns the index of the space before "s" (1).
+  private static findPreviousWordSeparatorIndex(
+    text: string, index: number): number {
+    for (let i = index; i >= 0; i--) {
+      if (this.isSeparatorChar(text.charAt(i))) {
         return i;
       }
     }
     return -1;
   }
 
-  // Finds the next word seperator after the current cursor position:
-  // "a str<cursor>ing here" will return the position of "g"
-  private static findNextWordSeperatorPos(text: string, cursorPos: number): number {
-    for (let i: number = cursorPos; i < text.length; i++) {
-      if (this.isSeperatorChar(text.charAt(i))) {
+  // Returns the index of the next word separator after the given index.
+  // E.g. "a str*ing here" returns the index of the space after "g" (8).
+  private static findNextWordSeparatorIndex(text: string, index: number): number {
+    for (let i = index; i < text.length; i++) {
+      if (this.isSeparatorChar(text.charAt(i))) {
         return i;
       }
     }
