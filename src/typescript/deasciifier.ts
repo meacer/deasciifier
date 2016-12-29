@@ -32,7 +32,7 @@ export class Asciifier implements TextProcessor {
     // correctly.
     let changedPositions: number[] = [];
     let output: Array<string> = new Array<string>(text.length);
-    /*for (let i: number = 0; i < text.length; i++) {
+    for (let i: number = 0; i < text.length; i++) {
       let ch: string = text.charAt(i);
       if (i >= range.start && i < range.end) {
         let toggled: string = TURKISH_ASCIIFY_TABLE[ch];
@@ -41,16 +41,6 @@ export class Asciifier implements TextProcessor {
           changedPositions.push(i);
           continue;
         }
-      }
-      output[i] = ch;
-    }*/
-    for (let i = range.start; i < range.end; i++) {
-      let ch: string = text.charAt(i);
-      let toggled: string = TURKISH_ASCIIFY_TABLE[ch];
-      if (toggled) {
-        output[i] = toggled;
-        changedPositions.push(i);
-        continue;
       }
       output[i] = ch;
     }
@@ -286,15 +276,11 @@ export class Deasciifier implements TextProcessor {
   }
 
   turkish_get_context(text: string, pos: number, size: number): string {
-    let s: string = '';
-    let space: boolean = false;
-    /*let string_size: number = 2 * size + 1;
-    for (let j = 0; j < string_size; j++) {  // make-string
-      s = s + ' ';
-  }*/
-    s = Array(2 * size + 1 + 1).join(' ');
+    // s is initially (2 * size + 1) spaces.
+    let s: string = Array(2 * size + 1 + 1).join(' ');
     s = setCharAt(s, size, 'X');
 
+    let space: boolean = false;
     let i: number = size + 1;
     let index: number = pos + 1;
     while (i < s.length && !space && index < text.length) {

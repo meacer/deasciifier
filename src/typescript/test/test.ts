@@ -26,23 +26,28 @@ describe('Asciifier', function () {
     expect(result.changedPositions).to.eql([]);
     assert.equal("", result.text);
 
-    // Empty text range.
-    result = asciifier.processRange(testdata.TEST_DATA[0].deasciified, <TextRange>{ start: 0, end: 0 }, null);
+    // Empty range.
+    result = asciifier.processRange("Türkçe", <TextRange>{ start: 0, end: 0 }, null);
     expect(result.changedPositions).to.eql([]);
-    assert.equal("", result.text);
+    assert.equal("Türkçe", result.text);
 
-    // First character of text "T\u00FCrk\u00E7e".
-    result = asciifier.processRange(testdata.TEST_DATA[0].deasciified, <TextRange>{ start: 0, end: 1 }, null);
+    // First character.
+    result = asciifier.processRange("Türkçe", <TextRange>{ start: 0, end: 1 }, null);
     expect(result.changedPositions).to.eql([]);
-    assert.equal("T", result.text);
+    assert.equal("Türkçe", result.text);
 
-    // First two character of text is "T\u00FCrk\u00E7e".
-    result = asciifier.processRange(testdata.TEST_DATA[0].deasciified, <TextRange>{ start: 0, end: 2 }, null);
+    // First two characters.
+    result = asciifier.processRange("Türkçe", <TextRange>{ start: 0, end: 2 }, null);
     expect(result.changedPositions).to.eql([1]);
-    assert.equal("Tu", result.text);
+    assert.equal("Turkçe", result.text);
 
-    // All characters of text "T\u00FCrk\u00E7e".
-    result = asciifier.processRange(testdata.TEST_DATA[0].deasciified, <TextRange>{ start: 0, end: 6 }, null);
+    // All characters.
+    result = asciifier.processRange("Türkçe", <TextRange>{ start: 0, end: 6 }, null);
+    expect(result.changedPositions).to.eql([1, 4]);
+    assert.equal("Turkce", result.text);
+
+    // All characters, beyond text length.
+    result = asciifier.processRange("Türkçe", <TextRange>{ start: 0, end: 100 }, null);
     expect(result.changedPositions).to.eql([1, 4]);
     assert.equal("Turkce", result.text);
   });
@@ -89,13 +94,13 @@ describe('Deasciifier', function () {
     'c': 'aXa|-bXb|-aX|-Xa',
     'g': 'aXa|-bX|-Xb'
   };
+
   it('should load patterns', function () {
     let deasc = new deasciifier.Deasciifier();
     deasc.init(PATTERNS);
     expect(keysOf(deasc.turkish_pattern_table)).to.eql(['c', 'g']);
     expect(deasc.turkish_pattern_table['c']).to.eql({ 'aXa': 1, 'bXb': -2, 'aX': -3, 'Xa': -4 });
     expect(deasc.turkish_pattern_table['g']).to.eql({ 'aXa': 1, 'bX': -2, 'Xb': -3 });
-
   });
 
   it('should deasciify', function () {

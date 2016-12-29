@@ -23,7 +23,7 @@ interface TextEditor {
   setSelection(range: TextRange): void;
 
   highlightRanges(ranges: Array<TextRange>): void;
-  clearHighlights(): void;
+  clearHighlights(range: TextRange): void;
 
   // Returns absolute coordinates of the character at |index|.
   getPosition(index: number): Position;
@@ -87,12 +87,17 @@ class CodeMirrorEditor implements TextEditor {
       let rangeEnd = this.editor.posFromIndex(range.end);
       this.editor.markText(
         rangeStart, rangeEnd,
-        { readOnly: true, className: 'test-css' });
+        { readOnly: false, className: 'test-css' });
     }
   }
 
-  public clearHighlights() {
-    // Not implemented
+  public clearHighlights(range: TextRange) {
+    let rangeStart = this.editor.posFromIndex(range.start);
+    let rangeEnd = this.editor.posFromIndex(range.end);
+    let marks = this.editor.findMarks(rangeStart, rangeEnd);
+    for (let mark of marks) {
+      mark.clear();
+    }
   }
 
   public getPosition(index: number): Position {
@@ -176,7 +181,7 @@ class DeasciiBox {
 
   public onkeyup(keyCode: number) {
     if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
-      this.deasciifyCursor();
+      //////this.deasciifyCursor();
     }
   }
 
@@ -258,7 +263,7 @@ class DeasciiBox {
     if ((!changedPositions || changedPositions.length == 0) && !forceClear) {
       return;
     }
-    this.textEditor.clearHighlights();
+    //this.textEditor.clearHighlights();
     let ranges = new Array<TextRange>();
     for (let i = 0; i < changedPositions.length; i++) {
       ranges.push(
@@ -279,7 +284,8 @@ class DeasciiBox {
     this.textProcessor.setMode(mode);
     let result =
       this.textProcessor.processRange(this.textEditor.getText(), range, null);
-    this.textEditor.setText(result.text, range);
+    this.textEditor.setText(
+      result.text.substring(range.start, range.end), range);
     this.highlightChanges(result.changedPositions, false);
   }
 }
