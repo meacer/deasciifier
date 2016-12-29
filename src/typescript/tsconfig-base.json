@@ -4,7 +4,8 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": false,
-    "outDir": "out/"
+    "outDir": "out/",
+    "types": []
   },
   "files": [
     "common.ts",

@@ -181,7 +181,7 @@ class DeasciiBox {
 
   public onkeyup(keyCode: number) {
     if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
-      //////this.deasciifyCursor();
+      this.deasciifyCursor();
     }
   }
 

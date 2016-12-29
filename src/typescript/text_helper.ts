@@ -51,9 +51,10 @@ export class TextHelper {
    */
   static getWordBeforeCursor(text: string, index: number): TextRange {
     // Move back until finding a non-separator character:
-    if (index >= text.length) {
-      index = text.length - 1;
+    if (index > text.length) {
+      index = text.length;
     }
+    index--;
     while (index >= 0 && this.isSeparatorChar(text.charAt(index))) {
       index--;
     }

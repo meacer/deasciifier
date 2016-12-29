@@ -278,15 +278,15 @@ describe('TextHelper', function () {
       new TestCase(1, 0, 3),    // a*c de  f   g
       new TestCase(2, 0, 3),    // ab* de  f   g
       new TestCase(3, 0, 3),    // abc*de  f   g
-      new TestCase(4, 4, 6),    // abc *e  f   g
+      new TestCase(4, 0, 3),    // abc *e  f   g
       new TestCase(5, 4, 6),    // abc d*  f   g
       new TestCase(6, 4, 6),    // abc de* f   g
       new TestCase(7, 4, 6),    // abc de *f   g
-      new TestCase(8, 8, 9),    // abc de  *   g
+      new TestCase(8, 4, 6),    // abc de  *   g
       new TestCase(9, 8, 9),    // abc de  f*  g
       new TestCase(10, 8, 9),   // abc de  f * g
       new TestCase(11, 8, 9),   // abc de  f  *g
-      new TestCase(12, 12, 13), // abc de  f   *
+      new TestCase(12, 8, 9),   // abc de  f   *
       new TestCase(13, 12, 13), // abc de  f   g*
 
       // Before the string.

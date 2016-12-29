@@ -20,6 +20,10 @@ describe('App', function () {
   let div = document.createElement("div");
   let app = new App(cm, PATTERNS, div);
 
+  beforeEach(function () {
+    cm.getDoc().setValue("");
+  });
+
   it('should asciify', function () {
     cm.setValue("Ağaça çıktık");
     app.asciifySelection();
@@ -102,5 +106,57 @@ describe('App', function () {
         start: ${test_case.selection_start},
         end: ${test_case.selection_end}`);
     }
+  });
+
+  function putChar(text: string, index: number) {
+    assert.equal(1, text.length);
+    let pos = cm.getDoc().posFromIndex(index);
+    cm.getDoc().replaceRange(text, pos);
+
+    let new_pos = cm.getDoc().posFromIndex(index + text.length);
+    cm.getDoc().setSelection(new_pos, null);
+    app.onkeyup(text.charCodeAt(0));
+  }
+
+  function putString(text: string, index: number = -1) {
+    if (index == -1) {
+      index = cm.getDoc().getValue().length;
+    }
+    for (let i = 0; i < text.length; i++) {
+      putChar(text.charAt(i), index + i);
+    }
+  }
+
+  it('should deasciify word before cursor', function () {
+    putString("Agaca");
+    assert.equal("Agaca", cm.getValue());
+    putString(" ");
+    assert.equal("Ağaça ", cm.getValue());
+
+    // Should only deasciify the last word.
+    cm.setValue("Agaca ");
+    putString("ciktik ");
+    assert.equal("Agaca çıktık ", cm.getValue());
+  });
+
+  it('should not deasciify word after cursor', function () {
+    // Type a space character between two words. Only first word should be
+    // deasciifed.
+    cm.setValue("Agacaciktik");
+    // Put cursor after the first word.
+    putString(" ", 5);
+    assert.equal("Ağaça ciktik", cm.getValue());
+
+    putString("hizla", 6);
+    assert.equal("Ağaça hizlaciktik", cm.getValue());
+
+    putString(" ", 11);
+    assert.equal("Ağaça hızla ciktik", cm.getValue());
+
+    putString(".", 12);
+    assert.equal("Ağaça hızla .ciktik", cm.getValue());
+
+    putString("!", 19);
+    assert.equal("Ağaça hızla .çıktık!", cm.getValue());
   });
 });
