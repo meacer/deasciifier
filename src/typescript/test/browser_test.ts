@@ -27,14 +27,39 @@ describe('App', function () {
   });
 
   it('should asciify selection', function () {
-    cm.setValue("Ağaça çıktık");
-    cm.getDoc().setSelection({ line: 0, ch: 0 }, { line: 0, ch: 3 });
-    app.asciifySelection();
-    assert.equal("Agaça çıktık", cm.getValue());
-
-    cm.getDoc().setSelection({ line: 0, ch: 0 }, { line: 0, ch: 4 });
-    app.asciifySelection();
-    assert.equal("Agaca çıktık", cm.getValue());
+    class TestCase {
+      constructor(
+        public readonly selection_start: number,
+        public readonly selection_end: number,
+        public readonly expected_text: string) { }
+    }
+    const TEST_CASES: Array<TestCase> = [
+      // Empty selection:
+      new TestCase(0, 0, "Agaca ciktik"),
+      // Oversized selection:
+      new TestCase(0, 100, "Agaca ciktik"),
+      // First character:
+      new TestCase(0, 1, "Ağaça çıktık"),
+      // Second character:
+      new TestCase(1, 2, "Agaça çıktık"),
+      // First two characters:
+      new TestCase(0, 2, "Agaça çıktık"),
+      // First three characters:
+      new TestCase(0, 3, "Agaça çıktık"),
+      // First four characters:
+      new TestCase(0, 4, "Agaca çıktık"),
+    ];
+    for (let test_case of TEST_CASES) {
+      cm.setValue("Ağaça çıktık");
+      cm.getDoc().setSelection(
+        { line: 0, ch: test_case.selection_start },
+        { line: 0, ch: test_case.selection_end });
+      app.asciifySelection();
+      assert.equal(test_case.expected_text, cm.getValue(),
+        `Wrong result for
+        start: ${test_case.selection_start},
+        end: ${test_case.selection_end}`);
+    }
   });
 
   it('should deasciify', function () {
@@ -44,13 +69,38 @@ describe('App', function () {
   });
 
   it('should deasciify selection', function () {
-    cm.setValue("Agaca ciktik");
-    cm.getDoc().setSelection({ line: 0, ch: 0 }, { line: 0, ch: 3 });
-    app.deasciifySelection();
-    assert.equal("Ağaca ciktik", cm.getValue());
-
-    cm.getDoc().setSelection({ line: 0, ch: 0 }, { line: 0, ch: 4 });
-    app.deasciifySelection();
-    assert.equal("Ağaça ciktik", cm.getValue());
+    class TestCase {
+      constructor(
+        public readonly selection_start: number,
+        public readonly selection_end: number,
+        public readonly expected_text: string) { }
+    }
+    const TEST_CASES: Array<TestCase> = [
+      // Empty selection:
+      new TestCase(0, 0, "Ağaça çıktık"),
+      // Oversized selection:
+      new TestCase(0, 100, "Ağaça çıktık"),
+      // First character:
+      new TestCase(0, 1, "Agaca ciktik"),
+      // Second character:
+      new TestCase(1, 2, "Ağaca ciktik"),
+      // First two characters:
+      new TestCase(0, 2, "Ağaca ciktik"),
+      // First three characters:
+      new TestCase(0, 3, "Ağaca ciktik"),
+      // First four characters:
+      new TestCase(0, 4, "Ağaça ciktik"),
+    ];
+    for (let test_case of TEST_CASES) {
+      cm.setValue("Agaca ciktik");
+      cm.getDoc().setSelection(
+        { line: 0, ch: test_case.selection_start },
+        { line: 0, ch: test_case.selection_end });
+      app.deasciifySelection();
+      assert.equal(test_case.expected_text, cm.getValue(),
+        `Wrong result for
+        start: ${test_case.selection_start},
+        end: ${test_case.selection_end}`);
+    }
   });
 });
