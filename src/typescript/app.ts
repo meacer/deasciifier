@@ -40,18 +40,18 @@ interface TextEditor {
 }
 
 interface TextEditorEventListener {
-  onkeyup(keyCode: number): void;
-  onclick(): void;
+  onKeyUp(keyCode: number): void;
+  onClick(): void;
 }
 
 class CodeMirrorEditor implements TextEditor {
   constructor(
     private editor: any, private eventListener: TextEditorEventListener) {
     editor.getWrapperElement().onkeyup = function (e: any) {
-      eventListener.onkeyup(e.keyCode);
+      eventListener.onKeyUp(e.keyCode);
     }
     editor.getWrapperElement().onclick = function (e: any) {
-      eventListener.onclick();
+      eventListener.onClick();
     }
   }
 
@@ -179,13 +179,13 @@ class DeasciiBox {
     this.textEditor.setText(text, this.correctionMenuSelection);
   }
 
-  public onkeyup(keyCode: number) {
+  public onKeyUp(keyCode: number) {
     if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
       this.deasciifyCursor();
     }
   }
 
-  public onclick() {
+  public onClick() {
     let selectionRange = this.textEditor.getSelection();
     // Since this is a mouse up event, we expect start and end positions
     // to be the same. TODO: Is this always the case?
@@ -343,11 +343,11 @@ export class App implements TextEditorEventListener {
     this.deasciiBox.hideCorrectionMenu();
   }
 
-  public onkeyup(keyCode: number) {
-    this.deasciiBox.onkeyup(keyCode);
+  public onKeyUp(keyCode: number) {
+    this.deasciiBox.onKeyUp(keyCode);
   }
 
-  public onclick() {
-    this.deasciiBox.onclick();
+  public onClick() {
+    this.deasciiBox.onClick();
   }
 }
