@@ -1,0 +1,12 @@
+{
+  "extends": "../tsconfig-base",
+  "compilerOptions": {
+    "types": ["chai", "mocha"],
+    "typeRoots": [
+            "../node_modules/@types"
+    ]
+  },
+  "files": [
+    "interactive_browser_test.ts"
+  ]
+}
