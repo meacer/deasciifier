@@ -211,7 +211,7 @@
     <antcall target="${build-deasciifier-js-targetname}" />
   </target>
 
-  <target name="test">
+  <target name="test4">
     <exec executable="mocha" dir="src/js" />
   </target>
 
@@ -370,6 +370,19 @@
     <concat destfile="${website.local.jsdir}/allscripts.js" append="true">
         <filelist refid="website-files" />
     </concat>
+  </target>
+
+<!--==========================================================================
+    Run tests.
+  ===========================================================================-->
+  <target name="test" depends="build-all">
+    <exec
+        executable="npm"
+        dir="${basedir}/src/js/"
+        failonerror="true"
+        failifexecutionfails="true">
+      <arg value="install-test"/>
+    </exec>
   </target>
 
   <!--==========================================================================
