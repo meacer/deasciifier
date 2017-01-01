@@ -8,6 +8,7 @@
   },
   "files": [
     "test.ts",
-    "browser_test.ts"
+    "browser_test.ts",
+    "view_test.ts"
   ]
 }

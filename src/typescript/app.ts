@@ -10,6 +10,8 @@ import { Deasciifier, Asciifier } from "./deasciifier"
 import { CorrectionCallback, CorrectionMenu } from "./correction_menu"
 import { KeyboardCallback, Keyboard } from "./keyboard"
 import { TextHelper } from "./text_helper"
+import { DomElementImpl, DomFactoryImpl } from "./dom";
+import { DomFactory, DomElement } from "./view";
 
 class Options {
   public constructor(public highlightChanges: boolean) { }
@@ -167,12 +169,14 @@ class DeasciiBox {
   private correctionMenuSelection: TextRange;
 
   constructor(
+    parent: DomElement,
+    domFactory: DomFactory,
     private textEditor: TextEditor,
     private textProcessor: DeasciifyProcessor) {
     this.options_ = new Options(true);
     this.correctionMenuSelection = null;
     this.correctionMenu =
-      new CorrectionMenu(new CorrectionCallbackImpl(this));
+      new CorrectionMenu(parent, new CorrectionCallbackImpl(this), domFactory);
   }
 
   public oncorrectiontextchange(text: string) {
@@ -313,7 +317,12 @@ export class App implements TextEditorEventListener {
   private keyboard: Keyboard;
 
   constructor(
-    codemirror: any, pattern_list: any, keyboard_container: HTMLDivElement) {
+    codemirror: any,
+    pattern_list: any,
+    keyboard_container: HTMLDivElement,
+    parent: DomElement = new DomElementImpl(document.body),
+    domFactory: DomFactory = new DomFactoryImpl()) {
+
     this.deasciifier_instance = new Deasciifier();
     this.deasciifier_instance.init(pattern_list);
     this.asciifier_instance = new Asciifier();
@@ -321,6 +330,8 @@ export class App implements TextEditorEventListener {
     this.textEditor = new CodeMirrorEditor(codemirror, this);
     this.deasciiBox =
       new DeasciiBox(
+        parent,
+        domFactory,
         this.textEditor,
         new DeasciifyProcessor(
           this.deasciifier_instance, this.asciifier_instance));

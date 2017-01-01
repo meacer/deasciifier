@@ -7,7 +7,7 @@
   },
   "scripts": {
     "pretest": "tsc --project test/",
-    "test": "mocha out/test/test.js && karma start karma.conf.js",
+    "test": "mocha out/test/test.js && mocha out/test/view_test.js && karma start karma.conf.js",
     "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
     "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js"
   },
