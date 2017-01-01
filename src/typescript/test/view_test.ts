@@ -59,9 +59,9 @@ class TestDomFactory implements DomFactory {
 
 describe("Correction menu", function () {
   class TestCorrectionCallback implements CorrectionCallback {
-    public called: boolean;
-    onchange(text: string): void {
-      this.called = true;
+    public text: string;
+    public onchange(text: string): void {
+      this.text = text;
     }
   }
 
@@ -82,7 +82,7 @@ describe("Correction menu", function () {
     expect(children).to.eql(expected);
   }
 
-  it("should not show non-existent corrections", function () {
+  it("should show corrections", function () {
     let callback = new TestCorrectionCallback();
     let domFactory = new TestDomFactory();
     let container = domFactory.createDiv();
@@ -91,7 +91,7 @@ describe("Correction menu", function () {
     // Empty before show():
     assert.equal(0, container.children.length);
 
-    // None of the letters has corrections.
+    // No corrections.
     menu.show(new Position(0, 0), "wxyz");
     checkLayout(container);
     checkChildren(container.children[0], ["w", "x", "y", "z"]);
@@ -106,4 +106,33 @@ describe("Correction menu", function () {
     checkLayout(container);
     checkChildren(container.children[0], ["*c", "*g", "*i", "*o", "*s", "*u"]);
   })
+
+  it("should handle clicks", function () {
+    let callback = new TestCorrectionCallback();
+    let domFactory = new TestDomFactory();
+    let container = domFactory.createDiv();
+    let menu = new CorrectionMenu(container, callback, domFactory);
+
+    menu.show(new Position(0, 0), "abcdefg");
+    checkLayout(container);
+    checkChildren(container.children[0], ["a", "b", "*c", "d", "e", "f", "*g"]);
+
+    menu.view.onclick(0);
+    assert.equal(null, callback.text);
+
+    menu.view.onclick(1);
+    assert.equal(null, callback.text);
+
+    menu.view.onclick(2);
+    assert.equal("abçdefg", callback.text);
+
+    menu.view.onclick(6);
+    assert.equal("abçdefğ", callback.text);
+
+    menu.view.onclick(2);
+    assert.equal("abcdefğ", callback.text);
+
+    menu.view.onclick(6);
+    assert.equal("abcdefg", callback.text);
+  });
 });

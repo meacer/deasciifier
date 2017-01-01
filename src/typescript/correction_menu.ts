@@ -76,7 +76,8 @@ class CorrectionView {
 }
 
 export class CorrectionMenu {
-  private view: CorrectionView;
+  // Public for testing.
+  public view: CorrectionView;
   constructor(
     private container: DomElement,
     private correctionCallback: CorrectionCallback,
