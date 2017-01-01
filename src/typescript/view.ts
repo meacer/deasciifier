@@ -4,7 +4,6 @@ export interface DomElement {
   element: any;
   appendChild(child: DomElement): void;
   setClassName(name: string): void;
-  //getClassName(): string;
   setPosition(pos: Position): void;
 
   hide(): void;

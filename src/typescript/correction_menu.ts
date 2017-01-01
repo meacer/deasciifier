@@ -20,6 +20,7 @@ export interface CorrectionCallback {
 
 class CorrectionView {
   private text: string;
+  private children: Array<DomElement>;
   constructor(
     private container: DomElement,
     public correctionCallback: CorrectionCallback,
@@ -28,6 +29,7 @@ class CorrectionView {
 
   public render(text: string) {
     this.text = text;
+    this.children = [];
     this.container.clear();
 
     let textContainer = this.domFactory.createDiv();
@@ -48,17 +50,19 @@ class CorrectionView {
         let self = this;
         classNames.push("correction-menu-item-alternative");
         div.setClickHandler(function () {
-          self.onclick(i, div);
+          self.onclick(i);
         })
       }
       div.setText(ch);
       div.setClassName(classNames.join(" "));
+      this.children.push(div);
       textContainer.appendChild(div);
     }
     this.container.appendChild(textContainer);
   }
 
-  onclick(index: number, div: DomElement) {
+  onclick(index: number) {
+    let div = this.children[index];
     let alternative = CORRECTION_TABLE[div.getText()];
     if (!alternative) {
       return;
