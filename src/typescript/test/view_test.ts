@@ -1,6 +1,6 @@
 import { Position } from "../common";
 import { CorrectionMenu, CorrectionCallback } from "../correction_menu";
-import {DomElement, DomFactory} from "../view";
+import { DomElement, DomFactory } from "../view";
 
 import chai = require('chai');
 let assert = chai.assert;
@@ -65,42 +65,45 @@ describe("Correction menu", function () {
     }
   }
 
-  function checkParent(parent: TestDomElement) {
-    assert.equal(1, parent.children.length);
-    assert.equal(2, parent.children[0].children.length);
-    assert.equal("correction-menu-arrow", parent.children[0].children[0].getClassName());
-    assert.equal("correction-menu-text", parent.children[0].children[1].getClassName());
+  function checkLayout(element: TestDomElement) {
+    assert.equal(1, element.children.length);
+    assert.equal("correction-menu-text", element.children[0].getClassName());
   }
 
-  function checkChildrenCountsOfChildren(parent: TestDomElement, expected: Array<number>) {
+  function checkChildren(parent: TestDomElement, expected: Array<string>) {
     assert.equal(expected.length, parent.children.length);
-    let counts: Array<number> = [];
-    for (let i = 0; i < parent.children.length; i++) {
-      counts.push(parent.children[i].children.length);
+    let children: Array<string> = [];
+    for (let child of parent.children) {
+      let entry =
+        (child.getClassName().indexOf("-alternative") >= 0) ?
+          "*" + child.getText() : child.getText();
+      children.push(entry);
     }
-    expect(counts).to.eql(expected);
+    expect(children).to.eql(expected);
   }
 
   it("should not show non-existent corrections", function () {
     let callback = new TestCorrectionCallback();
     let domFactory = new TestDomFactory();
-    let parent = domFactory.createDiv();
-    let menu = new CorrectionMenu(parent, callback, domFactory);
-    checkParent(parent);
+    let container = domFactory.createDiv();
+    let menu = new CorrectionMenu(container, callback, domFactory);
 
-    // .correction-menu-text is empty before show():
-    assert.equal(0, parent.children[0].children[1].children.length);
+    // Empty before show():
+    assert.equal(0, container.children.length);
+
+    // None of the letters has corrections.
     menu.show(new Position(0, 0), "wxyz");
+    checkLayout(container);
+    checkChildren(container.children[0], ["w", "x", "y", "z"]);
 
-    // .correction-menu-text has a div for each letter after show(), none of the
-    // letters have corrections.
-    checkChildrenCountsOfChildren(parent.children[0].children[1], [0, 0, 0, 0]);
+    // Two of the letters have corrections.
+    menu.show(new Position(0, 0), "abcdefg");
+    checkLayout(container);
+    checkChildren(container.children[0], ["a", "b", "*c", "d", "e", "f", "*g"]);
 
-    menu.show(new Position(0, 0), "agaclar");
-    checkParent(parent);
-    // .correction-menu-text has a div for each letter of "agaclar" after
-    // show(), g and c have corrections.
-    checkChildrenCountsOfChildren(
-      parent.children[0].children[1], [0, 2, 0, 2, 0, 0, 0]);
+    // All letters have corrections.
+    menu.show(new Position(0, 0), "cgiosu");
+    checkLayout(container);
+    checkChildren(container.children[0], ["*c", "*g", "*i", "*o", "*s", "*u"]);
   })
 });

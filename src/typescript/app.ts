@@ -175,8 +175,11 @@ class DeasciiBox {
     private textProcessor: DeasciifyProcessor) {
     this.options_ = new Options(true);
     this.correctionMenuSelection = null;
+
+    let correctionElement = domFactory.createDiv();
     this.correctionMenu =
-      new CorrectionMenu(parent, new CorrectionCallbackImpl(this), domFactory);
+      new CorrectionMenu(correctionElement, new CorrectionCallbackImpl(this), domFactory);
+    parent.appendChild(correctionElement);
   }
 
   public oncorrectiontextchange(text: string) {
