@@ -9,7 +9,7 @@
   display: none;
   z-index: 99;
   position: absolute;
-  box-shadow: 0 0 10px #333;
+  box-shadow: 0 0 5px black;
   white-space: nowrap;
 }
 
@@ -36,15 +36,12 @@
 
 .correction-menu-item-alternative {
   cursor: pointer;
-  font-weight: bold;
-  background: orange;
-  color: #333;
+  color: orange;
 }
 
 .correction-menu-item-alternative:hover {
   background: blue;
   color: white;
-  font-weight: normal;
 }
 
 .correction-menu-selection {
