@@ -24,7 +24,7 @@ interface TextEditor {
   getSelection(): TextRange;
   setSelection(range: TextRange): void;
 
-  highlightRanges(ranges: Array<TextRange>): void;
+  highlight(range: TextRange, cssName: string) : any;
   clearHighlights(range: TextRange): void;
 
   // Returns absolute coordinates of the character at |index|.
@@ -83,14 +83,12 @@ class CodeMirrorEditor implements TextEditor {
     this.editor.setSelection(rangeStart, rangeEnd);
   }
 
-  public highlightRanges(ranges: Array<TextRange>) {
-    for (let range of ranges) {
-      let rangeStart = this.editor.posFromIndex(range.start);
-      let rangeEnd = this.editor.posFromIndex(range.end);
-      this.editor.markText(
+  public highlight(range: TextRange, cssName: string) {
+    let rangeStart = this.editor.posFromIndex(range.start);
+    let rangeEnd = this.editor.posFromIndex(range.end);
+    return this.editor.markText(
         rangeStart, rangeEnd,
-        { readOnly: false, className: 'test-css' });
-    }
+        { readOnly: false, className: cssName });
   }
 
   public clearHighlights(range: TextRange) {
@@ -167,6 +165,7 @@ class DeasciiBox {
   private options_: Options;
   private correctionMenu: CorrectionMenu;
   private correctionMenuSelection: TextRange;
+  private correctionMenuHighlight: any;
 
   constructor(
     parent: DomElement,
@@ -193,6 +192,7 @@ class DeasciiBox {
   }
 
   public onClick() {
+    this.hideCorrectionMenu();
     let selectionRange = this.textEditor.getSelection();
     // Since this is a mouse up event, we expect start and end positions
     // to be the same. TODO: Is this always the case?
@@ -203,7 +203,6 @@ class DeasciiBox {
     let text: string = this.textEditor.getText();
     // Only show the menu if we are in the middle of a word
     if (!TextHelper.isCursorInsideWord(text, cursorPos)) {
-      this.correctionMenu.hide();
       return;
     }
     let wordBoundary = TextHelper.getWordAtCursor(text, cursorPos);
@@ -211,7 +210,6 @@ class DeasciiBox {
 
     // Don't show menu if there is nothing to suggest
     if (!CorrectionMenu.hasCorrections(wordText)) {
-      this.correctionMenu.hide();
       return;
     }
 
@@ -226,6 +224,8 @@ class DeasciiBox {
 
     this.correctionMenuSelection = wordBoundary;
     this.correctionMenu.show(menuCoords, wordText);
+    this.correctionMenuHighlight =
+      this.textEditor.highlight(wordBoundary, "correction-menu-selection");
   }
 
   private deasciifyCursor() {
@@ -273,14 +273,20 @@ class DeasciiBox {
     //this.textEditor.clearHighlights();
     let ranges = new Array<TextRange>();
     for (let i = 0; i < changedPositions.length; i++) {
-      ranges.push(
-        new TextRange(changedPositions[i], changedPositions[i] + 1));
+      this.textEditor.highlight(
+        new TextRange(changedPositions[i], changedPositions[i] + 1),
+        "test-css");
     }
-    this.textEditor.highlightRanges(ranges);
   }
 
   public hideCorrectionMenu() {
     this.correctionMenu.hide();
+    if (this.correctionMenuSelection) {
+      this.textEditor.clearHighlights(this.correctionMenuSelection);
+    }
+    if (this.correctionMenuHighlight) {
+      this.correctionMenuHighlight.clear();
+    }
   }
 
   public processSelection(mode: TextProcessorMode) {
