@@ -10,6 +10,7 @@
   z-index: 99;
   position: absolute;
   box-shadow: 0 0 10px #333;
+  white-space: nowrap;
 }
 
 .correction-menu-item {
@@ -44,4 +45,11 @@
   background: blue;
   color: white;
   font-weight: normal;
+}
+
+.correction-menu-selection {
+  /*outline: 3pt dotted orange;*/
+  box-shadow: 0 0 3pt 2pt orange;
+  /*outline-bottom: 3pt dotted orange;*/
+  background: #ddd;
 }
