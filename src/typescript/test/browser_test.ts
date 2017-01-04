@@ -29,11 +29,11 @@ describe('App', function () {
   });
 
   function checkHighlights(expected: number[]) {
-    let marks : codemirror.TextMarker[] = cm.getDoc().getAllMarks();
+    let marks: codemirror.TextMarker[] = cm.getDoc().getAllMarks();
     assert.equal(expected.length, marks.length);
     for (let i = 0; i < expected.length; i++) {
-      expect({line: 0, ch: expected[i]}).to.eql(marks[i].find().from);
-      expect({line: 0, ch: expected[i] + 1}).to.eql(marks[i].find().to);
+      expect({ line: 0, ch: expected[i] }).to.eql(marks[i].find().from);
+      expect({ line: 0, ch: expected[i] + 1 }).to.eql(marks[i].find().to);
     }
   }
 

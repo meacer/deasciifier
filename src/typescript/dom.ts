@@ -32,6 +32,9 @@ export class DomElementImpl implements DomElement {
   setClickHandler(handler: any) : void {
     this.element.addEventListener("click", handler);
   }
+  setTabIndex(index: number): void {
+    this.element.tabIndex = index;
+  }
 }
 
 export class DomFactoryImpl implements DomFactory {

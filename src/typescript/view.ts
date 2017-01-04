@@ -15,6 +15,7 @@ export interface DomElement {
   clear(): void;
 
   setClickHandler(handler: any) : void;
+  setTabIndex(index: number): void;
 }
 
 export interface DomFactory {

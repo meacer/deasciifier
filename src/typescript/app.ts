@@ -12,6 +12,7 @@ import { KeyboardCallback, Keyboard } from "./keyboard"
 import { TextHelper } from "./text_helper"
 import { DomElementImpl, DomFactoryImpl } from "./dom";
 import { DomFactory, DomElement } from "./view";
+import { KeyboardLayout } from "./keyboard_layout_turkish"
 
 class Options {
   public constructor(public highlightChanges: boolean) { }
@@ -328,14 +329,15 @@ export class App implements TextEditorEventListener {
   constructor(
     codemirror: any,
     pattern_list: any,
-    keyboard_container: HTMLDivElement,
-    parent: DomElement = new DomElementImpl(document.body),
+    parentContainer: HTMLElement,
+    keyboardContainer: HTMLElement,
     domFactory: DomFactory = new DomFactoryImpl()) {
 
     this.deasciifier_instance = new Deasciifier();
     this.deasciifier_instance.init(pattern_list);
     this.asciifier_instance = new Asciifier();
 
+    let parent: DomElement = new DomElementImpl(parentContainer);
     this.textEditor = new CodeMirrorEditor(codemirror, this);
     this.deasciiBox =
       new DeasciiBox(
@@ -345,7 +347,11 @@ export class App implements TextEditorEventListener {
         new DeasciifyProcessor(
           this.deasciifier_instance, this.asciifier_instance));
 
-    this.keyboard = new Keyboard(keyboard_container);
+    let keyboard_container = new DomElementImpl(keyboardContainer);
+    this.keyboard = new Keyboard(
+      KeyboardLayout['TR_Q'],
+      keyboard_container, domFactory);
+    parent.appendChild(keyboard_container);
 
     this.keyboardHandler = new KeyboardHandler(this, this.textEditor);
     this.keyboard.create(this.keyboardHandler);

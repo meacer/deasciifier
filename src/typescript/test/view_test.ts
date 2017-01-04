@@ -1,5 +1,6 @@
 import { Position } from "../common";
 import { CorrectionMenu, CorrectionCallback } from "../correction_menu";
+import { Keyboard, KeyboardCallback } from "../keyboard";
 import { DomElement, DomFactory } from "../view";
 
 import chai = require('chai');
@@ -14,6 +15,7 @@ class TestDomElement implements DomElement {
   public hidden: boolean;
   public text: string;
   public clickHandler: Function;
+  public tabIndex: number;
   constructor() {
     this.children = [];
     this.hidden = false;
@@ -48,6 +50,9 @@ class TestDomElement implements DomElement {
   }
   setClickHandler(handler: any): void {
     this.clickHandler = handler;
+  }
+  setTabIndex(index: number): void {
+    this.tabIndex = index;
   }
 }
 
@@ -134,5 +139,112 @@ describe("Correction menu", function () {
 
     menu.view.onclick(6);
     assert.equal("abcdefg", callback.text);
+  });
+});
+
+describe('Keyboard', function () {
+  class TestKeyboardCallback implements KeyboardCallback {
+    public key: string;
+    onKey(key: string) {
+      this.key = key;
+    }
+  };
+
+  function checkLayout(container: TestDomElement, isCapsOn: boolean) {
+    let rows = container.children[0].children;
+    assert.equal(2, rows.length);
+    assert.equal(3, rows[0].children.length);
+
+    if (isCapsOn) {
+      assert.equal("A", rows[0].children[0].getText());
+      assert.equal("B", rows[0].children[1].getText());
+      assert.equal("shift", rows[0].children[2].getText());
+
+      assert.equal(2, rows[1].children.length);
+      assert.equal("d", rows[1].children[0].getText());
+      assert.equal("?", rows[1].children[1].getText());
+    } else {
+      assert.equal("a", rows[0].children[0].getText());
+      assert.equal("b", rows[0].children[1].getText());
+      assert.equal("shift", rows[0].children[2].getText());
+
+      assert.equal(2, rows[1].children.length);
+      assert.equal("d", rows[1].children[0].getText());
+      assert.equal("?", rows[1].children[1].getText());
+    }
+  }
+
+  let callback = new TestKeyboardCallback();
+  let domFactory = new TestDomFactory();
+  let container = domFactory.createDiv();
+  let layout: Array<Array<string>> = [
+    ["a,A", "(b,B)", "[shift]"],
+    ["d", "?"]
+  ];
+  let keyboard: Keyboard = undefined;
+
+  beforeEach(function () {
+    keyboard = new Keyboard(layout, container, domFactory);
+    keyboard.create(callback);
+
+    assert.equal("mea-keyboard-main", container.getClassName());
+    assert.equal(1, container.children.length);
+    assert.equal("mea-keyboard-layout", container.children[0].getClassName());
+  });
+
+  it('caps lock', function () {
+    checkLayout(container, false);
+
+    // Turn on caps lock.
+    keyboard.onKey("caps");
+    checkLayout(container, true);
+
+    // Type a character. Caps should stay on.
+    keyboard.onKey("a");
+    checkLayout(container, true);
+
+    // Turn off caps lock.
+    keyboard.onKey("caps");
+    checkLayout(container, false);
+  });
+
+  it('shift', function () {
+    // Turn shift on.
+    keyboard.onKey("shift");
+    checkLayout(container, true);
+
+    // Type a character. Caps should turn off.
+    keyboard.onKey("a");
+    checkLayout(container, false);
+  });
+
+  it('caps lock then shift', function () {
+    // Turn on caps lock and shift, caps lock should turn off.
+    keyboard.onKey("caps");
+    keyboard.onKey("shift");
+    checkLayout(container, false);
+
+    // Type a character. Caps should turn on because shift turns off.
+    keyboard.onKey("b");
+    checkLayout(container, true);
+
+    // Turn off caps lock.
+    keyboard.onKey("caps");
+    checkLayout(container, false);
+  });
+
+  it('shift then caps lock', function () {
+    // Turn on caps lock and shift, caps lock should turn off.
+    keyboard.onKey("shift");
+    keyboard.onKey("caps");
+    checkLayout(container, false);
+
+    // Type a character. Caps should turn on because shift turns off.
+    keyboard.onKey("b");
+    checkLayout(container, true);
+
+    // Turn off caps lock.
+    keyboard.onKey("caps");
+    checkLayout(container, false);
   });
 });
