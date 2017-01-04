@@ -1,5 +1,7 @@
 import { App } from '../app';
 
+// These tests are run with karma.
+
 import codemirror = require('codemirror');
 
 import chai = require('chai');
@@ -16,18 +18,30 @@ describe('App', function () {
   let textarea = document.createElement("textarea");
   document.body.appendChild(textarea);
 
+  let keyboardContainer = document.createElement("div");
+  document.body.appendChild(keyboardContainer);
+
   let cm = codemirror.fromTextArea(textarea);
-  let div = document.createElement("div");
-  let app = new App(cm, PATTERNS, div);
+  let app = new App(cm, PATTERNS, document.body, keyboardContainer);
 
   beforeEach(function () {
     cm.getDoc().setValue("");
   });
 
+  function checkHighlights(expected: number[]) {
+    let marks : codemirror.TextMarker[] = cm.getDoc().getAllMarks();
+    assert.equal(expected.length, marks.length);
+    for (let i = 0; i < expected.length; i++) {
+      expect({line: 0, ch: expected[i]}).to.eql(marks[i].find().from);
+      expect({line: 0, ch: expected[i] + 1}).to.eql(marks[i].find().to);
+    }
+  }
+
   it('should asciify', function () {
     cm.setValue("Ağaça çıktık");
     app.asciifySelection();
     assert.equal("Agaca ciktik", cm.getValue());
+    checkHighlights([1, 3, 6, 7, 10]);
   });
 
   it('should asciify selection', function () {
@@ -35,23 +49,24 @@ describe('App', function () {
       constructor(
         public readonly selection_start: number,
         public readonly selection_end: number,
-        public readonly expected_text: string) { }
+        public readonly expected_text: string,
+        public readonly expected_highlights: number[]) { }
     }
     const TEST_CASES: Array<TestCase> = [
       // Empty selection:
-      new TestCase(0, 0, "Agaca ciktik"),
+      new TestCase(0, 0, "Agaca ciktik", [1, 3, 6, 7, 10]),
       // Oversized selection:
-      new TestCase(0, 100, "Agaca ciktik"),
+      new TestCase(0, 100, "Agaca ciktik", [1, 3, 6, 7, 10]),
       // First character:
-      new TestCase(0, 1, "Ağaça çıktık"),
+      new TestCase(0, 1, "Ağaça çıktık", []),
       // Second character:
-      new TestCase(1, 2, "Agaça çıktık"),
+      new TestCase(1, 2, "Agaça çıktık", [1]),
       // First two characters:
-      new TestCase(0, 2, "Agaça çıktık"),
+      new TestCase(0, 2, "Agaça çıktık", [1]),
       // First three characters:
-      new TestCase(0, 3, "Agaça çıktık"),
+      new TestCase(0, 3, "Agaça çıktık", [1]),
       // First four characters:
-      new TestCase(0, 4, "Agaca çıktık"),
+      new TestCase(0, 4, "Agaca çıktık", [1, 3]),
     ];
     for (let test_case of TEST_CASES) {
       cm.setValue("Ağaça çıktık");
@@ -63,6 +78,7 @@ describe('App', function () {
         `Wrong result for
         start: ${test_case.selection_start},
         end: ${test_case.selection_end}`);
+      checkHighlights(test_case.expected_highlights);
     }
   });
 
@@ -77,23 +93,24 @@ describe('App', function () {
       constructor(
         public readonly selection_start: number,
         public readonly selection_end: number,
-        public readonly expected_text: string) { }
+        public readonly expected_text: string,
+        public readonly expected_highlights: number[]) { }
     }
     const TEST_CASES: Array<TestCase> = [
       // Empty selection:
-      new TestCase(0, 0, "Ağaça çıktık"),
+      new TestCase(0, 0, "Ağaça çıktık", [1, 3, 6, 7, 10]),
       // Oversized selection:
-      new TestCase(0, 100, "Ağaça çıktık"),
+      new TestCase(0, 100, "Ağaça çıktık", [1, 3, 6, 7, 10]),
       // First character:
-      new TestCase(0, 1, "Agaca ciktik"),
+      new TestCase(0, 1, "Agaca ciktik", []),
       // Second character:
-      new TestCase(1, 2, "Ağaca ciktik"),
+      new TestCase(1, 2, "Ağaca ciktik", [1]),
       // First two characters:
-      new TestCase(0, 2, "Ağaca ciktik"),
+      new TestCase(0, 2, "Ağaca ciktik", [1]),
       // First three characters:
-      new TestCase(0, 3, "Ağaca ciktik"),
+      new TestCase(0, 3, "Ağaca ciktik", [1]),
       // First four characters:
-      new TestCase(0, 4, "Ağaça ciktik"),
+      new TestCase(0, 4, "Ağaça ciktik", [1, 3]),
     ];
     for (let test_case of TEST_CASES) {
       cm.setValue("Agaca ciktik");
@@ -105,6 +122,7 @@ describe('App', function () {
         `Wrong result for
         start: ${test_case.selection_start},
         end: ${test_case.selection_end}`);
+      checkHighlights(test_case.expected_highlights);
     }
   });
 
@@ -130,13 +148,17 @@ describe('App', function () {
   it('should deasciify word before cursor', function () {
     putString("Agaca");
     assert.equal("Agaca", cm.getValue());
+    checkHighlights([]);
+
     putString(" ");
     assert.equal("Ağaça ", cm.getValue());
+    checkHighlights([1, 3]);
 
     // Should only deasciify the last word.
     cm.setValue("Agaca ");
     putString("ciktik ");
     assert.equal("Agaca çıktık ", cm.getValue());
+    checkHighlights([6, 7, 10]);
   });
 
   it('should not deasciify word after cursor', function () {
@@ -146,17 +168,23 @@ describe('App', function () {
     // Put cursor after the first word.
     putString(" ", 5);
     assert.equal("Ağaça ciktik", cm.getValue());
+    checkHighlights([1, 3]);
 
     putString("hizla", 6);
     assert.equal("Ağaça hizlaciktik", cm.getValue());
+    checkHighlights([1, 3]);
 
     putString(" ", 11);
     assert.equal("Ağaça hızla ciktik", cm.getValue());
+    // TODO: Fix. The previous highlights are removed.
+    //checkHighlights([1, 3, 7]);
 
     putString(".", 12);
     assert.equal("Ağaça hızla .ciktik", cm.getValue());
 
     putString("!", 19);
     assert.equal("Ağaça hızla .çıktık!", cm.getValue());
+    // TODO: Fix. The previous highlights are removed.
+    //checkHighlights([1, 3, 7, 12, 13, 16]);
   });
 });
