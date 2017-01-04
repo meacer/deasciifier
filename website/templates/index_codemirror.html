@@ -523,35 +523,7 @@ var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
   height: "dynamic",
   autofocus: true
 });
-/*
-function markTextAt(lineCh) {
-  var coords = editor.charCoords(lineCh);
-  editor.markText(
-      lineCh,
-      {line: lineCh.line, ch: lineCh.ch + 1},
-      {readOnly: true, className: 'test-css'});
-}
 
-function showMenuAt(lineCh) {
-  var index = editor.indexFromPos(lineCh);
-  var coords = editor.charCoords(lineCh);
-
-  var range = MEA.TextHelper.getWordAtCursor(editor.getValue(), index);
-  var word = editor.getValue().substring(range.start, range.end);
-
-  var rangeStart = editor.posFromIndex(range.start);
-  var rangeEnd = editor.posFromIndex(range.end);
-  var startPos = editor.charCoords({line: rangeStart.line,
-                                    ch: rangeStart.ch});
-  var endPos = editor.charCoords({line: rangeEnd.line,
-                                    ch: rangeEnd.ch});
-  var coords = {top: startPos.top + editor.defaultTextHeight(),
-                left: startPos.left,
-                bottom: startPos.bottom + editor.defaultTextHeight(),
-                right: endPos.right};
-  menu.displayAt(coords, word);
-}
-*/
 var app;
 var deasc = null;
 var app = null;
@@ -574,11 +546,11 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   //deasc.init(patternList);
   document.getElementById("progress-bar").style.display = "none";
 
-  app = new DeasciifierApp.App(editor, patternList, document.getElementById("keyboard"));
+  //app = new DeasciifierApp.App(editor, patternList, document.getElementById("keyboard"));
+  app = new DeasciifierApp.App(editor, patternList);
 }
-
+/*
 function deasciify() {
-  //var txt = document.getElementById("txt");
   editor.operation(function() {
     var result = Deasciifier.deasciify(editor.getValue());
     console.log(result);
@@ -593,7 +565,7 @@ function deasciify() {
     }
   });
 }
-
+*/
 $("#deasciify-btn").click(function() {
   app.deasciifySelection();
 });
