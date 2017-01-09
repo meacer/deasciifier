@@ -6,8 +6,11 @@
     "test": "test"
   },
   "scripts": {
-    "pretest": "tsc --project test/",
-    "test": "mocha out/test/test.js && mocha out/test/view_test.js && karma start karma.conf.js",
+    "preunit-test": "tsc --project test/",
+    "unit-test": "mocha out/test/test.js && mocha out/test/view_test.js && karma start karma.conf.js",
+    "preinteractive-test": "tsc --project interactive_test/ && browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o out/test-bundle.js",
+    "interactive-test": "node_modules/protractor/bin/protractor interactive_test/protractor.conf.js",
+    "test": "npm run -s unit-test && npm run -s interactive-test",
     "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
     "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js"
   },
@@ -31,7 +34,7 @@
     "typescript": "^2.1.4",
     "uglify": "^0.1.5",
     "watchify": "^3.8.0",
-    "webdriver-manager": "^11.1.0"
+    "webdriver-manager": "^11.1.1"
   },
   "repository": {
     "type": "git",

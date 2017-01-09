@@ -16,16 +16,19 @@ const PATTERNS = {
   'i': 'Xk'
 };
 
+// Do not wait for Angular.
+browser.ignoreSynchronization = true;
+
 describe('App', function () {
   beforeEach(function() {
-    //browser.get('http://localhost:4444/codemirror');
-    browser.get('about:blank');
-    browser.executeScript("window.navigator = {}");
+    //browser.ignoreSynchronization = true;
+    browser.get("/interactive_test/test_runner.html", 60000);
   });
 
   it('should test', function() {
-    //browser.executeScript("var editor = document.getElementById('txt').CodeMirror;editor.setValue('{');");
+    //browser.ignoreSynchronization = true;
     browser.executeScript(`
+      document.title='test';
       //var cm = CodeMirror(document.body);
       var txt = document.createElement("textarea");
       document.body.appendChild(txt);
