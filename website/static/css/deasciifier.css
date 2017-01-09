@@ -50,3 +50,9 @@
   /*outline-bottom: 3pt dotted orange;*/
   background: #ddd;
 }
+
+.deasciifier-highlight {
+  /*font-weight: bold;
+  color: #333;*/
+  background: lightgreen;
+}

@@ -233,12 +233,6 @@
     min-height: 80vh;
   }
 
-  .test-css {
-    font-weight: bold;
-    color: #333;
-    background: lightgreen;
-  }
-
   .container {
     width: 90%;
     margin: 0 auto;
@@ -547,7 +541,7 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   document.getElementById("progress-bar").style.display = "none";
 
   //app = new DeasciifierApp.App(editor, patternList, document.getElementById("keyboard"));
-  app = new DeasciifierApp.App(editor, patternList);
+  app = new DeasciifierApp.App(editor, patternList, document.body, document.getElementById("keyboard"));
 }
 /*
 function deasciify() {
