@@ -26,6 +26,9 @@ interface TextEditor {
   setSelection(range: TextRange): void;
 
   highlight(range: TextRange, cssName: string) : any;
+  // Use this for multiple markers.
+  highlightMultiple(ranges: TextRange[], cssName: string) : void;
+
   clearHighlights(range: TextRange): void;
 
   // Returns absolute coordinates of the character at |index|.
@@ -90,6 +93,15 @@ class CodeMirrorEditor implements TextEditor {
     return this.editor.markText(
         rangeStart, rangeEnd,
         { readOnly: false, className: cssName });
+  }
+
+  public highlightMultiple(ranges: TextRange[], cssName: string) {
+    let self = this;
+    this.editor.operation(function() {
+      for (let range of ranges) {
+        self.highlight(range, cssName);
+      }
+    });
   }
 
   public clearHighlights(range: TextRange) {
@@ -272,12 +284,11 @@ class DeasciiBox {
       return;
     }
     //this.textEditor.clearHighlights();
-    let ranges = new Array<TextRange>();
+    let ranges : TextRange[]  = [];
     for (let i = 0; i < changedPositions.length; i++) {
-      this.textEditor.highlight(
-        new TextRange(changedPositions[i], changedPositions[i] + 1),
-        "test-css");
+      ranges.push(new TextRange(changedPositions[i], changedPositions[i] + 1));
     }
+    this.textEditor.highlightMultiple(ranges, "deasciifier-highlight");
   }
 
   public hideCorrectionMenu() {
