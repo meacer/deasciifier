@@ -2,14 +2,44 @@
 
 <link rel="stylesheet" href="../node_modules/codemirror/lib/codemirror.css">
 <script src="../node_modules/codemirror/lib/codemirror.js"></script>
+<script src="../node_modules/jquery/dist/jquery.js"></script>
+<!--
+<script src="../out/interactive_bundle.js"></script>-->
 <script src="../out/test-bundle.js"></script>
 
-<textarea id="txt">
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-</textarea>
+
+<textarea id="txt"></textarea>
+<div id="keyboard"></div>
 
 <script>
-var myCodeMirror = CodeMirror.fromTextArea(document.getElementById("txt"));
+
+var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
+  lineNumbers: false,
+  viewportMargin: Infinity,
+  lineWrapping: true,
+  minHeight: 900,
+  height: "dynamic",
+  autofocus: true
+});
+/*
+var app = null;
+window.Deasciifier = {}
+window.Deasciifier.onPatternListLoaded = function(patternList) {
+  //$("#loading").hide();
+  //enableControls(true);
+  //document.getElementById("btn_deasciify").style.visibility = "visible";
+  //document.getElementById("btn_asciify").style.visibility = "visible";
+  //document.getElementById("status").textContent = "LOADED";
+  //document.getElementById("progress-bar").style.display = "none";
+
+  //app = new DeasciifierApp.App(editor, patternList, document.getElementById("keyboard"));
+  app = new DeasciifierApp.App(editor, patternList, document.body, document.getElementById("keyboard"));
+}
+
+window.Deasciifier.onPatternListLoaded({
+  'c': 'aXa|-bXb|-aX|-Xa',
+  'g': 'aXa|-bX|-Xb',
+  'i': 'Xk'
+});*/
 </script>
-<div id="somediv">test</div>
 </html>

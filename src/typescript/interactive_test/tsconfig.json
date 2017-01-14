@@ -1,7 +1,7 @@
 {
   "extends": "../tsconfig-base",
   "compilerOptions": {
-    "types": ["chai", "mocha"],
+    "types": ["mocha", "chai", "core-js"],
     "typeRoots": [
             "../node_modules/@types"
     ]
