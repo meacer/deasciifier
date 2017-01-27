@@ -8,23 +8,25 @@
 
 <!-- Bootstrap -->
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+  integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
   crossorigin="anonymous">
 <!-- Optional theme -->
 <!--
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
   crossorigin="anonymous">
-  -->
+-->
 <!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+  integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
   crossorigin="anonymous"></script>
 
 <!-- Material design icons -->
 <link rel="stylesheet" href="https://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css">
 
 <!-- CodeMirror -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.21.0/codemirror.min.js"></script>
 
 <!-- Deasciifier -->
 <script src="/static/ts/bundle.js"></script>
@@ -387,8 +389,6 @@
   <div class="container-fluid">
 
     <a class="navbar-brand" href="#">
-      <!-- <img src="static/img/v2.0/g-logo.png" height="48">
-      -->
       <img src="static/favicon.png" height="100%">
       <h3 class="heading hidden-sm">deasciifier.com</h3>
     </a>
@@ -397,43 +397,43 @@
       <ul class="nav navbar-nav">
         <li class=" navbar-li-active">
           <button id="deasciify-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Undo">
+            data-toggle="tooltip" data-placement="bottom" title="cgiosu → çğıöşü">
               Deasciify
           </button>
         </li>
         <li>
           <button id="asciify-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Undo">
+            data-toggle="tooltip" data-placement="bottom" title="çğıöşü → cgiosu">
               Asciify
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="undo-btn"  class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Undo">
+            data-toggle="tooltip" data-placement="bottom" title="Geri al">
             <i class="mdi mdi-undo" aria-hidden="true"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="redo-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Redo">
+            data-toggle="tooltip" data-placement="bottom" title="Yinele">
             <i class="mdi mdi-redo" aria-hidden="true"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="keyboard-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Keyboard">
+            data-toggle="tooltip" data-placement="bottom" title="Klavyeyi göster">
             <i class="mdi mdi-keyboard" aria-hidden="true"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="settings-btn" class="btn btn-default navbar-btn"
-          data-toggle="tooltip" data-placement="bottom" title="Settings">
+          data-toggle="tooltip" data-placement="bottom" title="Ayarlar &amp; Diğer">
             <i class="mdi mdi-settings" aria-hidden="true"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc; border-right: 1px solid #ccc">
           <button id="benchmark-btn" class="btn btn-default navbar-btn"
-           data-toggle="tooltip" data-placement="bottom" title="More">
+           data-toggle="tooltip" data-placement="bottom" title="...">
             <i class="mdi mdi-dots-horizontal" aria-hidden="true"></i>
           </button>
         </li>
@@ -445,47 +445,85 @@
 <div id="benchmark-result"></div>
 <div id="status"></div>
 <div id="keyboard" style="display: none"></div>
-<div class="panel panel-default" style="width: 900px; margin: 0 auto; display: block" id="settings-panel">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <ul class="list-group">
-          <li class="list-group-item">
-            <div class="checkbox">
-              <label>
-                  <input type="checkbox" value="">
-                  Yazarken cevir
-                </label>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="checkbox">
-              <label>
-                  <input type="checkbox" value="">
-                  Duzeltme menusunu goster
-                </label>
-            </div>
-          </li>
-          <li class="list-group-item">
-            <div class="checkbox">
-              <label>
-                  <input type="checkbox" value="">
-                  Satir numaralarini goster
-                </label>
-            </div>
-          </li>
-        </ul>
-      </div>
 
-      <div class="col-md-6" style="border-left: 1px solid #ccc">
-        <ul class="list-group">
-          <li class="list-group-item">
-            <a href="https://google.com">Chrome eklentisi</a></li>
-          <li class="list-group-item">Firefox eklentisi</li>
-          <li class="list-group-item">Safari eklentisi</li>
-          <li class="list-group-item">Github</li>
-          <li class="list-group-item">Geribildirim</li>
-        </ul>
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel" id="settings">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Ayarlar &amp; Diğer</h4>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+          <div class="col-md-6">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <div class="checkbox">
+                  <label>
+                      <input type="checkbox" value="">
+                      Yazarken cevir
+                    </label>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="checkbox">
+                  <label>
+                      <input type="checkbox" value="">
+                      Duzeltme menusunu goster
+                    </label>
+                </div>
+              </li>
+              <li class="list-group-item">
+                <div class="checkbox">
+                  <label>
+                      <input type="checkbox" value="">
+                      Satir numaralarini goster
+                    </label>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-md-6" style="border-left: 1px solid #ccc">
+            <ul class="list-group">
+              <li class="list-group-item">
+                <a href="https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk">
+                <i class="mdi mdi-google-chrome"></i>
+                Chrome eklentisi</a>
+              </li>
+              <li class="list-group-item">
+                <a href="https://addons.mozilla.org/en-US/firefox/addon/204311/">
+                <i class="mdi mdi-firefox"></i>
+                Firefox eklentisi</a>
+              </li>
+              <li class="list-group-item">
+                <a href="http://www.mustafaacer.com/deasciifier/safari/safari_deasciifier.safariextz">
+                <i class="mdi mdi-apple-safari"></i>
+                Safari eklentisi</a>
+              </li>
+              <li class="list-group-item">
+                <a href="https://deasciifier.uservoice.com/">
+                <i class="mdi mdi-comment-multiple-outline"></i>
+                Geribildirim</a>
+              </li>
+              <li class="list-group-item">
+                <a href="https://github.com/meacer/deasciifier">
+                <i class="mdi mdi-github-circle"></i>
+                GitHub</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <b>Gizlilik:</b> Türkçeleştirme tamamen sizin bilgisayarınızda
+          yapılmaktadır. Girdiğiniz metin kaydedilmemekte veya Internet
+          üzerinden başka bir bilgisayara aktarılmamaktadır.
+          <br><br>
+          Deasciifier kodu Mustafa Emre Acer tarafından Dr. Deniz Yüret'in Emacs
+          için geliştirdiği turkish-mode'dan çevrilmiştir.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Kapat</button>
       </div>
     </div>
   </div>
@@ -494,7 +532,8 @@
 <br>
 
 <div class="progress" id="progress-bar">
-  <div class="progress-bar progress-bar-striped progress-bar-success active" role="progressbar" aria-valuenow="100%" aria-valuemin="0"
+  <div class="progress-bar progress-bar-striped progress-bar-success active"
+      role="progressbar" aria-valuenow="100%" aria-valuemin="0"
     aria-valuemax="100" style="width: 100%">
     <span class="sr-only">45% Complete</span>
   </div>
@@ -506,7 +545,7 @@
   </textarea>
 </div>
 <div style="margin: 0 auto; width: 100%; text-align: center; margin-top: 2em; margin-bottom: 1em">
-  deasciifier.com - 2016
+  deasciifier.com - 2017
 </div>
 <script>
 var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
@@ -518,11 +557,9 @@ var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
   autofocus: true
 });
 
-var app;
 var deasc = null;
 var app = null;
-window.Deasciifier = {}
-
+window.Deasciifier = window.Deasciifier || {};
 window.Deasciifier.onPatternListLoaded = function(patternList) {
   //deasc = new deasciifier.Deasciifier();
   //$("#loading").hide();
@@ -539,27 +576,9 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   //document.getElementById("status").textContent = "LOADED";
   //deasc.init(patternList);
   document.getElementById("progress-bar").style.display = "none";
-
-  //app = new DeasciifierApp.App(editor, patternList, document.getElementById("keyboard"));
   app = new DeasciifierApp.App(editor, patternList, document.body, document.getElementById("keyboard"));
 }
-/*
-function deasciify() {
-  editor.operation(function() {
-    var result = Deasciifier.deasciify(editor.getValue());
-    console.log(result);
-    editor.setValue(result.text);
-    for (var i = 0; i < result.changedPositions.length; i++) {
-      var pos = result.changedPositions[i];
-      var lineCh = editor.posFromIndex(pos);
-      //editor.replaceRange(result.text.charAt(pos),
-       //                   lineCh,
-       //                   {line: lineCh.line, ch: lineCh.ch + 1});
-      markTextAt(lineCh);
-    }
-  });
-}
-*/
+
 $("#deasciify-btn").click(function() {
   app.deasciifySelection();
 });
@@ -569,7 +588,7 @@ $("#asciify-btn").click(function() {
 });
 
 $("#settings-btn").click(function() {
-  $("#settings-panel").slideToggle({duration: 200});
+  $("#settings").modal();
 });
 
 $("#undo-btn").click(function() {
@@ -621,7 +640,7 @@ $("#benchmark-btn").click(function() {
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip({
-    delay: { "show": 500, "hide": 0 }
+    delay: { "show": 2000, "hide": 0 }
   });
 })
 </script>
