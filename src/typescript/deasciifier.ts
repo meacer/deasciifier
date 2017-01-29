@@ -87,30 +87,6 @@ class DefaultSkipFilter {
 
 const TURKISH_CONTEXT_SIZE: number = 10;
 
-/** @const */
-/*var Options = {
-  defaults: {
-    // Default options
-    "skipURLs": true
-  },
-
-  get: function(options, optionName) {
-    if (options && options.hasOwnProperty(optionName)) {
-      return options[optionName];
-    }
-    return Options.defaults[optionName];
-  },
-
-  // TODO: remove?
-  getMulti: function(options, optionNames) {
-    var ret = {};
-    for (var i = 0; i < optionNames.length; i++) {
-      ret[optionNames[i]] = Options.get(options, optionNames[i]);
-    }
-    return ret;
-  }
-};*/
-
 function make_turkish_downcase_asciify_table(): { [key: string]: string } {
   let ct: { [key: string]: string } = {};
   let ch: string = 'a';
@@ -161,7 +137,6 @@ function make_turkish_toggle_accent_table(): { [key: string]: string } {
 }
 
 function setCharAt(str: string, pos: number, c: string): string {
-  // TODO: Improve performance
   return str.substring(0, pos) + c + str.substring(pos + 1);
 }
 
