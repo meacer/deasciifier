@@ -115,10 +115,8 @@ function setBrowserActionUI(currentTabId, toggledCharCnt) {
 
 function convertSelectedEditableInTab(tab) {
   if (!tab) {
-    console.log("No tab");
     return;
   }
-  console.log("Browser action, tab id: " + tab.id);
   chrome.tabs.executeScript(tab.id, {file: "execute.js"}, function() {
     chrome.tabs.executeScript(tab.id, {code: "deasciifyActiveElement();"});
   });
@@ -165,7 +163,6 @@ chrome.contextMenus.create({
 });
 
 chrome.commands.onCommand.addListener(function(command){
-  console.log("onCommand");
   chrome.tabs.getCurrent(function(tab){
     chrome.tabs.executeScript(null, {file: "execute.js"}, function() {
       chrome.tabs.executeScript(null, {code: "toggleAutoDeasciify();"});

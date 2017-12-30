@@ -119,7 +119,6 @@ function onChangeTextBox(ev) {
   // Convert word at cursor if space or enter is pressed
   if (ev.keyCode == 13 || ev.keyCode == 32) {
     var activeTextBox = ev.target;
-    console.log("Key pressed: " + ev.keyCode);
     if (activeTextBox) {
       chrome.runtime.sendMessage({
         message: "DEASCIIFY_TYPED_TEXT",
@@ -162,7 +161,6 @@ function getActiveTextBox() { // TODO: REMOVE
 }
 
 function toggleAutoDeasciify() {
-  console.log("toggleAutoDeasciify()");
   var activeTextBox = getActiveTextBox();
   if (!activeTextBox.onkeyup) {
     setEnableAutoConversion(activeTextBox, true);
