@@ -29,9 +29,7 @@
   ];
 
   var cssMirror = [
-    (window.BuildConfig && window.BuildConfig.TEXTHILITE_SHOW_BACKGROUND_TEXT ?
-         "color:blue;" :
-         "color:white;"),
+    "color:white;",
     "z-index:9;",
     //"overflow-x: auto;",
     "overflow-x: hidden;",
@@ -41,9 +39,6 @@
 
   var cssTextArea = [
     "z-index: 20;",
-    (window.BuildConfig && window.BuildConfig.TEXTHILITE_TRANSPARENT_TEXT ?
-         "opacity:0.2; filter:alpha(opacity=20);" :
-         ""),
     //"overflow-x: auto;",
     "overflow-x: hidden;",
     "overflow-y: hidden;",

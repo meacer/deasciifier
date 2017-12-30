@@ -233,9 +233,7 @@
     /** Uninstall the deasciifyBox instance from the given textarea. */
     uninstall: function(textArea) {
       if (!this.getInstance(textArea)) {
-        window.console && window.console.log &&
-            window.console.log(
-                "Deasciifier already not installed for this text area");
+        console.log("Deasciifier already not installed for this text area");
         return;
       }
       for (var i = 0; i < handledEvents.length; i++) {
@@ -255,8 +253,7 @@
       if (instance) {
         instance.processSelection(DeasciiConverter);
       } else {
-        window.console && window.console.log &&
-            window.console.log("DeasciifyBox not installed for this text area");
+        console.log("DeasciifyBox not installed for this text area");
       }
     },
 
@@ -270,8 +267,7 @@
       if (instance) {
         instance.processSelection(AsciiConverter);
       } else {
-        window.console && window.console.log &&
-            window.console.log("DeasciifyBox not installed for this text area");
+        console.log("DeasciifyBox not installed for this text area");
       }
     },
 

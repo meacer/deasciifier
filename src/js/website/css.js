@@ -329,7 +329,7 @@
 
     createStyle: function(styleName, styleDef) {
       var styleText = styleName + " { " + styleDef + " }";
-      log("Creating style " + styleText);
+      //log("Creating style " + styleText);
       try {  // FIXME: Opera is throwing DOMException?
 
         if (sheet && sheet.insertRule) {
@@ -343,7 +343,7 @@
           styleNode.innerHTML += (styleText + "\n");
         }
       } catch (e) {
-        log(e.toString());
+        console.log(e);
       }
     },
 

@@ -5,18 +5,6 @@
  *  Version: 1.0
  *
  */
-
-function log(s) {
-  window.BuildConfig && window.BuildConfig.LOG && window.console &&
-      window.console.log(s);
-}
-
-function debugBreak() {
-  if (window.BuildConfig && window.BuildConfig.DEBUGGER) {
-    debugger;
-  }
-}
-
 window["MEA"] = {};
 var MEA = window["MEA"];
 

@@ -282,7 +282,6 @@
   <filelist id="deasciifybox.js.files" dir="${basedir}">
     <file name="src/js/lib/base.js"/>
     <file name="src/js/lib/deasciifier.js"/>                <!-- Deasciifier       -->
-    <file name="src/js/utils/build.config.js"/>             <!-- Build config      -->
     <file name="src/js/website/common.js"/>                 <!-- Base (logs etc)   -->
     <file name="src/js/website/css.js"/>                    <!-- CSS helper        -->
     <file name="src/js/website/event_handler.js"/>          <!-- Event handler     -->
@@ -315,7 +314,6 @@
       <arg value="--externs"/>           <arg value="src/js/utils/extern/jquery_1.5_externs.js"/><!-- jQuery externs for CC  -->
       <arg value="--externs"/>           <arg value="src/js/lib/cc_exports/externs.js"/>         <!-- Deasciifier externs for CC  -->
 
-      <arg value="--js"/>                <arg value="src/js/utils/build.config.js"/>             <!-- Build config      -->
       <arg value="--js"/>                <arg value="src/js/website/common.js"/>                 <!-- Base (logs etc)   -->
       <arg value="--js"/>                <arg value="src/js/website/css.js"/>                    <!-- CSS helper        -->
       <arg value="--js"/>                <arg value="src/js/website/event_handler.js"/>          <!-- Event handler     -->
