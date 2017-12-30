@@ -46,3 +46,7 @@ document.getElementById("btn_html").onclick = function() {
 document.getElementById("btn_js").onclick = function() {
   encode('js');
 }
+
+Deasciifier.onPatternListLoaded = function(patternListV2) {
+  Deasciifier.init(patternListV2);
+}

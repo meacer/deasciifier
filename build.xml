@@ -27,6 +27,7 @@
   ===========================================================================-->
   <target name="generate-patterns-file"
       depends="build-deasciifier-js-init">
+    <!-- Pattern Version 2 -->
     <exec
         executable="python"
         dir="${basedir}"
@@ -34,28 +35,7 @@
         failifexecutionfails="true">
       <!-- Compilation script -->
       <arg value="${basedir}/build/compile_patterns.py"/>
-      <!-- Pattern version 1 -->
-      <arg value="pattern_v1"/>
-      <!-- Source patterns (input) -->
-      <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
 
-      <!-- Pattern template (input) -->
-      <arg value="${basedir}/src/js/lib/patterns/template.js"/>
-
-      <!-- Compiled patterns (output) -->
-      <arg value="${basedir}/src/js/lib/patterns/_generated_patterns_v1.js"/>
-    </exec>
-
-    <!-- Same as above, except with Pattern Version 2 -->
-    <exec
-        executable="python"
-        dir="${basedir}"
-        failonerror="true"
-        failifexecutionfails="true">
-      <!-- Compilation script -->
-      <arg value="${basedir}/build/compile_patterns.py"/>
-      <!-- Pattern version 1 -->
-      <arg value="pattern_v2"/>
       <!-- Source patterns (input) -->
       <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
 
@@ -136,6 +116,9 @@
       <arg value="-jar"/>
       <arg value="${closurecompiler.path}"/>
 
+      <arg value="--module_resolution" />
+      <arg value="NODE"/>
+
       <arg value="--process_common_js_modules" />
       <arg value="--common_js_entry_module" />
       <arg value="src/js/lib/cc_exports/deasciifier_exports.js" />
@@ -155,6 +138,9 @@
       <!-- JS/HTML Encoder -->
       <arg value="--js"/>
       <arg value="src/js/lib/turkish_encoder.js"/>
+
+      <arg value="--js"/>
+      <arg value="src/js/lib/cc_exports/turkish_encoder_exports.js"/>
 
       <!-- Full output file -->
       <arg value="--js_output_file"/>
@@ -185,6 +171,9 @@
 
       <arg value="-jar"/>
       <arg value="${closurecompiler.path}"/>
+
+      <arg value="--module_resolution" />
+      <arg value="NODE"/>
 
       <arg value="--process_common_js_modules" />
       <arg value="--common_js_entry_module" />
@@ -239,6 +228,7 @@
       depends="build-deasciifier-js, read-chromeextension-version">
 
     <echo message="Building Chrome Extension at ${chrome.extension.dir} (no debug version)"/>
+    <delete dir="${chrome.extension.dir}" />
     <mkdir dir="${chrome.extension.dir}/lib"/>
 
     <copy todir="${chrome.extension.dir}">

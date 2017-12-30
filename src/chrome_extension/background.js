@@ -172,3 +172,7 @@ chrome.commands.onCommand.addListener(function(command){
     });
   });
 });
+
+Deasciifier.onPatternListLoaded = function(patternListV2) {
+  Deasciifier.init(patternListV2);
+}

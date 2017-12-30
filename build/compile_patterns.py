@@ -10,37 +10,6 @@ import datetime
 import json
 import sys
 
-def CompilePatterns(pattern_json_path):
-  """Converts the pattern json to ranked pattern list.
-
-  Args:
-    pattern_json_path: str, Path of the json file containing the patterns.
-  """
-  keys = ['c', 'g', 'i', 'o', 's', 'u']
-  key_strings = []
-  print "Generating patterns v1...";
-  with open(pattern_json_path) as pattern_json:
-    patterns = json.loads(pattern_json.read())
-    for key in keys:
-      entries = patterns[key]
-      computed_entries = []
-      for k in range(0, len(entries)):
-        entry = entries[k]
-        pattern = entry[0]
-        # rank is index * (-1 or 1).
-        rank = entry[1] * k
-        computed_string = '\"%s\":%d' % (pattern, rank)
-        computed_entries.append(computed_string)
-
-      # Add the "length" entry.
-      computed_entries.append('\"length\":%d' % len(entries))
-      key_string = '\"%s\":{%s}' % (key, ','.join(computed_entries))
-      key_strings.append(key_string)
-
-    # The output string.
-    pattern_string = '{\n%s\n};' % ',\n'.join(key_strings)
-    return pattern_string
-
 def CompilePatternsV2(pattern_json_path):
   """Converts the pattern json to ranked pattern list.
 
@@ -88,21 +57,12 @@ def CompilePatternTemplate(pattern_template_path, pattern_string, output_path):
 
 
 if __name__ == "__main__":
-  if len(sys.argv) > 4:
-    pattern_version = sys.argv[1]
-    if pattern_version == "pattern_v1":
-      pattern_string = CompilePatterns(sys.argv[2])
-    elif pattern_version == "pattern_v2":
-      pattern_string = CompilePatternsV2(sys.argv[2])
-    else:
-      print("First parameter must be pattern_v1 or pattern_v2");
-      exit(-1)
-
-    template_path = sys.argv[3]
-    output_path = sys.argv[4]
+  if len(sys.argv) == 4:
+    pattern_string = CompilePatternsV2(sys.argv[1])
+    template_path = sys.argv[2]
+    output_path = sys.argv[3]
     CompilePatternTemplate(template_path, pattern_string, output_path)
   else:
     print(("\nUsage: compile_patterns.py "
-          "<pattern_v1|pattern_v2> <pattern_json_path> <template_path> "
-          "<output_path>\n"))
+          "<pattern_v2_json_path> <template_path> <output_path>\n"))
     exit(-1)
