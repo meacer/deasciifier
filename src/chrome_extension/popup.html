@@ -4,16 +4,19 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head>
 <style>
-#page { margin: 5px; font-family: Verdana, Sans Serif; font-size: 10pt; min-width:370px}
-#msg { white-space: nowrap; overflow:visible; display: block; min-height: 10pt;}
-#info { text-align:right; width:100%; font-size:8pt; color:#777; font-family: Tahoma; white-space: nowrap; float:right; clear:both}
+html {
+  font-family: Helvetica, Sans Serif;
+  font-size: 1em;
+}
+#page { margin: 1em; min-width: 40em}
+#msg { white-space: nowrap; overflow: visible; display: block; min-height: 1em;}
+#info { text-align: right; width: 100%; font-size: 0.8em; color: #777;
+        white-space: nowrap; float: right; clear:both}
 a { color: #777; text-decoration: underline}
 a:hover { color: #99f; text-decoration: none}
-#inputtext {width: 100%; min-height: 200px; font-family: Tahoma}
-hr { width:100%; height:1px; margin: 2px 0px 2px 0px; display: inline-block}
-.btn {font-family: Tahoma; font-size:10pt; cursor:pointer; min-width:50px; }
-#btnTable {font-family:Verdana, Sans Serif; font-size:9pt; font-weight:bold}
-#btnTable td {margin:0;padding:0}
+#inputtext {width: 100%; min-height: 15em;}
+hr { width:100%; height: 1px; margin: 2px 0px 2px 0px; display: inline-block}
+.btn {cursor:pointer; min-width: 5em; }
 .sep {width:100%; height:1px; background: #aaa; margin-top:4px; margin-bottom:4px}
 </style>
 <body style="background: #eee;">
@@ -33,7 +36,7 @@ hr { width:100%; height:1px; margin: 2px 0px 2px 0px; display: inline-block}
       <input class="btn" type="button" id="btn_html" value="HTML" title="Metni HTML kodlar&#305;na &#231;evirir"/>
       <input class="btn" type="button" id="btn_js" value="JS" title="Metni JavaScript kodlar&#305;na &#231;evirir"/>
       <span style="vertical-align:middle; margin-left:5px;">
-        <input type="checkbox" id="checkCopy"><label style="color:#777;font-family:Tahoma; font-size:9pt; cursor:pointer"
+        <input type="checkbox" id="checkCopy"><label style="color:#777; cursor:pointer"
           for="checkCopy" title="&#199;evrilen metni otomatik olarak panoya kopyalar">&#199;eviriyi kopyala</label>
       </span>
     </span>
