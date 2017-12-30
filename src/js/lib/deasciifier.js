@@ -345,8 +345,8 @@ var base = require('./base');
     return Deasciifier.deasciifyRange(text, start, end, options);
   };
 
-  Deasciifier.init = function(patternList) {
-    if (!patternList) {
+  Deasciifier.init = function(patternListV2) {
+    if (!patternListV2) {
       throw new Error("Pattern list can't be null");
     }
     Deasciifier.turkish_asciify_table = make_turkish_asciify_table();
@@ -356,8 +356,21 @@ var base = require('./base');
         make_turkish_upcase_accents_table();
     Deasciifier.turkish_toggle_accent_table =
         make_turkish_toggle_accent_table();
-    // This is precompiled:
-    Deasciifier.turkish_pattern_table = patternList;
+    Deasciifier.turkish_pattern_table = {};
+    for (var key in patternListV2) {
+      Deasciifier.turkish_pattern_table[key] = {}
+      var tokens = patternListV2[key].split("|");
+      for (var i = 0; i < tokens.length; i++) {
+        var pattern = tokens[i];
+        var rank = i + 1;
+        if (pattern.charAt(0) == '-') {
+          rank = -rank;
+          pattern = pattern.substring(1);
+        }
+        Deasciifier.turkish_pattern_table[key][pattern] = rank;
+      }
+      Deasciifier.turkish_pattern_table[key]["length"] = tokens.length;
+    }
     Deasciifier.initialized = true;
   };
 

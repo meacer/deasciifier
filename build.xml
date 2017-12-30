@@ -43,7 +43,7 @@
       <arg value="${basedir}/src/js/lib/patterns/template.js"/>
 
       <!-- Compiled patterns (output) -->
-      <arg value="${basedir}/src/js/lib/patterns/_generated_patterns.js"/>
+      <arg value="${basedir}/src/js/lib/patterns/_generated_patterns_v1.js"/>
     </exec>
 
     <!-- Same as above, except with Pattern Version 2 -->
@@ -192,7 +192,7 @@
 
       <!-- Generated pattern list (input) -->
       <arg value="--js"/>
-      <arg value="src/js/lib/patterns/_generated_patterns.js"/>
+      <arg value="src/js/lib/patterns/_generated_patterns_v2.js"/>
 
       <!-- Closure Compiler exports for patterns -->
       <arg value="--js"/>

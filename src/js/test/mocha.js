@@ -3,7 +3,7 @@ var assert = chai.assert;
 
 var testdata = require('./testdata');
 var deasciifier = require('../lib/deasciifier');
-var patterns = require('../lib/patterns/_generated_patterns');
+var patterns = require('../lib/patterns/_generated_patterns_v2');
 var turkish_encoder = require('../lib/turkish_encoder');
 
 describe('Asciifier', function() {
