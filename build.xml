@@ -406,7 +406,8 @@
     Builds all targets
   ===========================================================================-->
   <target name="build-all"
-    depends="build-deasciifier-js-init, build-deasciifier-js, build-chrome-extension, build-safari-extension, build-deasciifybox-js">
+    depends="build-deasciifier-js-init, build-deasciifier-js, build-chrome-extension,
+    build-safari-extension, build-deasciifybox-js, build-website">
   </target>
 
   <target name="help">
