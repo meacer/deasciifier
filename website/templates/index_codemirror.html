@@ -46,102 +46,18 @@ ga('send', 'pageview');
   integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
   crossorigin="anonymous"></script>
 
-<!-- Material design icons -->
-<link rel="stylesheet" href="https://cdn.materialdesignicons.com/1.7.22/css/materialdesignicons.min.css">
-
 <!-- CodeMirror -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/addon/display/placeholder.min.js"></script>
 
+<!-- Font Awesome -->
+<script defer src="https://use.fontawesome.com/releases/v5.0.2/js/all.js"></script>
+
 <!-- Deasciifier -->
 <script src="/static/ts/bundle.js"></script>
 <link rel="stylesheet" href="/static/css/deasciifier.css">
 <style type="text/css">
-  /* Material design icons */
-
-  i.mdi::before,
-  span.mdi::before,
-  button.mdi::before {
-    font-size: 24px;
-    line-height: 13px;
-  }
-
-  .btn.mdi::before,
-  .btn .mdi::before {
-    position: relative;
-    top: 4px;
-  }
-
-  .btn-xs.mdi::before,
-  .btn-xs .mdi::before {
-    font-size: 18px;
-    top: 3px;
-  }
-
-  .btn-sm.mdi::before,
-  .btn-sm .mdi::before {
-    font-size: 18px;
-    top: 3px;
-  }
-
-  .dropdown-menu .mdi {
-    width: 18px;
-  }
-
-  .dropdown-menu .mdi::before {
-    position: relative;
-    top: 4px;
-    left: -8px;
-  }
-
-  .nav .mdi::before {
-    position: relative;
-    top: 4px;
-  }
-
-  .navbar .navbar-toggle .mdi::before {
-    position: relative;
-    top: 4px;
-    color: #FFF;
-  }
-
-  .breadcrumb .mdi::before {
-    position: relative;
-    top: 4px;
-  }
-
-  .breadcrumb a:hover {
-    text-decoration: none;
-  }
-
-  .breadcrumb a:hover span {
-    text-decoration: underline;
-  }
-
-  .alert .mdi::before {
-    position: relative;
-    top: 4px;
-    margin-right: 2px;
-  }
-
-  .input-group-addon .mdi::before {
-    position: relative;
-    top: 3px;
-  }
-
-  .navbar-brand .mdi::before {
-    position: relative;
-    top: 2px;
-    margin-right: 2px;
-  }
-
-  .list-group-item .mdi::before {
-    position: relative;
-    top: 3px;
-    left: -3px
-  }
-  /* Material design icons end */
   /** BOOTSTRAP: */
 
   @media (min-width: 768px) {
@@ -426,7 +342,7 @@ ga('send', 'pageview');
     padding-left: 1em;
     padding-right: 1em;
     font-size: 1.2em;
-    min-width: 4em;
+    min-width: 3.5em;
   }
   .navbar-btn:hover {
     background: orange;
@@ -453,6 +369,7 @@ ga('send', 'pageview');
         <li class=" navbar-li-active">
           <button id="deasciify-btn" class="btn btn-default navbar-btn"
             data-toggle="tooltip" data-placement="bottom" title="cgiosu → çğıöşü">
+              <i class="fas fa-star"></i>
               Deasciify
           </button>
         </li>
@@ -465,31 +382,31 @@ ga('send', 'pageview');
         <li style="border-left: 1px solid #ccc">
           <button id="undo-btn"  class="btn btn-default navbar-btn"
             data-toggle="tooltip" data-placement="bottom" title="Geri al">
-            <i class="mdi mdi-undo" aria-hidden="true"></i>
+            <i title="Geri al" class="fas fa-undo-alt"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="redo-btn" class="btn btn-default navbar-btn"
             data-toggle="tooltip" data-placement="bottom" title="Yinele">
-            <i class="mdi mdi-redo" aria-hidden="true"></i>
+            <i title="Yinele" class="fas fa-redo-alt"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="keyboard-btn" class="btn btn-default navbar-btn"
             data-toggle="tooltip" data-placement="bottom" title="Klavyeyi göster">
-            <i class="mdi mdi-keyboard" aria-hidden="true"></i>
+            <i title="Klavye" class="fas fa-keyboard"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="settings-btn" class="btn btn-default navbar-btn"
           data-toggle="tooltip" data-placement="bottom" title="Ayarlar &amp; Diğer">
-            <i class="mdi mdi-settings" aria-hidden="true"></i>
+            <i title="Ayarlar" class="fas fa-cog"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc; border-right: 1px solid #ccc">
           <button id="benchmark-btn" class="btn btn-default navbar-btn"
            data-toggle="tooltip" data-placement="bottom" title="...">
-            <i class="mdi mdi-dots-horizontal" aria-hidden="true"></i>
+            <i title="Ayarlar" class="fas fa-ellipsis-h"></i>
           </button>
         </li>
       </ul>
@@ -542,17 +459,17 @@ ga('send', 'pageview');
             <ul class="list-group">
               <li class="list-group-item">
                 <a href="https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk">
-                <i class="mdi mdi-google-chrome"></i>
+                <i class="fab fa-chrome"></i>
                 Chrome eklentisi</a>
               </li>
               <li class="list-group-item">
                 <a href="https://deasciifier.uservoice.com/">
-                <i class="mdi mdi-comment-multiple-outline"></i>
+                <i class="fas fa-comment"></i>
                 Geribildirim</a>
               </li>
               <li class="list-group-item">
                 <a href="https://github.com/meacer/deasciifier">
-                <i class="mdi mdi-github-circle"></i>
+                <i class="fab fa-github"></i>
                 GitHub</a>
               </li>
             </ul>
