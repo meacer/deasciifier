@@ -346,7 +346,6 @@ ga('send', 'pageview');
       <img src="static/icon.svg" height="100%">
       <h3 class="heading hidden-sm">Turkish Deasciifier</h3>
     </a>
-
     <div class="collapse navbar-collapse navbar-right">
       <ul class="nav navbar-nav">
         <li class="navbar-li-active">
@@ -474,16 +473,6 @@ ga('send', 'pageview');
   </div>
 </div>
 
-<br>
-
-<div class="progress" id="progress-bar">
-  <div class="progress-bar progress-bar-striped progress-bar-success active"
-      role="progressbar" aria-valuenow="100%" aria-valuemin="0"
-    aria-valuemax="100" style="width: 100%">
-    <span class="sr-only">45% Complete</span>
-  </div>
-</div>
-
 <div class="text-container">
   <textarea id="txt" placeholder="Çevirmek istediğiniz metni buraya giriniz."></textarea>
 </div>
@@ -497,15 +486,18 @@ var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
   lineWrapping: true,
   minHeight: 900,
   height: "dynamic",
-  autofocus: true
+  autofocus: true,
+  readOnly: "nocursor"
 });
 
 var deasc = null;
 var app = null;
 window.Deasciifier = window.Deasciifier || {};
 window.Deasciifier.onPatternListLoaded = function(patternList) {
+  editor.setOption("readOnly", false);
+  editor.focus();
+
   //deasc = new deasciifier.Deasciifier();
-  //$("#loading").hide();
   //enableControls(true);
   //document.getElementById("btn_deasciify").style.visibility = "visible";
   //document.getElementById("btn_asciify").style.visibility = "visible";
@@ -518,7 +510,6 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   textArea.onfocus = on_focus_handler;*/
   //document.getElementById("status").textContent = "LOADED";
   //deasc.init(patternList);
-  document.getElementById("progress-bar").style.display = "none";
   app = new DeasciifierApp.App(editor, patternList, document.body, document.getElementById("keyboard"));
 }
 
