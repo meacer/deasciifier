@@ -92,12 +92,6 @@ ga('send', 'pageview');
     margin-left: 0;
   }
 
-  @media (max-width: 767px) {
-    .navbar {
-      height: 10vh;
-    }
-  }
-
   .heading {
     display: inline-block;
     margin: 0;
@@ -192,6 +186,20 @@ ga('send', 'pageview');
     margin: 0 auto;
     padding: 1px;
     box-shadow: 0 0 8px #888;
+  }
+
+  @media (max-width: 767px) {
+    .navbar {
+      height: 10vh;
+    }
+  }
+  @media (max-width: 900px) {
+    .container-fluid {
+      width: 95%;
+    }
+    .text-container {
+      width: 95%;
+    }
   }
 
   .mea-keyboard-main {
