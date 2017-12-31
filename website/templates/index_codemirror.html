@@ -349,46 +349,46 @@ ga('send', 'pageview');
 
     <div class="collapse navbar-collapse navbar-right">
       <ul class="nav navbar-nav">
-        <li class=" navbar-li-active">
+        <li class="navbar-li-active">
           <button id="deasciify-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="cgiosu → çğıöşü">
-              <i class="fas fa-star"></i>
-              Deasciify
+              title="cgiosu → çğıöşü">
+            <i class="fas fa-star"></i>
+            Deasciify
           </button>
         </li>
         <li>
           <button id="asciify-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="çğıöşü → cgiosu">
-              Asciify
+              title="çğıöşü → cgiosu">
+            Asciify
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="undo-btn"  class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Geri al">
+              title="Geri al">
             <i title="Geri al" class="fas fa-undo-alt"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="redo-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Yinele">
+              title="Yinele">
             <i title="Yinele" class="fas fa-redo-alt"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="keyboard-btn" class="btn btn-default navbar-btn"
-            data-toggle="tooltip" data-placement="bottom" title="Klavyeyi göster">
+              title="Klavyeyi göster">
             <i title="Klavye" class="fas fa-keyboard"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
           <button id="settings-btn" class="btn btn-default navbar-btn"
-          data-toggle="tooltip" data-placement="bottom" title="Ayarlar &amp; Diğer">
+              title="Ayarlar &amp; Diğer">
             <i title="Ayarlar" class="fas fa-cog"></i>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc; border-right: 1px solid #ccc">
           <button id="benchmark-btn" class="btn btn-default navbar-btn"
-           data-toggle="tooltip" data-placement="bottom" title="...">
+              title="...">
             <i title="Ayarlar" class="fas fa-ellipsis-h"></i>
           </button>
         </li>
@@ -560,12 +560,6 @@ $("#benchmark-btn").click(function() {
   editor.setValue(result.text);
   $("#benchmark-result").html("Deasciified: " + time + " milliseconds");
 });
-
-$(function () {
-  $('[data-toggle="tooltip"]').tooltip({
-    delay: { "show": 2000, "hide": 0 }
-  });
-})
 </script>
 
 <!-- Pattern list (very large) -->
