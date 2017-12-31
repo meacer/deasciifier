@@ -471,7 +471,6 @@ var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
   readOnly: "nocursor"
 });
 
-var deasc = null;
 var app = null;
 window.Deasciifier = window.Deasciifier || {};
 window.Deasciifier.onPatternListLoaded = function(patternList) {
@@ -518,14 +517,14 @@ $("#keyboard-btn").click(function() {
 $("#benchmark-btn").click(function() {
   console.log("Benchmarking...");
   $("#benchmark-result").html("");
-  $.get("/static/test_text.txt", function(data) {
-    editor.setValue(data);
+  $.get("/static/test_text.txt", function(text) {
+    editor.setValue(text);
+    var start = new Date();
+    var result = app.deasciifier_instance.process(text);
+    var time = new Date() - start;
+    editor.setValue(result.text);
+    $("#benchmark-result").html("Deasciified: " + time + " milliseconds");
   })
-  var start = new Date();
-  var result = deasc.process(text);
-  var time = new Date() - start;
-  editor.setValue(result.text);
-  $("#benchmark-result").html("Deasciified: " + time + " milliseconds");
 });
 </script>
 
