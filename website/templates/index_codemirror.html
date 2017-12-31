@@ -496,21 +496,8 @@ window.Deasciifier = window.Deasciifier || {};
 window.Deasciifier.onPatternListLoaded = function(patternList) {
   editor.setOption("readOnly", false);
   editor.focus();
-
-  //deasc = new deasciifier.Deasciifier();
-  //enableControls(true);
-  //document.getElementById("btn_deasciify").style.visibility = "visible";
-  //document.getElementById("btn_asciify").style.visibility = "visible";
-
-  /*DeasciifyApp.init({
-    "textbox": textArea,
-    "keyboard_toggle_btn": "btn_keyboard"
-  });
-  textArea.onclick = on_focus_handler; // TODO: This will be overriden by suggestions popup menu?
-  textArea.onfocus = on_focus_handler;*/
-  //document.getElementById("status").textContent = "LOADED";
-  //deasc.init(patternList);
-  app = new DeasciifierApp.App(editor, patternList, document.body, document.getElementById("keyboard"));
+  app = new DeasciifierApp.App(
+      editor, patternList, document.body, document.getElementById("keyboard"));
 }
 
 $("#deasciify-btn").click(function() {
