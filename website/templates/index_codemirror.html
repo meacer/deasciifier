@@ -139,10 +139,15 @@
   }
 
   .navbar {
-    background: rgb(241, 241, 241);
     border-bottom: 1px solid #888;
-    /*height: 8vh;
-    margin-bottom: 0;*/
+
+   /* Permalink - use to edit and share this gradient:
+      http://colorzilla.com/gradient-editor/#ffffff+0,ededed+100;WhiteCustom */
+  background: rgb(255,255,255); /* Old browsers */
+  background: -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(237,237,237,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(237,237,237,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
   }
 /*
 @media (min-width: 768px) {
@@ -222,6 +227,8 @@
     padding-top: 70px;
     height: 100%;
     background: rgb(222, 222, 222);
+    background: rgb(252, 252, 252);
+    background: url(../static/img/v2.0/bg_pattern.gif);
   }
 
   .CodeMirror {
@@ -241,13 +248,13 @@
   }
 
   .container-fluid {
-    width: 70em;
+    width: 900px; /* Or 70em, but then virtual keyboard doesn't work. */
     padding-left: 0;
     padding-right: 0;
   }
 
   .text-container {
-    width: 70em;
+    width: 900px; /* Same as container-fluid.width */
     margin: 0 auto;
     padding: 1px;
     box-shadow: 0 0 8px #888;
@@ -369,6 +376,10 @@
     font-size: 0;
   }*/
 
+  .navbar {
+    box-shadow: -5px 0 5px #333;
+  }
+
   .navbar-btn {
     background: none;
     color: none;
@@ -392,12 +403,12 @@
 
 </style>
 
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container-fluid">
 
     <a class="navbar-brand" href="#">
-      <img src="static/favicon.png" height="100%">
-      <h3 class="heading hidden-sm">deasciifier.com</h3>
+      <img src="static/favicon.svg" height="100%">
+      <h3 class="heading hidden-sm">Turkish Deasciifier</h3>
     </a>
 
     <div class="collapse navbar-collapse navbar-right">
