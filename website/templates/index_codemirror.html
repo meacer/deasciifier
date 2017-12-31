@@ -402,24 +402,16 @@ ga('send', 'pageview');
               <li class="list-group-item">
                 <div class="checkbox">
                   <label>
-                      <input type="checkbox" value="">
-                      Yazarken cevir
+                      <input type="checkbox" value="" checked id="option-auto-convert">
+                      Yazarken çevir
                     </label>
                 </div>
               </li>
               <li class="list-group-item">
                 <div class="checkbox">
                   <label>
-                      <input type="checkbox" value="">
-                      Duzeltme menusunu goster
-                    </label>
-                </div>
-              </li>
-              <li class="list-group-item">
-                <div class="checkbox">
-                  <label>
-                      <input type="checkbox" value="">
-                      Satir numaralarini goster
+                      <input type="checkbox" value="" checked id="option-correction-menu">
+                      Düzeltme menüsünü göster
                     </label>
                 </div>
               </li>
@@ -509,6 +501,14 @@ $("#undo-btn").click(function() {
 $("#redo-btn").click(function() {
   app.hideCorrectionMenu();
   editor.execCommand("redo");
+});
+
+$("#option-auto-convert").change(function(event) {
+  app.setEnableAutoConvert($(event.target).prop('checked'));
+});
+
+$("#option-correction-menu").change(function(event) {
+  app.setEnableCorrectionMenu($(event.target).prop('checked'));
 });
 
 $("#keyboard-btn").click(function() {
