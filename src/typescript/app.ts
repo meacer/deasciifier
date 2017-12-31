@@ -15,7 +15,9 @@ import { DomFactory, DomElement } from "./view";
 import { KeyboardLayout } from "./keyboard_layout_turkish"
 
 class Options {
-  public constructor(public highlightChanges: boolean) { }
+  public constructor(public highlightChanges: boolean,
+    public enableCorrectionMenu: boolean,
+    public enableAutoConvert: boolean) { }
 }
 
 interface TextEditor {
@@ -25,9 +27,9 @@ interface TextEditor {
   getSelection(): TextRange;
   setSelection(range: TextRange): void;
 
-  highlight(range: TextRange, cssName: string) : any;
+  highlight(range: TextRange, cssName: string): any;
   // Use this for multiple markers.
-  highlightMultiple(ranges: TextRange[], cssName: string) : void;
+  highlightMultiple(ranges: TextRange[], cssName: string): void;
 
   clearHighlights(range: TextRange): void;
 
@@ -91,13 +93,13 @@ class CodeMirrorEditor implements TextEditor {
     let rangeStart = this.editor.posFromIndex(range.start);
     let rangeEnd = this.editor.posFromIndex(range.end);
     return this.editor.markText(
-        rangeStart, rangeEnd,
-        { readOnly: false, className: cssName });
+      rangeStart, rangeEnd,
+      { readOnly: false, className: cssName });
   }
 
   public highlightMultiple(ranges: TextRange[], cssName: string) {
     let self = this;
-    this.editor.operation(function() {
+    this.editor.operation(function () {
       for (let range of ranges) {
         self.highlight(range, cssName);
       }
@@ -185,7 +187,7 @@ class DeasciiBox {
     domFactory: DomFactory,
     private textEditor: TextEditor,
     private textProcessor: DeasciifyProcessor) {
-    this.options_ = new Options(true);
+    this.options_ = new Options(true, true, true);
     this.correctionMenuSelection = null;
 
     let correctionElement = domFactory.createDiv();
@@ -199,6 +201,9 @@ class DeasciiBox {
   }
 
   public onKeyUp(keyCode: number) {
+    if (!this.options_.enableAutoConvert) {
+      return;
+    }
     if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
       this.deasciifyCursor();
     }
@@ -206,6 +211,10 @@ class DeasciiBox {
 
   public onClick() {
     this.hideCorrectionMenu();
+    if (!this.options_.enableCorrectionMenu) {
+      return;
+    }
+
     let selectionRange = this.textEditor.getSelection();
     // Since this is a mouse up event, we expect start and end positions
     // to be the same. TODO: Is this always the case?
@@ -284,7 +293,7 @@ class DeasciiBox {
       return;
     }
     //this.textEditor.clearHighlights();
-    let ranges : TextRange[]  = [];
+    let ranges: TextRange[] = [];
     for (let i = 0; i < changedPositions.length; i++) {
       ranges.push(new TextRange(changedPositions[i], changedPositions[i] + 1));
     }
@@ -312,6 +321,17 @@ class DeasciiBox {
     this.textEditor.setText(
       result.text.substring(range.start, range.end), range);
     this.highlightChanges(result.changedPositions, false);
+  }
+
+  public setEnableCorrectionMenu(enabled: boolean) {
+    if (!enabled) {
+      this.hideCorrectionMenu();
+    }
+    this.options_.enableCorrectionMenu = enabled;
+  }
+
+  public setEnableAutoConvert(enabled: boolean) {
+    this.options_.enableAutoConvert = enabled;
   }
 }
 
@@ -386,5 +406,13 @@ export class App implements TextEditorEventListener {
 
   public onClick() {
     this.deasciiBox.onClick();
+  }
+
+  public setEnableCorrectionMenu(enabled: boolean) {
+    this.deasciiBox.setEnableCorrectionMenu(enabled);
+  }
+
+  public setEnableAutoConvert(enabled: boolean) {
+    this.deasciiBox.setEnableAutoConvert(enabled);
   }
 }
