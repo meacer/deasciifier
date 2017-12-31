@@ -190,21 +190,6 @@ ga('send', 'pageview');
     float: right;
   }
 
-  @media (max-width: 767px) {
-    .nav > li {
-      display: inline-block;
-    }
-  }
-
-  @media (max-width: 900px) {
-    .container-fluid {
-      width: 95%;
-    }
-    .text-container {
-      width: 95%;
-    }
-  }
-
   .mea-keyboard-main {
     font-size: 1.5em;
     margin: 0 auto;
@@ -331,6 +316,29 @@ ga('send', 'pageview');
     background: orange;
     color: white;
   }
+
+  @media (max-width: 900px) {
+    .container-fluid {
+      width: 95%;
+    }
+    .text-container {
+      width: 95%;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .nav > li {
+      display: inline-block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .navbar-btn {
+      font-size: 1em;
+      min-width: 3em;
+    }
+  }
+
 </style>
 </head>
 
