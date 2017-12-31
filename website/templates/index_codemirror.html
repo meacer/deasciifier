@@ -52,6 +52,7 @@ ga('send', 'pageview');
 <!-- CodeMirror -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.33.0/addon/display/placeholder.min.js"></script>
 
 <!-- Deasciifier -->
 <script src="/static/ts/bundle.js"></script>
@@ -271,6 +272,10 @@ ga('send', 'pageview');
   .CodeMirror-scroll {
     min-height: 80vh;
   }
+
+  .CodeMirror-empty { outline: 1px solid #c22; }
+  .CodeMirror-empty.CodeMirror-focused { outline: none; }
+  .CodeMirror pre.CodeMirror-placeholder { color: #999; }
 
   .container {
     width: 90%;
@@ -580,9 +585,7 @@ ga('send', 'pageview');
 </div>
 
 <div class="text-container">
-  <textarea id="txt">
-    arkadaslarla agaca ciktik arkadaslarla agaca ciktik arkadaslarla agaca ciktik
-  </textarea>
+  <textarea id="txt" placeholder="Çevirmek istediğiniz metni buraya giriniz."></textarea>
 </div>
 <div style="margin: 0 auto; width: 100%; text-align: center; margin-top: 2em; margin-bottom: 1em">
   deasciifier.com - 2018
