@@ -56,15 +56,6 @@ ga('send', 'pageview');
 <style type="text/css">
   /** BOOTSTRAP: */
 
-  @media (min-width: 768px) {
-    .navbar-nav {
-      float: none;
-      margin: 0 auto;
-      display: table;
-      table-layout: fixed;
-    }
-  }
-
   .navbar-brand {
     display: inline-block;
     padding: 0;
@@ -111,9 +102,11 @@ ga('send', 'pageview');
     color: white;
     font-weight: bold;
   }
-
   .navbar-li-active:hover {
     background: orange;
+  }
+  .navbar-li-active .navbar-btn {
+    color: white;
   }
 
   .navbar-default .navbar-nav>li>a {
@@ -188,11 +181,21 @@ ga('send', 'pageview');
     box-shadow: 0 0 8px #888;
   }
 
+  .navbar-nav {
+    margin: 0 auto;
+  }
+
+  .navbar-right {
+    margin-right: 0;
+    float: right;
+  }
+
   @media (max-width: 767px) {
-    .navbar {
-      height: 10vh;
+    .nav > li {
+      display: inline-block;
     }
   }
+
   @media (max-width: 900px) {
     .container-fluid {
       width: 95%;
@@ -328,10 +331,6 @@ ga('send', 'pageview');
     background: orange;
     color: white;
   }
-  .navbar-li-active .navbar-btn {
-    color: white;
-  }
-
 </style>
 </head>
 
@@ -341,21 +340,23 @@ ga('send', 'pageview');
 
     <a class="navbar-brand" href="#">
       <img src="static/icon.svg" height="100%">
-      <h3 class="heading hidden-sm">Turkish Deasciifier</h3>
+      <h3 class="heading hidden-xs">Turkish Deasciifier</h3>
     </a>
-    <div class="collapse navbar-collapse navbar-right">
+    <div class="navbar-right">
       <ul class="nav navbar-nav">
         <li class="navbar-li-active">
           <button id="deasciify-btn" class="btn btn-default navbar-btn"
               title="cgiosu → çğıöşü">
-            <i class="fas fa-star"></i>
-            Deasciify
+            <i class="fas fa-star hidden-xs"></i>
+            <span class="hidden-xs">Deasciify</span>
+            <span class="visible-xs">D</span>
           </button>
         </li>
         <li>
           <button id="asciify-btn" class="btn btn-default navbar-btn"
               title="çğıöşü → cgiosu">
-            Asciify
+            <span class="hidden-xs">Asciify</span>
+            <span class="visible-xs">A</span>
           </button>
         </li>
         <li style="border-left: 1px solid #ccc">
