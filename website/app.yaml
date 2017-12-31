@@ -1,7 +1,7 @@
 # App name changed from |turkce-karakter| for High Replication Datastore
 # migration.
 application: turkce-klavye
-version: 4
+version: 5
 runtime: python27
 api_version: 1
 threadsafe: true
