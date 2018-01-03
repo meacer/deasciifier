@@ -235,7 +235,7 @@ a:hover {
   padding-top: 20px;
   font-size:11pt;
   display: block;
-  height: 55px;
+  min-height: 55px;
   background-color: #eeeeee;
   border-top: 1px solid #aaa;
   border-bottom: 1px solid #aaa;
