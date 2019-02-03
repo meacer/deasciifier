@@ -35,9 +35,6 @@ libraries:
 - name: django
   version: latest
 
-builtins:
-- appstats: on
-
 handlers:
 
 - url: /(favicon\.ico)

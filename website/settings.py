@@ -57,7 +57,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
-  'google.appengine.ext.appstats.recording.AppStatsDjangoMiddleware',
+  #'google.appengine.ext.appstats.recording.AppStatsDjangoMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
