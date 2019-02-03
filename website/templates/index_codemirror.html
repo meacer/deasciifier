@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<title>Online Turkish Deasciifier - deasciifier.com</title>
+<title>Yeni Online Turkish Deasciifier - deasciifier.com v2</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Language" content="tr" />
 <meta name="google" value="notranslate">
@@ -10,10 +10,17 @@
   content="Online Turkish Deasciifier automatically adds accented characters to
   Turkish text. Useful for people who type Turkish on a non-Turkish keyboard." />
 <meta name="keywords" content="deasciifier, turkish, asciifier, turkce, turkce klavye,
-deniz yuret, mustafa emre acer, turkish text deasciifier, turkce karakter, otomatik turkce karakter cevrimi" />
+deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter cevrimi" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="canonical" href="https://deasciifier.com" />
 
+<script>
+if (window.location.hostname == "www.deasciifier.com" ||
+    (window.location.hostname == "deasciifier.com" &&
+     window.location.protocol == "http:")) {
+  window.location = "https://deasciifier.com/v2";
+}
+</script>
 <!-- Google Analytics -->
 <script>
 (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -513,54 +520,54 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   editor.focus();
   app = new DeasciifierApp.App(
       editor, patternList, document.body, document.getElementById("keyboard"));
+
+  $("#deasciify-btn").click(function() {
+    app.deasciifySelection();
+  });
+
+  $("#asciify-btn").click(function() {
+    app.asciifySelection();
+  });
+
+  $("#settings-btn").click(function() {
+    $("#settings").modal();
+  });
+
+  $("#undo-btn").click(function() {
+    app.hideCorrectionMenu();
+    editor.execCommand("undo");
+  });
+
+  $("#redo-btn").click(function() {
+    app.hideCorrectionMenu();
+    editor.execCommand("redo");
+  });
+
+  $("#option-auto-convert").change(function(event) {
+    app.setEnableAutoConvert($(event.target).prop('checked'));
+  });
+
+  $("#option-correction-menu").change(function(event) {
+    app.setEnableCorrectionMenu($(event.target).prop('checked'));
+  });
+
+  $("#keyboard-btn").click(function() {
+    $("#keyboard").slideToggle({duration: 200});
+  });
+
+  $("#benchmark-btn").click(function() {
+    console.log("Benchmarking...");
+    $("#benchmark-result").html("");
+    $.get("/static/test_text.txt", function(text) {
+      editor.setValue(text);
+      var start = new Date();
+      var result = app.deasciifier_instance.process(text);
+      var time = new Date() - start;
+      editor.setValue(result.text);
+      $("#benchmark-result").html("Deasciified: " + time + " milliseconds");
+    });
+  });
 }
-
-$("#deasciify-btn").click(function() {
-  app.deasciifySelection();
-});
-
-$("#asciify-btn").click(function() {
-  app.asciifySelection();
-});
-
-$("#settings-btn").click(function() {
-  $("#settings").modal();
-});
-
-$("#undo-btn").click(function() {
-  app.hideCorrectionMenu();
-  editor.execCommand("undo");
-});
-
-$("#redo-btn").click(function() {
-  app.hideCorrectionMenu();
-  editor.execCommand("redo");
-});
-
-$("#option-auto-convert").change(function(event) {
-  app.setEnableAutoConvert($(event.target).prop('checked'));
-});
-
-$("#option-correction-menu").change(function(event) {
-  app.setEnableCorrectionMenu($(event.target).prop('checked'));
-});
-
-$("#keyboard-btn").click(function() {
-  $("#keyboard").slideToggle({duration: 200});
-});
-
-$("#benchmark-btn").click(function() {
-  console.log("Benchmarking...");
-  $("#benchmark-result").html("");
-  $.get("/static/test_text.txt", function(text) {
-    editor.setValue(text);
-    var start = new Date();
-    var result = app.deasciifier_instance.process(text);
-    var time = new Date() - start;
-    editor.setValue(result.text);
-    $("#benchmark-result").html("Deasciified: " + time + " milliseconds");
-  })
-});
 </script>
 
 <!-- Pattern list (very large) -->
