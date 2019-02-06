@@ -74,6 +74,6 @@ misses.forEach(function(pos: number) {
 console.log("=== Stats ===");
 console.log("ASCIIfied characters: " , asciiPositions.size);
 console.log("DEASCIIfied characters: " , deasciiPositions.size);
-console.log("Overlap: ", intersection.size);
-console.log("Misses: ", misses.size);
-console.log("False positives: ", false_positives.size);
+console.log("Overlap: ", intersection.size, " ", Math.floor(intersection.size * 100 / asciiPositions.size), "%");
+console.log("Misses: ", misses.size, " ", Math.floor(misses.size * 100 / asciiPositions.size), "%");
+console.log("False positives: ", false_positives.size, " ", Math.floor(false_positives.size * 100 / asciiPositions.size), "%");
