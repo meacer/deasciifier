@@ -5,7 +5,8 @@
     "preserveConstEnums": true,
     "sourceMap": false,
     "outDir": "out/",
-    "types": []
+    "types": [],
+    "lib": ["dom", "es6"]
   },
   "files": [
     "common.ts",

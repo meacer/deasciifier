@@ -1,6 +1,6 @@
 exports.config = {
   seleniumServerJar: "../node_modules/webdriver-manager/selenium/selenium-server-standalone-2.53.1.jar",
-  chromeDriver: "../node_modules/webdriver-manager/selenium/chromedriver_2.26",
+  chromeDriver: "../node_modules/chromedriver/bin/chromedriver",
   specs: ['../out/interactive_browser_test.js'],
 
   rootElement: 'html',
