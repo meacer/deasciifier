@@ -513,6 +513,24 @@ var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
   readOnly: "nocursor"
 });
 
+function getSizeBin(result) {
+  if (!result || !result.text) {
+    return "empty";
+  }
+  var bins = [10, 25, 50,
+              100, 250, 500,
+              1000, 2000, 5000,
+              10000, 25000, 50000,
+              100000, 250000, 500000,
+              1000000];
+  for (var i = 0; i < bins.length; i++) {
+    if (result.text.length < bins[i]) {
+      return "length" + bins[i];
+    }
+  }
+  return "large";
+}
+
 var app = null;
 window.Deasciifier = window.Deasciifier || {};
 window.Deasciifier.onPatternListLoaded = function(patternList) {
@@ -522,25 +540,30 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
       editor, patternList, document.body, document.getElementById("keyboard"));
 
   $("#deasciify-btn").click(function() {
-    app.deasciifySelection();
+    var result = app.deasciifySelection();
+    ga('send', 'event', 'button', 'deasciify', getSizeBin(result));
   });
 
   $("#asciify-btn").click(function() {
-    app.asciifySelection();
+    var result = app.asciifySelection();
+    ga('send', 'event', 'button', 'asciify', getSizeBin(result));
   });
 
   $("#settings-btn").click(function() {
     $("#settings").modal();
+    ga('send', 'event', 'button', 'settings');
   });
 
   $("#undo-btn").click(function() {
     app.hideCorrectionMenu();
     editor.execCommand("undo");
+    ga('send', 'event', 'button', 'undo');
   });
 
   $("#redo-btn").click(function() {
     app.hideCorrectionMenu();
     editor.execCommand("redo");
+    ga('send', 'event', 'button', 'redo');
   });
 
   $("#option-auto-convert").change(function(event) {
@@ -553,6 +576,7 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
 
   $("#keyboard-btn").click(function() {
     $("#keyboard").slideToggle({duration: 200});
+    ga('send', 'event', 'button', 'keyboard');
   });
 
   $("#benchmark-btn").click(function() {
