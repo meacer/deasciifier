@@ -158,10 +158,10 @@ var DeasciiBox = /** @class */ (function () {
             return;
         }
         var selectionRange = this.textEditor.getSelection();
-        // Since this is a mouse up event, we expect start and end positions
-        // to be the same. TODO: Is this always the case?
+        // If the user double clicks on a word, the word will be selected and start
+        // and end will be different. Don't do anything in that case.
         if (selectionRange.start != selectionRange.end) {
-            throw new Error("Unexpected condition");
+            return;
         }
         var cursorPos = selectionRange.start;
         var text = this.textEditor.getText();
@@ -251,6 +251,7 @@ var DeasciiBox = /** @class */ (function () {
         var result = this.textProcessor.processRange(this.textEditor.getText(), range, null);
         this.textEditor.setText(result.text.substring(range.start, range.end), range);
         this.highlightChanges(result.changedPositions, false);
+        return result;
     };
     DeasciiBox.prototype.setEnableCorrectionMenu = function (enabled) {
         if (!enabled) {
@@ -297,10 +298,10 @@ var App = /** @class */ (function () {
         this.keyboard.create(this.keyboardHandler);
     }
     App.prototype.deasciifySelection = function () {
-        this.deasciiBox.processSelection(TextProcessorMode.DEASCIIFY);
+        return this.deasciiBox.processSelection(TextProcessorMode.DEASCIIFY);
     };
     App.prototype.asciifySelection = function () {
-        this.deasciiBox.processSelection(TextProcessorMode.ASCIIFY);
+        return this.deasciiBox.processSelection(TextProcessorMode.ASCIIFY);
     };
     App.prototype.hideCorrectionMenu = function () {
         this.deasciiBox.hideCorrectionMenu();

@@ -216,10 +216,10 @@ class DeasciiBox {
     }
 
     let selectionRange = this.textEditor.getSelection();
-    // Since this is a mouse up event, we expect start and end positions
-    // to be the same. TODO: Is this always the case?
+    // If the user double clicks on a word, the word will be selected and start
+    // and end will be different. Don't do anything in that case.
     if (selectionRange.start != selectionRange.end) {
-      throw new Error("Unexpected condition");
+      return;
     }
     let cursorPos = selectionRange.start;
     let text: string = this.textEditor.getText();
