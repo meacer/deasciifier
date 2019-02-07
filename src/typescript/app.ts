@@ -321,6 +321,7 @@ class DeasciiBox {
     this.textEditor.setText(
       result.text.substring(range.start, range.end), range);
     this.highlightChanges(result.changedPositions, false);
+    return result;
   }
 
   public setEnableCorrectionMenu(enabled: boolean) {
@@ -389,11 +390,11 @@ export class App implements TextEditorEventListener {
   }
 
   public deasciifySelection() {
-    this.deasciiBox.processSelection(TextProcessorMode.DEASCIIFY);
+    return this.deasciiBox.processSelection(TextProcessorMode.DEASCIIFY);
   }
 
   public asciifySelection() {
-    this.deasciiBox.processSelection(TextProcessorMode.ASCIIFY);
+    return this.deasciiBox.processSelection(TextProcessorMode.ASCIIFY);
   }
 
   public hideCorrectionMenu() {

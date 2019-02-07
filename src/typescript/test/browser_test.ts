@@ -39,9 +39,11 @@ describe('App', function () {
 
   it('should asciify', function () {
     cm.setValue("Ağaça çıktık");
-    app.asciifySelection();
+    let result = app.asciifySelection();
     assert.equal("Agaca ciktik", cm.getValue());
     checkHighlights([1, 3, 6, 7, 10]);
+    expect(result.text).to.eql("Agaca ciktik");
+    expect(result.changedPositions).to.eql([ 1, 3, 6, 7, 10 ]);
   });
 
   it('should asciify selection', function () {
@@ -73,7 +75,10 @@ describe('App', function () {
       cm.getDoc().setSelection(
         { line: 0, ch: test_case.selection_start },
         { line: 0, ch: test_case.selection_end });
-      app.asciifySelection();
+      let result = app.asciifySelection();
+      expect(result.text).to.eql(test_case.expected_text);
+      expect(result.changedPositions).to.eql(test_case.expected_highlights);
+
       assert.equal(test_case.expected_text, cm.getValue(),
         `Wrong result for
         start: ${test_case.selection_start},
@@ -84,8 +89,10 @@ describe('App', function () {
 
   it('should deasciify', function () {
     cm.setValue("Agaca ciktik");
-    app.deasciifySelection();
-    assert.equal("Ağaça çıktık", cm.getValue());
+    let result = app.deasciifySelection();
+    expect(cm.getValue()).to.eql("Ağaça çıktık");
+    expect(result.text).to.eql("Ağaça çıktık");
+    expect(result.changedPositions).to.eql([ 1, 3, 6, 7, 10 ]);
   });
 
   it('should deasciify selection', function () {
@@ -117,7 +124,10 @@ describe('App', function () {
       cm.getDoc().setSelection(
         { line: 0, ch: test_case.selection_start },
         { line: 0, ch: test_case.selection_end });
-      app.deasciifySelection();
+      let result = app.deasciifySelection();
+      expect(result.text).to.eql(test_case.expected_text);
+      expect(result.changedPositions).to.eql(test_case.expected_highlights);
+
       assert.equal(test_case.expected_text, cm.getValue(),
         `Wrong result for
         start: ${test_case.selection_start},
