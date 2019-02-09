@@ -62,6 +62,9 @@ export class Asciifier implements TextProcessor {
 export const URL_REGEX: RegExp
   = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
 
+export const EMAIL_REGEX: RegExp
+  = /((^|\s).*)?@(.*\s)?/gi;
+
 class DefaultSkipFilter {
   static getSkipRegions(
     options: TextProcessingOptions, text: string): SkipList {
@@ -69,6 +72,7 @@ class DefaultSkipFilter {
     let regexps: Array<RegExp> = [];
     if (options && options.skipURLs) {
       regexps.push(URL_REGEX);
+      regexps.push(EMAIL_REGEX);
     }
     let skipList: Array<TextRange> = [];
     for (let i = 0; i < regexps.length; i++) {

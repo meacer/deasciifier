@@ -65,6 +65,7 @@ describe('Deasciifier', function () {
   it('should detect URLs', function () {
     const URLS: Array<string> = [
       "http://www.google.com",
+      " http://www.google.com ",
       "http://google.com",
       "https://www.google.com",
       "ftp://www.google.com",
@@ -87,6 +88,39 @@ describe('Deasciifier', function () {
     // Non-matches
     for (let i = 0; i < NON_URLS.length; i++) {
       assert.isNull(NON_URLS[i].match(deasciifier.URL_REGEX), "Case " + i);
+    }
+  });
+
+  it('should detect Email Like Words', function () {
+    const MATCHES: Array<string> = [
+      "test@test.com",
+      "@test.com",
+      "test@",
+      "test@ ",
+      " test@ string"
+    ];
+    const NON_MATCHES: Array<string> = [
+      "http://www.google.com",
+      "http://google.com",
+      "https://www.google.com",
+      "ftp://www.google.com",
+      "www.google.com",
+      "www.google.net",
+      "www.google",
+      "Test",
+      "Test.string",
+      "www",
+      "www. Test",
+      "http:// google.com",
+      "google.com"
+    ];
+    // Matches
+    for (let i = 0; i < MATCHES.length; i++) {
+      assert.isNotNull(MATCHES[i].match(deasciifier.EMAIL_REGEX), "Case " + i);
+    }
+    // Non-matches
+    for (let i = 0; i < NON_MATCHES.length; i++) {
+      assert.isNull(NON_MATCHES[i].match(deasciifier.EMAIL_REGEX), "Case " + i);
     }
   });
 
