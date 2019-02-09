@@ -251,10 +251,10 @@
     deasciifySelection: function(textArea) {
       var instance = this.getInstance(textArea);
       if (instance) {
-        instance.processSelection(DeasciiConverter);
-      } else {
-        console.log("DeasciifyBox not installed for this text area");
+        return instance.processSelection(DeasciiConverter);
       }
+      console.log("DeasciifyBox not installed for this text area");
+      return null;
     },
 
     /** Asciifies the selection within the textarea. If no text is selected,
@@ -265,10 +265,10 @@
     asciifySelection: function(textArea) {
       var instance = this.getInstance(textArea);
       if (instance) {
-        instance.processSelection(AsciiConverter);
-      } else {
-        console.log("DeasciifyBox not installed for this text area");
+        return instance.processSelection(AsciiConverter);
       }
+      console.log("DeasciifyBox not installed for this text area");
+      return null;
     },
 
     onResizeWindow: function(evt) {
@@ -568,9 +568,9 @@
     },
 
     /** Processes the selected text range with the given textProcessor.
-     * textProcessor
-     *  can be one of DeasciiConverter, AsciiConverter or any other user defined
-     *  filter.
+     *  textProcessor can be one of DeasciiConverter, AsciiConverter or any
+     *  other user defined filter.
+     *  Returns the result of the conversion if any, or null.
      */
     processSelection: function(textProcessor) {
       if (this.correction.menu) {
@@ -583,7 +583,7 @@
         // No selection, process whole text
         if (this.options.get(OPTION_CONFIRM_FULLTEXT, true)) {
           if (!confirm(question)) {
-            return false;
+            return null;
           }
         }
         result = textProcessor.process(this.textArea.value);
@@ -596,7 +596,7 @@
       this.displayResults(result);
       // Restore cursor
       TEXT_SELECTION.setRange(this.textArea, selectionRange);
-      return true;
+      return result;
     },
 
     onKeyUp: function(keyCode) {

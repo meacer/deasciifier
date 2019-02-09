@@ -22,11 +22,11 @@ var DeasciifyApp = {
   textBox: null,
 
   deasciifySelection: function(textBox) {
-    DeasciifyBox.deasciifySelection(textBox);
+    return DeasciifyBox.deasciifySelection(textBox);
   },
 
   asciifySelection: function(textBox) {
-    DeasciifyBox.asciifySelection(textBox);
+    return DeasciifyBox.asciifySelection(textBox);
   },
 
   displayKeyboard: function(keyboardContainer) {
