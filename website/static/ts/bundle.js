@@ -11,13 +11,13 @@ var keyboard_1 = require("./keyboard");
 var text_helper_1 = require("./text_helper");
 var dom_1 = require("./dom");
 var keyboard_layout_turkish_1 = require("./keyboard_layout_turkish");
-var Options = /** @class */ (function () {
-    function Options(highlightChanges, enableCorrectionMenu, enableAutoConvert) {
+var AppOptions = /** @class */ (function () {
+    function AppOptions(highlightChanges, enableCorrectionMenu, enableAutoConvert) {
         this.highlightChanges = highlightChanges;
         this.enableCorrectionMenu = enableCorrectionMenu;
         this.enableAutoConvert = enableAutoConvert;
     }
-    return Options;
+    return AppOptions;
 }());
 var CodeMirrorEditor = /** @class */ (function () {
     function CodeMirrorEditor(editor, eventListener) {
@@ -134,7 +134,9 @@ var DeasciiBox = /** @class */ (function () {
     function DeasciiBox(parent, domFactory, textEditor, textProcessor) {
         this.textEditor = textEditor;
         this.textProcessor = textProcessor;
-        this.options_ = new Options(true, true, true);
+        this.app_options_ = new AppOptions(true, true, true);
+        // Skip URLs etc.
+        this.processing_options_ = new common_1.TextProcessingOptions(true);
         this.correctionMenuSelection = null;
         var correctionElement = domFactory.createDiv();
         this.correctionMenu =
@@ -145,7 +147,7 @@ var DeasciiBox = /** @class */ (function () {
         this.textEditor.setText(text, this.correctionMenuSelection);
     };
     DeasciiBox.prototype.onKeyUp = function (keyCode) {
-        if (!this.options_.enableAutoConvert) {
+        if (!this.app_options_.enableAutoConvert) {
             return;
         }
         if (text_helper_1.TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
@@ -154,7 +156,7 @@ var DeasciiBox = /** @class */ (function () {
     };
     DeasciiBox.prototype.onClick = function () {
         this.hideCorrectionMenu();
-        if (!this.options_.enableCorrectionMenu) {
+        if (!this.app_options_.enableCorrectionMenu) {
             return;
         }
         var selectionRange = this.textEditor.getSelection();
@@ -203,7 +205,7 @@ var DeasciiBox = /** @class */ (function () {
             rangeToDeasciify = selectionRange;
         }
         // Deasciify the range.
-        var result = this.textProcessor.processRange(text, rangeToDeasciify, null);
+        var result = this.textProcessor.processRange(text, rangeToDeasciify, this.processing_options_);
         // Highlight the results.
         this.displayResult(result);
         // Restore cursor.
@@ -220,7 +222,7 @@ var DeasciiBox = /** @class */ (function () {
     };
     DeasciiBox.prototype.highlightChanges = function (changedPositions, forceClear) {
         // Highlight results.
-        if (!this.options_.highlightChanges) {
+        if (!this.app_options_.highlightChanges) {
             return;
         }
         if ((!changedPositions || changedPositions.length == 0) && !forceClear) {
@@ -248,7 +250,7 @@ var DeasciiBox = /** @class */ (function () {
             range = { start: 0, end: this.textEditor.getText().length };
         }
         this.textProcessor.setMode(mode);
-        var result = this.textProcessor.processRange(this.textEditor.getText(), range, null);
+        var result = this.textProcessor.processRange(this.textEditor.getText(), range, this.processing_options_);
         this.textEditor.setText(result.text.substring(range.start, range.end), range);
         this.highlightChanges(result.changedPositions, false);
         return result;
@@ -257,10 +259,10 @@ var DeasciiBox = /** @class */ (function () {
         if (!enabled) {
             this.hideCorrectionMenu();
         }
-        this.options_.enableCorrectionMenu = enabled;
+        this.app_options_.enableCorrectionMenu = enabled;
     };
     DeasciiBox.prototype.setEnableAutoConvert = function (enabled) {
-        this.options_.enableAutoConvert = enabled;
+        this.app_options_.enableAutoConvert = enabled;
     };
     return DeasciiBox;
 }());
@@ -525,6 +527,7 @@ var Asciifier = /** @class */ (function () {
 }());
 exports.Asciifier = Asciifier;
 exports.URL_REGEX = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
+exports.EMAIL_REGEX = /((^|\s).*)?@(.*\s)?/gi;
 var DefaultSkipFilter = /** @class */ (function () {
     function DefaultSkipFilter() {
     }
@@ -533,6 +536,7 @@ var DefaultSkipFilter = /** @class */ (function () {
         var regexps = [];
         if (options && options.skipURLs) {
             regexps.push(exports.URL_REGEX);
+            regexps.push(exports.EMAIL_REGEX);
         }
         var skipList = [];
         for (var i = 0; i < regexps.length; i++) {

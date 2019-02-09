@@ -14,7 +14,7 @@ import { DomElementImpl, DomFactoryImpl } from "./dom";
 import { DomFactory, DomElement } from "./view";
 import { KeyboardLayout } from "./keyboard_layout_turkish"
 
-class Options {
+class AppOptions {
   public constructor(public highlightChanges: boolean,
     public enableCorrectionMenu: boolean,
     public enableAutoConvert: boolean) { }
@@ -177,7 +177,8 @@ class CorrectionCallbackImpl implements CorrectionCallback {
 }
 
 class DeasciiBox {
-  private options_: Options;
+  private app_options_: AppOptions;
+  private processing_options_ : TextProcessingOptions;
   private correctionMenu: CorrectionMenu;
   private correctionMenuSelection: TextRange;
   private correctionMenuHighlight: any;
@@ -187,7 +188,9 @@ class DeasciiBox {
     domFactory: DomFactory,
     private textEditor: TextEditor,
     private textProcessor: DeasciifyProcessor) {
-    this.options_ = new Options(true, true, true);
+    this.app_options_ = new AppOptions(true, true, true);
+    // Skip URLs etc.
+    this.processing_options_ = new TextProcessingOptions(true);
     this.correctionMenuSelection = null;
 
     let correctionElement = domFactory.createDiv();
@@ -201,7 +204,7 @@ class DeasciiBox {
   }
 
   public onKeyUp(keyCode: number) {
-    if (!this.options_.enableAutoConvert) {
+    if (!this.app_options_.enableAutoConvert) {
       return;
     }
     if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
@@ -211,7 +214,7 @@ class DeasciiBox {
 
   public onClick() {
     this.hideCorrectionMenu();
-    if (!this.options_.enableCorrectionMenu) {
+    if (!this.app_options_.enableCorrectionMenu) {
       return;
     }
 
@@ -266,7 +269,7 @@ class DeasciiBox {
     }
     // Deasciify the range.
     let result =
-      this.textProcessor.processRange(text, rangeToDeasciify, null);
+      this.textProcessor.processRange(text, rangeToDeasciify, this.processing_options_);
     // Highlight the results.
     this.displayResult(result);
     // Restore cursor.
@@ -286,7 +289,7 @@ class DeasciiBox {
   private highlightChanges(
     changedPositions: Array<number>, forceClear: boolean) {
     // Highlight results.
-    if (!this.options_.highlightChanges) {
+    if (!this.app_options_.highlightChanges) {
       return;
     }
     if ((!changedPositions || changedPositions.length == 0) && !forceClear) {
@@ -317,7 +320,7 @@ class DeasciiBox {
     }
     this.textProcessor.setMode(mode);
     let result =
-      this.textProcessor.processRange(this.textEditor.getText(), range, null);
+      this.textProcessor.processRange(this.textEditor.getText(), range, this.processing_options_);
     this.textEditor.setText(
       result.text.substring(range.start, range.end), range);
     this.highlightChanges(result.changedPositions, false);
@@ -328,11 +331,11 @@ class DeasciiBox {
     if (!enabled) {
       this.hideCorrectionMenu();
     }
-    this.options_.enableCorrectionMenu = enabled;
+    this.app_options_.enableCorrectionMenu = enabled;
   }
 
   public setEnableAutoConvert(enabled: boolean) {
-    this.options_.enableAutoConvert = enabled;
+    this.app_options_.enableAutoConvert = enabled;
   }
 }
 
