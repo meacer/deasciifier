@@ -114,8 +114,7 @@
                     id="btn_deasciify"
                     class="button large-button"
                     value="Deasciify"
-                    disabled="true"
-                    onclick='DeasciifyApp.deasciifySelection(document.getElementById("txt"))'>
+                    disabled="true">
                   Deasciify
                 </button>
                 <div class="btn_tiptext">cgiosu &rarr; çğıöşü</div>
@@ -125,8 +124,7 @@
                     id="btn_asciify"
                     class="button large-button"
                     value="Asciify"
-                    disabled="true"
-                    onclick='DeasciifyApp.asciifySelection(document.getElementById("txt"))'>
+                    disabled="true">
                   Asciify
                 </button>
                 <div class="btn_tiptext">çğıöşü &rarr; cgiosu</div>
@@ -249,6 +247,25 @@ function enableControls(enabled) {
     }
   }
 }
+
+function getSizeBin(result) {
+  if (!result || !result.text) {
+    return "empty";
+  }
+  var bins = [10, 25, 50,
+              100, 250, 500,
+              1000, 2000, 5000,
+              10000, 25000, 50000,
+              100000, 250000, 500000,
+              1000000];
+  for (var i = 0; i < bins.length; i++) {
+    if (result.text.length < bins[i]) {
+      return "length" + bins[i];
+    }
+  }
+  return "large";
+}
+
 window.Deasciifier.onPatternListLoaded = function(patternList) {
   $("#loading").hide();
   Deasciifier.init(patternList);
@@ -262,6 +279,15 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   });
   textArea.onclick = on_focus_handler; // TODO: This will be overriden by suggestions popup menu?
   textArea.onfocus = on_focus_handler;
+
+  document.getElementById("btn_deasciify").onclick = function() {
+    var result = DeasciifyApp.deasciifySelection(document.getElementById("txt"));
+    ga('send', 'event', 'button', 'deasciify', getSizeBin(result));
+  }
+  document.getElementById("btn_asciify").onclick = function() {
+    var result = DeasciifyApp.asciifySelection(document.getElementById("txt"));
+    ga('send', 'event', 'button', 'asciify', getSizeBin(result));
+  }
 }
 
 var first_time_clicked = true;
