@@ -282,11 +282,11 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
 
   document.getElementById("btn_deasciify").onclick = function() {
     var result = DeasciifyApp.deasciifySelection(document.getElementById("txt"));
-    ga('send', 'event', 'button', 'deasciify', getSizeBin(result));
+    ga('send', 'event', 'button', 'deasciify-old', getSizeBin(result));
   }
   document.getElementById("btn_asciify").onclick = function() {
     var result = DeasciifyApp.asciifySelection(document.getElementById("txt"));
-    ga('send', 'event', 'button', 'asciify', getSizeBin(result));
+    ga('send', 'event', 'button', 'asciify-old', getSizeBin(result));
   }
 }
 
