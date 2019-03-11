@@ -13,6 +13,17 @@
   deniz yuret, mustafa emre acer, turkish text deasciifier, turkce karakter, otomatik turkce karakter cevrimi" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="canonical" href="https://deasciifier.com" />
+
+  <script>
+  if (window.location.hostname == "www.deasciifier.com" ||
+      window.location.hostname == "turkce-karakter.appspot.com" ||
+      window.location.hostname == "turkce-klavye.appspot.com" ||
+      (window.location.hostname == "deasciifier.com" &&
+       window.location.protocol == "http:")) {
+    window.location = "https://deasciifier.com/";
+  }
+  </script>
+
   <link rel="stylesheet" href="/static/css/main.css"/>
   <!-- Google Analytics -->
   <script>
