@@ -1,0 +1,11 @@
+html, body {
+  font-family: 'Helvetica';
+  font-size: 1em;
+  margin: 1em;
+  padding: 1em;
+  text-align: center;
+}
+
+.content {
+  margin: 0 auto;
+}
