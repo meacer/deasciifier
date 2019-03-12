@@ -1,16 +1,16 @@
 {
   "background": {
-    "page":"background.html"
+    "page": "background.html"
   },
   "browser_action": {
-    "default_icon":"g-logo.png",
+    "default_icon": "g-logo.png",
     "default_title": "Turkish Deasciifier - T\u00FCrk\u00E7e karakterleri d\u00FCzelt"
   },
   "icons": {
-    "16":"g-logo.png",
-    "48":"g-logo.png",
-    "64":"g-logo.png",
-    "128":"g-logo.png"
+    "16": "g-logo.png",
+    "48": "g-logo.png",
+    "64": "g-logo.png",
+    "128": "g-logo.png"
   },
 
   "web_accessible_resources": [
@@ -21,7 +21,8 @@
   "permissions": [
     "notifications",
     "contextMenus",
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
 
   "commands": {
@@ -34,8 +35,9 @@
     }
   },
 
+  "options_page": "options.html",
   "update_url": "http://clients2.google.com/service/update2/crx",
   "version": "1.4.2",
-  "homepage_url":"http://www.deasciifier.com/?chrome_extension",
+  "homepage_url": "https://deasciifier.com/?chrome_extension",
   "manifest_version": 2
 }

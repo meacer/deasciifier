@@ -10,33 +10,45 @@ var MSG_CONVERT_TURKISH = "T\u00FCrk\u00E7e karakterleri \u00E7evir (Deasciify)"
 // Deasciifier
 var deasciifier = Deasciifier;
 
+var options = {
+  "confirm_conversions": true,
+};
+
+chrome.storage.sync.get(["confirm_conversions"], function(result) {
+  updateOptions({"confirm_conversions": result.confirm_conversions});
+});
+
+function updateOptions(o) {
+  options = o;
+}
+
 function deasciifyInput(input) {
-  // Deasciify the text
+  // Deasciify the text.
   var text = input.text;
   var isHTML = input.isHTML;
   var selectionStart = input.selectionStart;
   var selectionEnd = input.selectionEnd;
   var result = null;
   if (isHTML) {
-    // HTML. Always convert full text:
-    if (!confirm(MSG_CONVERT_FULL_TEXT)) {
+    // Always convert HTML in full.
+    if (options.confirm_conversions && !confirm(MSG_CONVERT_FULL_TEXT)) {
       return null;
     }
-    result = MEA.HtmlDeasciifier.deasciify(text);
-  } else {
-    // Plain text
-    if (selectionStart != selectionEnd) {
-      // only selected part
-      result = deasciifier.deasciifyRange(text, selectionStart, selectionEnd);
-    } else {
-      // full text
-      if (!confirm(MSG_CONVERT_FULL_TEXT)) {
-        return null;
-      }
-      result = deasciifier.deasciify(text);
-    }
+    return MEA.HtmlDeasciifier.deasciify(text);
   }
-  return result;
+
+  // Plain text.
+
+  // Convert only selected part.
+  if (selectionStart != selectionEnd) {
+    return deasciifier.deasciifyRange(text, selectionStart, selectionEnd);
+  }
+
+  // Convert full text.
+  if (options.confirm_conversions && !confirm(MSG_CONVERT_FULL_TEXT)) {
+    return null;
+  }
+  return deasciifier.deasciify(text);
 }
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
@@ -97,6 +109,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
         }
       }
     }
+    break;
+
+    case "UPDATE_OPTIONS":
+    updateOptions(msg.options);
     break;
   }
 });
