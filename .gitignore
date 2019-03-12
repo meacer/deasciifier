@@ -5,3 +5,8 @@ output/
 .svn
 .DS_Store
 src/typescript/out/
+bazel-bin
+bazel-genfiles
+bazel-out
+bazel-src
+bazel-testlogs
