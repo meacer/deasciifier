@@ -27,7 +27,8 @@
   "commands": {
     "toggle_deasciify": {
       "suggested_key": {
-        "default": "Alt+T"
+        "default": "Alt+T",
+        "default": "MacCtrl+Alt+T"
       },
       "description": "Toggle deasciify"
     }
