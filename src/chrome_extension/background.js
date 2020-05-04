@@ -124,7 +124,7 @@ function convertSelectedEditableInTab(tab) {
 
 function ConvertTurkishChars() {
   // Get the current tab:
-  chrome.tabs.getSelected(null, convertSelectedEditableInTab);
+  chrome.tabs.query({active: true}, convertSelectedEditableInTab);
 }
 
 function showNotification(title, text, timeout) {
