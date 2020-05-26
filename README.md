@@ -33,4 +33,4 @@ Minification of JS code is done using [Closure Compiler](https://developers.goog
 
 ### TypeScript
 
-The v2 version of the library is written in TypeScript. See (src/typescript/README.md)[src/typescript/README.md].
+The v2 version of the library is written in TypeScript. See [src/typescript/README.md](src/typescript/README.md).
