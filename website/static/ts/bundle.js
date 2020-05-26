@@ -4,6 +4,7 @@
 /// <reference path="./deasciifier.ts" />
 /// <reference path="./correction_menu.ts" />
 exports.__esModule = true;
+exports.App = void 0;
 var common_1 = require("./common");
 var deasciifier_1 = require("./deasciifier");
 var correction_menu_1 = require("./correction_menu");
@@ -327,6 +328,7 @@ exports.App = App;
 },{"./common":2,"./correction_menu":3,"./deasciifier":4,"./dom":5,"./keyboard":6,"./keyboard_layout_turkish":7,"./text_helper":8}],2:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.Position = exports.KeyCode = exports.TextProcessingOptions = exports.TextRange = void 0;
 // A text range. |start| is inclusive, |end| is exclusive.
 var TextRange = /** @class */ (function () {
     function TextRange(start, end) {
@@ -371,6 +373,7 @@ exports.Position = Position;
 },{}],3:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.CorrectionMenu = void 0;
 var turkish_1 = require("./turkish");
 function makeCorrectionTable() {
     var table = {};
@@ -472,6 +475,7 @@ exports.CorrectionMenu = CorrectionMenu;
 /// <reference path="./common.ts" />
 /// <reference path="./turkish.ts" />
 exports.__esModule = true;
+exports.Deasciifier = exports.EMAIL_REGEX = exports.URL_REGEX = exports.Asciifier = void 0;
 var common_1 = require("./common");
 var turkish_1 = require("./turkish");
 var SkipList = /** @class */ (function () {
@@ -802,6 +806,7 @@ exports.Deasciifier = Deasciifier;
 },{"./common":2,"./turkish":9}],5:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.DomFactoryImpl = exports.DomElementImpl = void 0;
 var DomElementImpl = /** @class */ (function () {
     function DomElementImpl(element) {
         this.element = element;
@@ -853,6 +858,7 @@ exports.DomFactoryImpl = DomFactoryImpl;
 },{}],6:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.Keyboard = void 0;
 var SPECIAL_KEY_TEXTS = {
     "tab": "tab",
     "backspace": "\u2190",
@@ -989,6 +995,7 @@ exports.Keyboard = Keyboard;
 },{}],7:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.KeyboardLayout = void 0;
 var TR_c = '_\u00E7';
 var TR_C = '_\u00C7';
 var TR_g = '_\u011F';
@@ -1080,6 +1087,7 @@ exports.KeyboardLayout = {
 },{}],8:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.TextHelper = void 0;
 var common_1 = require("./common");
 var TextHelper = /** @class */ (function () {
     function TextHelper() {
@@ -1199,6 +1207,7 @@ exports.TextHelper = TextHelper;
 },{"./common":2}],9:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+exports.TURKISH_ASCIIFY_TABLE = exports.TURKISH_CHAR_ALIST = exports.TurkishChars = void 0;
 var TurkishChars = /** @class */ (function () {
     function TurkishChars() {
     }
