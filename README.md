@@ -6,7 +6,9 @@ This repository contains libraries for JavaScript, C++ and C# as
 well as a website and a Chrome extension.
 
 Website: [https://deasciifier.com](https://deasciifier.com)
+
 Chrome extension: [https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk](https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk)
+
 
 ## Build instructions
 
@@ -28,3 +30,7 @@ This will write build artifacts to the `output/` directory. JavaScript artifacts
  - `deasciify_box.lib.min.js`: Minified DeasciifyBox library (deprecated, do not use)
 
 Minification of JS code is done using [Closure Compiler](https://developers.google.com/closure/compiler). A copy of Closure Compiler is included under `tools/closure_compiler`.
+
+### TypeScript
+
+The v2 version of the library is written in TypeScript. See (src/typescript/README.md)[src/typescript/README.md].
