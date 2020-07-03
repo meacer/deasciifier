@@ -36,8 +36,7 @@
   },
 
   "options_page": "options.html",
-  "update_url": "http://clients2.google.com/service/update2/crx",
-  "version": "1.5",
+  "version": "1.5.1",
   "homepage_url": "https://deasciifier.com/?chrome_extension",
   "manifest_version": 2
 }
