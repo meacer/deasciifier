@@ -18,7 +18,7 @@ def CompilePatternsV2(pattern_json_path):
   """
   keys = ['c', 'g', 'i', 'o', 's', 'u']
   key_strings = []
-  print "Generating patterns v2...";
+  print("Generating patterns v2...")
   with open(pattern_json_path) as pattern_json:
     patterns = json.loads(pattern_json.read())
     for key in keys:
