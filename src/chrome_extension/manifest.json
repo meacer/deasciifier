@@ -29,7 +29,7 @@
     "toggle_deasciify": {
       "suggested_key": {
         "default": "Alt+T",
-        "default": "MacCtrl+Alt+T"
+        "mac": "Ctrl+Shift+T"
       },
       "description": "Toggle deasciify"
     }
