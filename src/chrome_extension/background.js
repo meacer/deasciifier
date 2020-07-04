@@ -15,7 +15,7 @@ var options = {
 };
 
 chrome.storage.sync.get(["confirm_conversions"], function(result) {
-  updateOptions({"confirm_conversions": result.confirm_conversions});
+  updateOptions({"confirm_conversions": result ? result.confirm_conversions : true});
 });
 
 function updateOptions(o) {
@@ -129,7 +129,8 @@ function setBrowserActionUI(currentTabId, toggledCharCnt) {
   });
 }
 
-function convertSelectedEditableInTab(tab) {
+function convertSelectedEditableInTab(tabs) {
+  var tab = tabs[0];
   if (!tab) {
     return;
   }
