@@ -4,7 +4,7 @@ var MSG_AUTO_CONVERT_ON = "Otomatik \u00E7evrim A\u00C7IK";
 var MSG_AUTO_CONVERT_OFF = "Otomatik \u00E7evrim KAPALI";
 var MSG_TEXT_WILL_BE_AUTO_CONVERTED = "Se\u00E7ili kutuya T\u00FCrk\u00E7e karakterler siz yazarken otomatik olarak eklenecek";
 var MSG_TEXT_WONT_BE_AUTO_CONVERTED = "Se\u00E7ili kutu i\u00E7in T\u00FCrk\u00E7e karakterler otomatik olarak \u00E7evrilmeyecek";
-var ICON_NOTIFICATION = "g-logo.png";
+var ICON_NOTIFICATION = "icon-32.png";
 var MSG_CONVERT_TURKISH = "T\u00FCrk\u00E7e karakterleri \u00E7evir (Deasciify)";
 
 // Deasciifier

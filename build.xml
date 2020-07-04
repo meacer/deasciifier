@@ -256,9 +256,17 @@
     <copy todir="${chrome.extension.dir}/lib"
         file="src/js/utils/text_helper.js" />
 
-    <!-- Copy icon -->
-    <copy tofile="${chrome.extension.dir}/g-logo.png"
-      file="resources/icon80x80.png"/>
+    <!-- Copy icons -->
+    <copy todir="${chrome.extension.dir}"
+      file="resources/deasciifier-icons/icon-16.png"/>
+    <copy todir="${chrome.extension.dir}"
+      file="resources/deasciifier-icons/icon-32.png"/>
+    <copy todir="${chrome.extension.dir}"
+      file="resources/deasciifier-icons/icon-48.png"/>
+    <copy todir="${chrome.extension.dir}"
+      file="resources/deasciifier-icons/icon-64.png"/>
+    <copy todir="${chrome.extension.dir}"
+      file="resources/deasciifier-icons/icon-128.png"/>
 
     <echo message="DONE"/>
   </target>
@@ -297,9 +305,17 @@
     <copy todir="${firefox.extension.dir}/lib"
         file="src/js/utils/text_helper.js" />
 
-    <!-- Copy icon -->
-    <copy tofile="${firefox.extension.dir}/g-logo.png"
-      file="resources/icon80x80.png"/>
+    <!-- Copy icons -->
+    <copy todir="${firefox.extension.dir}"
+      file="resources/deasciifier-icons/icon-16.png"/>
+    <copy todir="${firefox.extension.dir}"
+      file="resources/deasciifier-icons/icon-32.png"/>
+    <copy todir="${firefox.extension.dir}"
+      file="resources/deasciifier-icons/icon-48.png"/>
+    <copy todir="${firefox.extension.dir}"
+      file="resources/deasciifier-icons/icon-64.png"/>
+    <copy todir="${firefox.extension.dir}"
+      file="resources/deasciifier-icons/icon-128.png"/>
 
     <echo message="DONE"/>
   </target>

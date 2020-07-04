@@ -3,18 +3,18 @@
     "page": "background.html"
   },
   "browser_action": {
-    "default_icon": "g-logo.png",
+    "default_icon": "icon-64.png",
     "default_title": "Turkish Deasciifier - T\u00FCrk\u00E7e karakterleri d\u00FCzelt"
   },
   "icons": {
-    "16": "g-logo.png",
-    "48": "g-logo.png",
-    "64": "g-logo.png",
-    "128": "g-logo.png"
+    "16": "icon-16.png",
+    "48": "icon-48.png",
+    "64": "icon-64.png",
+    "128": "icon-128.png"
   },
 
   "web_accessible_resources": [
-    "g-logo.png"
+    "icon-32.png"
   ],
   "description": "T\u00FCrk\u00E7e karakterleri otomatik olarak d\u00FCzelten bir eklenti (Automatically adds accented characters to Turkish texts)",
   "name": "Turkish Deasciifier",
