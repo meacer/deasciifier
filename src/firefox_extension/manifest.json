@@ -1,0 +1,38 @@
+{
+  "background": {
+    "page": "background.html"
+  },
+  "browser_action": {
+    "default_icon": "g-logo.png",
+    "default_title": "Turkish Deasciifier - T\u00FCrk\u00E7e karakterleri d\u00FCzelt"
+  },
+  "icons": {
+    "16": "g-logo.png",
+    "48": "g-logo.png",
+    "64": "g-logo.png",
+    "128": "g-logo.png"
+  },
+
+  "web_accessible_resources": [
+    "g-logo.png"
+  ],
+  "description": "T\u00FCrk\u00E7e karakterleri otomatik olarak d\u00FCzelten bir eklenti (Automatically adds accented characters to Turkish texts)",
+  "name": "Turkish Deasciifier",
+  "permissions": [
+    "notifications",
+    "contextMenus",
+    "activeTab",
+    "storage"
+  ],
+
+  "version": "1.5.1",
+  "homepage_url": "https://deasciifier.com/?chrome_extension",
+  "manifest_version": 2,
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "firefox@deasciifier.com",
+      "strict_min_version": "55.0"
+    }
+  }
+}

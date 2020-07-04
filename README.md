@@ -24,7 +24,8 @@ ant -Dconfig.name=Debug build-all
 
 This will write build artifacts to the `output/` directory. JavaScript artifacts can be found under `output/js/release` (or `output/js/debug`):
 
- - `chrome_extension/`: Directory containing the Chrome extension code
+ - `chrome_extension/`: Directory containing Chrome extension code
+ - `firefox_extension/`: Directory containing Firefox extension code
  - `deasciifier.min.js`: Minified JS library
  - `deasciifier.patterns.min.js`: Minified pattern data
  - `deasciify_box.lib.min.js`: Minified DeasciifyBox library (deprecated, do not use)

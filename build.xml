@@ -15,7 +15,6 @@
     <!-- Create output directories -->
     <mkdir dir="${output.dir}" />
     <mkdir dir="${output.dir}/js" />
-    <mkdir dir="${output.dir}/js/gen" />
 
     <!-- Log directory for Closure Compiler output -->
     <mkdir dir="${logs.dir}" />
@@ -90,9 +89,10 @@
       </filterchain>
     </concat>
 
-    <!-- Patterns -->
-    <copy tofile="${deasciifier.js.patterns.debug}"
-        file="${output.dir}/js/gen/patterns.js"/>
+    <!-- Copy patterns from Release build. -->
+    <copy file="${deasciifier.js.patterns.release}"
+        tofile="${deasciifier.js.patterns.debug}"
+        failonerror="true"/>
     <echo message="DONE"/>
   </target>
 
@@ -159,7 +159,7 @@
       <arg value="(function(){%output%})();"/>
     </exec>
 
-    <echo message="Building deasciifier patterns using Closure Compiler.."/>
+    <echo message="Building deasciifier patterns using Closure Compiler..."/>
     <exec
         executable="java"
         dir="${basedir}"
@@ -257,6 +257,47 @@
 
     <!-- Copy icon -->
     <copy tofile="${chrome.extension.dir}/g-logo.png"
+      file="resources/icon80x80.png"/>
+
+    <echo message="DONE"/>
+  </target>
+
+  <!--==========================================================================
+    Builds Firefox extension
+  ===========================================================================-->
+  <target name="build-firefox-extension"
+      depends="build-deasciifier-js, read-chromeextension-version">
+
+    <echo message="Building Firefox Extension at ${firefox.extension.dir} (no debug version)"/>
+    <delete dir="${firefox.extension.dir}" />
+    <mkdir dir="${firefox.extension.dir}/lib"/>
+
+    <copy todir="${firefox.extension.dir}">
+      <fileset dir="${basedir}/src/firefox_extension" includes="*" />
+    </copy>
+
+    <!-- Copy compiled deasciifier JS -->
+    <copy todir="${firefox.extension.dir}/lib"
+        file="${deasciifier.js.lib.release}" />
+
+    <!-- Copy compiled patterns -->
+    <copy todir="${firefox.extension.dir}/lib"
+        file="${deasciifier.js.patterns.release}" />
+
+    <!-- Html deasciifier -->
+    <!-- <copy todir="${firefox.extension.dir}/lib"
+        file="src/js/utils/html_deasciifier.js" /> -->
+
+    <!-- Html decoder -->
+    <!-- <copy todir="${firefox.extension.dir}/lib"
+        file="src/js/utils/html_decoder.js" /> -->
+
+    <!-- Text helper -->
+    <copy todir="${firefox.extension.dir}/lib"
+        file="src/js/utils/text_helper.js" />
+
+    <!-- Copy icon -->
+    <copy tofile="${firefox.extension.dir}/g-logo.png"
       file="resources/icon80x80.png"/>
 
     <echo message="DONE"/>
@@ -395,7 +436,7 @@
   ===========================================================================-->
   <target name="build-all"
     depends="build-deasciifier-js-init, build-deasciifier-js, build-chrome-extension,
-    build-safari-extension, build-deasciifybox-js, build-website">
+    build-firefox-extension, build-safari-extension, build-deasciifybox-js, build-website">
   </target>
 
   <target name="help">
@@ -412,6 +453,7 @@
       build-deasciifybox-js          : Builds debug or release deasciifybox based on the value of |config.name|.
 
       build-chrome-extension         : Builds the Chrome Extension.
+      build-firefox-extension        : Builds the Firefox Extension.
       build-safari-extension         : Builds the Safari Extension.
 
       build-website                  : Builds Appengine website.
