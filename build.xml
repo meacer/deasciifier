@@ -15,6 +15,7 @@
     <!-- Create output directories -->
     <mkdir dir="${output.dir}" />
     <mkdir dir="${output.dir}/js" />
+    <mkdir dir="${output.dir}/js/gen" />
 
     <!-- Log directory for Closure Compiler output -->
     <mkdir dir="${logs.dir}" />
@@ -42,7 +43,7 @@
       <arg value="${basedir}/src/js/lib/patterns/template.js"/>
 
       <!-- Compiled patterns (output) -->
-      <arg value="${basedir}/src/js/lib/patterns/_generated_patterns_v2.js"/>
+      <arg value="${output.dir}/js/gen/_generated_patterns_v2.js"/>
     </exec>
   </target>
 
@@ -181,7 +182,7 @@
 
       <!-- Generated pattern list (input) -->
       <arg value="--js"/>
-      <arg value="src/js/lib/patterns/_generated_patterns_v2.js"/>
+      <arg value="${output.dir}/js/gen/_generated_patterns_v2.js"/>
 
       <!-- Closure Compiler exports for patterns -->
       <arg value="--js"/>
