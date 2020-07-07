@@ -18,11 +18,11 @@
   "devDependencies": {
     "@types/chai": "^3.5.2",
     "@types/mocha": "^2.2.48",
-    "@types/node": "^10.17.24",
+    "@types/node": "^10.17.26",
     "browserify": "^13.1.1",
     "chai": "^3.5.0",
     "chromedriver": "^2.46.0",
-    "codemirror": "^5.54.0",
+    "codemirror": "^5.55.0",
     "jquery": "^3.5.1",
     "karma": "^4.4.1",
     "karma-browserify": "^6.1.0",
@@ -36,7 +36,7 @@
     "requirejs": "^2.3.6",
     "selenium-standalone": "^6.17.0",
     "tsify": "^2.0.7",
-    "typescript": "^3.9.3",
+    "typescript": "^3.9.6",
     "watchify": "^3.11.1",
     "webdriver-manager": "^11.1.1",
     "webdriverio": "^5.23.0"
