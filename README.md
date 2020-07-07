@@ -3,12 +3,13 @@
 Deasciifier adds missing accented characters to Turkish text. It's based on Deniz Yuret's [Turkish Mode for Emacs]([https://github.com/denizyuret/deasciify](https://github.com/denizyuret/deasciify)).
 
 This repository contains libraries for JavaScript, C++ and C# as
-well as a website and a Chrome extension.
+well as a website, a Chrome extension and a Firefox add-on.
 
 Website: [https://deasciifier.com](https://deasciifier.com)
 
 Chrome extension: [https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk](https://chrome.google.com/webstore/detail/turkish-deasciifier/nhfdmlgglfmcdheoabgklabmgjklgofk)
 
+Firefox add-on: [https://addons.mozilla.org/en-US/firefox/addon/deasciifier/](https://addons.mozilla.org/en-US/firefox/addon/deasciifier/)
 
 ## Build instructions
 
