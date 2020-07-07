@@ -35,3 +35,25 @@ Minification of JS code is done using [Closure Compiler](https://developers.goog
 ### TypeScript
 
 The v2 version of the library is written in TypeScript. See [src/typescript/README.md](src/typescript/README.md).
+
+
+### Website
+
+The website runs on Google App Engine.
+
+To run it locally, first [install the SDK](https://cloud.google.com/appengine/downloads) for Standard Python environment. Then:
+
+```
+# Build all targets
+ant build-all
+
+# Build v2 Typescript library
+cd src/typescript
+npm run-script build
+
+cd ../../website
+dev_appserver.py .
+
+```
+
+You can now load the site at `http://localhost:8080`.
