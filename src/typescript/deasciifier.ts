@@ -62,6 +62,14 @@ export class Asciifier implements TextProcessor {
 export const URL_REGEX: RegExp
   = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
 
+// This regex only matches strings that end with whitespace, end of string,
+// non-letter or non-number (punctuation, symbol, etc). We can only check this
+// for this regex because it must end with one of the known TLDs (com, co.uk,
+// etc.). The other two regexes could end with anything (e.g. URL_REGEX will
+// match http://google.come).
+export const HOSTNAME_REGEX: RegExp
+  = /(([a-z0-9\-\.]+)\.(com|co\.uk|org|net|tr|ru|de|fr|nl)(?=(\p{Punctuation}|\p{Symbol}|\p{Separator}|\p{Other}|\s|$)))/gui;
+
 export const EMAIL_REGEX: RegExp
   = /((^|\s).*)?@(.*\s)?/gi;
 
@@ -72,6 +80,7 @@ class DefaultSkipFilter {
     let regexps: Array<RegExp> = [];
     if (options && options.skipURLs) {
       regexps.push(URL_REGEX);
+      regexps.push(HOSTNAME_REGEX);
       regexps.push(EMAIL_REGEX);
     }
     let skipList: Array<TextRange> = [];

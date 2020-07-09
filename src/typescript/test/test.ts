@@ -62,32 +62,82 @@ function keysOf(dict: { [key: string]: any }): Array<string> {
 }
 
 describe('Deasciifier', function () {
-  it('should detect URLs', function () {
-    const URLS: Array<string> = [
-      "http://www.google.com",
-      " http://www.google.com ",
-      "http://google.com",
-      "https://www.google.com",
-      "ftp://www.google.com",
-      "www.google.com",
-      "www.google.net",
-      "www.google"
+  it('should detect URLs and hostnames', function () {
+    function match(input: string) : RegExpMatchArray {
+      let m = input.match(deasciifier.URL_REGEX);
+      if (m) {
+        return m;
+      }
+      return input.match(deasciifier.HOSTNAME_REGEX);
+    }
+
+    class TestCase {
+      public constructor(
+        public readonly text: string,
+        public readonly matched: string) {
+          if (this.matched == "<self>") {
+            this.matched = text;
+          }
+      }
+    }
+
+    const URLS: Array<TestCase> = [
+        // URLs:
+        new TestCase("http://www.google.com", "<self>"),
+        new TestCase(" http://www.google.com ", "http://www.google.com"),
+        new TestCase("http://google.com", "<self>"),
+        new TestCase("https://www.google.com", "<self>"),
+        new TestCase("ftp://www.google.com", "<self>"),
+        new TestCase("http:// google.com", "google.com"),
+        // TODO: These should match http://www.google.com instead:
+        new TestCase(" http://www.google.com'a", "http://www.google.com'a"),
+        new TestCase(" http://www.google.com.", "http://www.google.com."),
+        // TODO: Should ignore if the hostname doesn't have a dot:
+        new TestCase("http://www", "<self>"),
+        // TODO: Should ignore if the hostname doesn't have letters:
+        new TestCase("http:///", "<self>"),
+
+        // Hostnames:
+        new TestCase("www.google.com", "<self>"),
+        new TestCase("www.google.net", "<self>"),
+        new TestCase("www.google", "<self>"),
+        new TestCase("google.com", "google.com"),
+        new TestCase("google.com.", "google.com"),
+        new TestCase("google.com ", "google.com"),
+        new TestCase("google.com\n", "google.com"),
+        new TestCase("google.com'a", "google.com"),
+        new TestCase("google.com-a", "google.com"),
+        new TestCase("google.com test", "google.com"),
+        new TestCase("google.co.uk test", "google.co.uk"),
+        new TestCase("google.com.tr", "google.com.tr"),
+        new TestCase("google.tr",  "google.tr"),
+        new TestCase("openoffice.org",  "openoffice.org"),
     ];
+
     const NON_URLS: Array<string> = [
       "Test",
       "Test.string",
       "www",
       "www. Test",
-      "http:// google.com",
-      "google.com"
+      "http://",
+      "google.co",
+      "google.co.",
+      "google.come",
+      "google.com1",
+      "google.comü",
+      "google-com",
+      "google.test",
     ];
-    // Matches
+    // Matches:
     for (let i = 0; i < URLS.length; i++) {
-      assert.isNotNull(URLS[i].match(deasciifier.URL_REGEX), "Case " + i);
+      let m = match(URLS[i].text);
+      let t = URLS[i];
+      assert.isNotNull(m, "Case " + i + ": " + URLS[i]);
+      assert.equal(t.matched, m[0], "Case " + i + ": " + URLS[i]);
     }
-    // Non-matches
+    // Non-matches:
     for (let i = 0; i < NON_URLS.length; i++) {
-      assert.isNull(NON_URLS[i].match(deasciifier.URL_REGEX), "Case " + i);
+      assert.isNull(match(NON_URLS[i]), "Case " + i + ": " + URLS[i]);
     }
   });
 
