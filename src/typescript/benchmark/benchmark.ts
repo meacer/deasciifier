@@ -44,8 +44,11 @@ function getDifference(left: Set<number>, right: Set<number>): Set<number> {
   return difference;
 }
 
-
+console.log("Processing ", input_path);
 let text = fs.readFileSync(input_path, "utf8");
+console.log("File read, deasciifying...");
+
+let startTime = new Date().getTime();
 let asciifier = new deasciifier.Asciifier();
 let deasc = new deasciifier.Deasciifier();
 deasc.init(PATTERNS);
@@ -72,8 +75,9 @@ misses.forEach(function(pos: number) {
    console.log(showContext(text, pos));
 });
 console.log("=== Stats ===");
-console.log("ASCIIfied characters: " , asciiPositions.size);
-console.log("DEASCIIfied characters: " , deasciiPositions.size);
-console.log("Overlap: ", intersection.size, " ", Math.floor(intersection.size * 100 / asciiPositions.size), "%");
-console.log("Misses: ", misses.size, " ", Math.floor(misses.size * 100 / asciiPositions.size), "%");
-console.log("False positives: ", false_positives.size, " ", Math.floor(false_positives.size * 100 / asciiPositions.size), "%");
+console.log("Elapsed time:           %d seconds ", Math.floor((new Date().getTime() - startTime) / 1000));
+console.log("ASCIIfied characters:   %d", asciiPositions.size);
+console.log("DEASCIIfied characters: %d", deasciiPositions.size);
+console.log("Overlap:         %d (%d%%)", intersection.size, Math.floor(intersection.size * 100 / asciiPositions.size));
+console.log("Misses:          %d (%d%%)", misses.size, Math.floor(misses.size * 100 / asciiPositions.size));
+console.log("False positives: %d (%d%%)", false_positives.size, Math.floor(false_positives.size * 100 / asciiPositions.size));
