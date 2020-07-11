@@ -3,10 +3,11 @@ import * as fs from "fs";
 import * as process from "process"
 
 if (process.argv.length <= 2) {
-  throw "Last parameter must be the input file name";
+  throw "Usage: benchmark <input_file> <optional_output_file>";
 }
 
-let input_path = process.argv[process.argv.length - 1];
+let input_path = process.argv[2];
+let output_path = (process.argv.length > 3) ? process.argv[3] : null;
 
 // TODO: Load from .json.
 const PATTERNS = {
@@ -81,3 +82,13 @@ console.log("DEASCIIfied characters: %d", deasciiPositions.size);
 console.log("Overlap:         %d (%d%%)", intersection.size, Math.floor(intersection.size * 100 / asciiPositions.size));
 console.log("Misses:          %d (%d%%)", misses.size, Math.floor(misses.size * 100 / asciiPositions.size));
 console.log("False positives: %d (%d%%)", false_positives.size, Math.floor(false_positives.size * 100 / asciiPositions.size));
+
+if (output_path) {
+  fs.writeFile(output_path, deascii.text,  function(err) {
+    if (err) {
+      throw err;
+    } else {
+      console.log("Wrote deasciified text at %s", output_path);
+    }
+  });
+}
