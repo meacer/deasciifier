@@ -1,10 +1,8 @@
-
+// A basic string buffer that only supports operations needed by Deasciifier.
 export class StringBuffer {
-  //private text: string;
   private arr: Array<string>;
 
   constructor(text: string) {
-    //this.text = text;
     this.arr = text.split("");
   }
 
