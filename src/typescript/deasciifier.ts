@@ -6,6 +6,7 @@ import {
   TextFilter, TextResult
 } from "./common"
 import { TURKISH_ASCIIFY_TABLE, TURKISH_CHAR_ALIST } from "./turkish"
+import { StringBuffer } from './util'
 
 class SkipList implements TextFilter {
   constructor(private skipRegions: Array<TextRange>) { }
@@ -149,10 +150,6 @@ function make_turkish_toggle_accent_table(): { [key: string]: string } {
   return ct;
 }
 
-function setCharAt(str: string, pos: number, c: string): string {
-  return str.substring(0, pos) + c + str.substring(pos + 1);
-}
-
 export class Deasciifier implements TextProcessor {
   private initialized: boolean;
   public turkish_pattern_table: { [key: string]: { [key: string]: number } };
@@ -191,33 +188,33 @@ export class Deasciifier implements TextProcessor {
     if (end > text.length) {
       end = text.length;
     }
+    const output = new StringBuffer(text);
 
     let changedPositions: number[] = [];
     for (let i: number = start; i < end; i++) {
       if (filter && filter.shouldExclude(i)) {
         continue;
       }
-      if (this.turkish_need_correction(text, i)) {
-        text = this.turkish_toggle_accent(text, i);
+      if (this.turkish_need_correction(output, i)) {
+        this.turkish_toggle_accent(output, i);
         changedPositions.push(i);
       }
     }
     return <TextResult>{
-      text: text,
+      text: output.toString(),
       changedPositions: changedPositions,
       //skippedRegions: filter
     };
   }
 
-  turkish_toggle_accent(text: string, pos: number): string {
+  turkish_toggle_accent(text: StringBuffer, pos: number) {
     let alt = this.TURKISH_TOGGLE_ACCENT_TABLE[text.charAt(pos)];
     if (alt) {
-      return setCharAt(text, pos, alt);
+      text.setCharAt(pos, alt);
     }
-    return text;
   }
 
-  turkish_need_correction(text: string, pos: number): boolean {
+  turkish_need_correction(text: StringBuffer, pos: number): boolean {
     let ch: string = text.charAt(pos);
     let tr: string = TURKISH_ASCIIFY_TABLE[ch];
     if (!tr) {
@@ -236,7 +233,7 @@ export class Deasciifier implements TextProcessor {
   }
 
   turkish_match_pattern(
-    text: string, pos: number, decision_list: any): boolean {
+    text: StringBuffer, pos: number, decision_list: any): boolean {
     // TODO: Figure out if this should be negative. When positive, the default
     // behavior is to deasciify the character (e.g. no pattern matches and
     // rank remains equal to Number.MAX_VALUE)
@@ -263,15 +260,15 @@ export class Deasciifier implements TextProcessor {
     return rank > 0;
   }
 
-  turkish_get_context(text: string, pos: number, size: number): string {
+  turkish_get_context(text: StringBuffer, pos: number, size: number): string {
     // s is initially (2 * size + 1) spaces.
-    let s: string = Array(2 * size + 1 + 1).join(' ');
-    s = setCharAt(s, size, 'X');
+    let sb = new StringBuffer(" ".repeat(size) + "X" + " ".repeat(size));
+    const len = sb.length();
 
     let space: boolean = false;
     let i: number = size + 1;
     let index: number = pos + 1;
-    while (i < s.length && !space && index < text.length) {
+    while (i < len && !space && index < text.length()) {
       let c: string = text.charAt(index);
       let x: string = this.TURKISH_DOWNCASE_ASCIIFY_TABLE[c];
       if (!x) {
@@ -280,14 +277,14 @@ export class Deasciifier implements TextProcessor {
           space = true;
         }
       } else {
-        s = setCharAt(s, i, x);
+        sb.setCharAt(i, x);
         i++;
         space = false;
       }
       index++;
     }
 
-    s = s.substring(0, i);
+    sb = new StringBuffer(sb.substring(0, i));
     index = pos;  // goto_char(p);
     i = size - 1;
     space = false;
@@ -302,13 +299,13 @@ export class Deasciifier implements TextProcessor {
           space = true;
         }
       } else {
-        s = setCharAt(s, i, x);
+        sb.setCharAt(i, x);
         i--;
         space = false;
       }
       index--;
     }
-    return s;
+    return sb.toString();
   }
 
   build_skip_list(text: string, options: TextProcessingOptions): SkipList {
