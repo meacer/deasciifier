@@ -9,6 +9,7 @@
   "files": [
     "test.ts",
     "browser_test.ts",
-    "view_test.ts"
+    "view_test.ts",
+    "util_test.ts"
   ]
 }
