@@ -7,7 +7,7 @@
   },
   "scripts": {
     "preunit-test": "tsc --project test/",
-    "unit-test": "mocha out/test/test.js && mocha out/test/view_test.js",
+    "unit-test": "mocha out/test/test.js && mocha out/test/view_test.js && mocha out/test/util_test.js",
     "browser-test": "karma start karma.conf.js",
     "preinteractive-test": "tsc --project interactive_test/ && browserify interactive_test/interactive_bundle.js -o out/interactive_bundle.js && browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o out/test-bundle.js",
     "interactive-test": "node_modules/protractor/bin/protractor interactive_test/protractor.conf.js",
