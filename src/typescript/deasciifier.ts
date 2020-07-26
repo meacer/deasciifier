@@ -158,6 +158,7 @@ export class Deasciifier implements TextProcessor {
   private TURKISH_UPCASE_ACCENTS_TABLE: { [key: string]: string };
   private TURKISH_TOGGLE_ACCENT_TABLE: { [key: string]: string };
   private patternListLoadedCallback: any;
+  private contextPlaceholder: string;
 
   constructor() {
     this.initialized = false;
@@ -167,6 +168,15 @@ export class Deasciifier implements TextProcessor {
       make_turkish_upcase_accents_table();
     this.TURKISH_TOGGLE_ACCENT_TABLE =
       make_turkish_toggle_accent_table();
+
+    this.contextPlaceholder = "";
+    for (var i = 0; i < TURKISH_CONTEXT_SIZE; i++) {
+      this.contextPlaceholder += " ";
+    }
+    this.contextPlaceholder += "X";
+    for (var i = 0; i < TURKISH_CONTEXT_SIZE; i++) {
+      this.contextPlaceholder += " ";
+    }
   }
 
   setPatternListLoadedCallback(callback: any) {
@@ -262,7 +272,10 @@ export class Deasciifier implements TextProcessor {
 
   turkish_get_context(text: StringBuffer, pos: number, size: number): string {
     // s is initially (2 * size + 1) spaces.
-    let sb = new StringBuffer(" ".repeat(size) + "X" + " ".repeat(size));
+    if (this.contextPlaceholder.length != size * 2 + 1) {
+      throw "Incorrect context size";
+    }
+    let sb = new StringBuffer(this.contextPlaceholder);
     const len = sb.length();
 
     let space: boolean = false;
