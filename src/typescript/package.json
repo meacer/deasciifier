@@ -14,7 +14,8 @@
     "test": "npm run -s unit-test && npm run -s browser-test && npm run -s interactive-test",
     "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
     "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
-    "benchmark": "tsc --project benchmark/ && node out/benchmark/benchmark.js"
+    "benchmark": "tsc --project benchmark/ && node out/benchmark/benchmark.js",
+    "cleanup-text": "tsc --project benchmark/ && node out/benchmark/cleanup.js"
   },
   "devDependencies": {
     "@types/chai": "^3.5.2",
