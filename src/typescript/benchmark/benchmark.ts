@@ -2,6 +2,7 @@ import * as deasciifier from '../deasciifier'
 import * as fs from "fs";
 import * as process from "process"
 import { stringify } from 'querystring';
+import { TextProcessingOptions } from '../common';
 
 if (process.argv.length <= 2) {
   throw "Usage: benchmark <input_file> <optional_output_file>";
@@ -67,10 +68,11 @@ let asciifier = new deasciifier.Asciifier();
 let deasc = new deasciifier.Deasciifier();
 deasc.init(loadPatterns());
 
-let ascii = asciifier.process(text, null);
+const options = new TextProcessingOptions(true);
+let ascii = asciifier.process(text, options);
 
 let startTime = new Date().getTime();
-let deascii = deasc.process(ascii.text, null);
+let deascii = deasc.process(ascii.text, options);
 let endTime = new Date().getTime();
 
 let asciiPositions = new Set<number>();
