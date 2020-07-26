@@ -49,14 +49,15 @@ console.log("Processing ", input_path);
 let text = fs.readFileSync(input_path, "utf8");
 console.log("File read, deasciifying...");
 
-let startTime = new Date().getTime();
 let asciifier = new deasciifier.Asciifier();
 let deasc = new deasciifier.Deasciifier();
 deasc.init(PATTERNS);
 
-
 let ascii = asciifier.process(text, null);
+
+let startTime = new Date().getTime();
 let deascii = deasc.process(ascii.text, null);
+let endTime = new Date().getTime();
 
 let asciiPositions = new Set<number>();
 let deasciiPositions = new Set<number>();
@@ -76,7 +77,7 @@ misses.forEach(function(pos: number) {
    console.log(showContext(text, pos));
 });
 console.log("=== Stats ===");
-console.log("Elapsed time:           %d seconds ", Math.floor((new Date().getTime() - startTime) / 1000));
+console.log("Elapsed time:           %d seconds ", Math.floor((endTime - startTime) / 1000));
 console.log("ASCIIfied characters:   %d", asciiPositions.size);
 console.log("DEASCIIfied characters: %d", deasciiPositions.size);
 console.log("Overlap:         %d (%d%%)", intersection.size, Math.floor(intersection.size * 100 / asciiPositions.size));
