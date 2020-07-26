@@ -18,7 +18,7 @@ aren't handled by the deasciifier. Such texts can be cleaned up using
 the `cleanup.ts` script as follows:
 
 ```
-npm run-script cleanup <input-file> <output-file>
+npm run-script cleanup-text <input-file> <output-file>
 ```
 
 This will remove some (but not all) such characters from the text.
