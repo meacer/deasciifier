@@ -6,15 +6,14 @@
     "test": "test"
   },
   "bin": {
-    "webdriver-manager": "node_modules/webdriver-manager/bin/webdriver-manager"
+    "protractor": "./node_modules/protractor/bin/protractor"
   },
   "scripts": {
-    "webdriver-manager-update": "webdriver-manager update",
     "preunit-test": "tsc --project test/",
     "unit-test": "mocha out/test/test.js && mocha out/test/view_test.js && mocha out/test/util_test.js",
     "browser-test": "karma start karma.conf.js",
     "preinteractive-test": "tsc --project interactive_test/ && browserify interactive_test/interactive_bundle.js -o out/interactive_bundle.js && browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o out/test-bundle.js",
-    "interactive-test": "node_modules/protractor/bin/protractor interactive_test/protractor.conf.js",
+    "interactive-test": "protractor interactive_test/protractor.conf.js",
     "test": "npm run -s unit-test && npm run -s browser-test && npm run -s interactive-test",
     "watch": "watchify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
     "build": "browserify app.ts --standalone DeasciifierApp -p [ tsify --noImplicitAny ] -o ../../website/static/ts/bundle.js",
@@ -40,12 +39,9 @@
     "mocha": "^5.2.0",
     "protractor": "^7.0.0",
     "requirejs": "^2.3.6",
-    "selenium-standalone": "^6.20.0",
     "tsify": "^2.0.7",
     "typescript": "^3.9.6",
-    "watchify": "^3.11.1",
-    "webdriver-manager": "^12.1.7",
-    "webdriverio": "^5.23.0"
+    "watchify": "^3.11.1"
   },
   "repository": {
     "type": "git",
