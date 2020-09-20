@@ -11,6 +11,8 @@ Chrome extension: [https://chrome.google.com/webstore/detail/turkish-deasciifier
 
 Firefox add-on: [https://addons.mozilla.org/en-US/firefox/addon/deasciifier/](https://addons.mozilla.org/en-US/firefox/addon/deasciifier/)
 
+[![Actions Status](https://github.com/meacer/deasciifier/workflows/TypeScript%20Build/badge.svg)](https://github.com/meacer/deasciifier/actions)
+
 ## Build instructions
 
 The build tool is Apache Ant (https://ant.apache.org/). Install it and build the project as follows:
@@ -58,3 +60,4 @@ dev_appserver.py .
 ```
 
 You can now load the site at `http://localhost:8080`.
+
