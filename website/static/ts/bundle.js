@@ -475,9 +475,10 @@ exports.CorrectionMenu = CorrectionMenu;
 /// <reference path="./common.ts" />
 /// <reference path="./turkish.ts" />
 exports.__esModule = true;
-exports.Deasciifier = exports.EMAIL_REGEX = exports.URL_REGEX = exports.Asciifier = void 0;
+exports.Deasciifier = exports.EMAIL_REGEX = exports.HOSTNAME_REGEX = exports.URL_REGEX = exports.Asciifier = void 0;
 var common_1 = require("./common");
 var turkish_1 = require("./turkish");
+var util_1 = require("./util");
 var SkipList = /** @class */ (function () {
     function SkipList(skipRegions) {
         this.skipRegions = skipRegions;
@@ -531,6 +532,12 @@ var Asciifier = /** @class */ (function () {
 }());
 exports.Asciifier = Asciifier;
 exports.URL_REGEX = /\b((((https?|ftp|file):\/\/)|(www\.))[^\s]+)/gi;
+// This regex only matches strings that end with whitespace, end of string,
+// non-letter or non-number (punctuation, symbol, etc). We can only check this
+// for this regex because it must end with one of the known TLDs (com, co.uk,
+// etc.). The other two regexes could end with anything (e.g. URL_REGEX will
+// match http://google.come).
+exports.HOSTNAME_REGEX = /(([a-z0-9\-\.]+)\.(com|co\.uk|org|net|tr|ru|de|fr|nl)(?=(\p{Punctuation}|\p{Symbol}|\p{Separator}|\p{Other}|\s|$)))/gui;
 exports.EMAIL_REGEX = /((^|\s).*)?@(.*\s)?/gi;
 var DefaultSkipFilter = /** @class */ (function () {
     function DefaultSkipFilter() {
@@ -540,6 +547,7 @@ var DefaultSkipFilter = /** @class */ (function () {
         var regexps = [];
         if (options && options.skipURLs) {
             regexps.push(exports.URL_REGEX);
+            regexps.push(exports.HOSTNAME_REGEX);
             regexps.push(exports.EMAIL_REGEX);
         }
         var skipList = [];
@@ -604,9 +612,6 @@ function make_turkish_toggle_accent_table() {
     }
     return ct;
 }
-function setCharAt(str, pos, c) {
-    return str.substring(0, pos) + c + str.substring(pos + 1);
-}
 var Deasciifier = /** @class */ (function () {
     function Deasciifier() {
         this.initialized = false;
@@ -616,6 +621,14 @@ var Deasciifier = /** @class */ (function () {
             make_turkish_upcase_accents_table();
         this.TURKISH_TOGGLE_ACCENT_TABLE =
             make_turkish_toggle_accent_table();
+        this.contextPlaceholder = "";
+        for (var i = 0; i < TURKISH_CONTEXT_SIZE; i++) {
+            this.contextPlaceholder += " ";
+        }
+        this.contextPlaceholder += "X";
+        for (var i = 0; i < TURKISH_CONTEXT_SIZE; i++) {
+            this.contextPlaceholder += " ";
+        }
     }
     Deasciifier.prototype.setPatternListLoadedCallback = function (callback) {
         this.patternListLoadedCallback = callback;
@@ -633,27 +646,27 @@ var Deasciifier = /** @class */ (function () {
         if (end > text.length) {
             end = text.length;
         }
+        var output = new util_1.StringBuffer(text);
         var changedPositions = [];
         for (var i = start; i < end; i++) {
             if (filter && filter.shouldExclude(i)) {
                 continue;
             }
-            if (this.turkish_need_correction(text, i)) {
-                text = this.turkish_toggle_accent(text, i);
+            if (this.turkish_need_correction(output, i)) {
+                this.turkish_toggle_accent(output, i);
                 changedPositions.push(i);
             }
         }
         return {
-            text: text,
+            text: output.toString(),
             changedPositions: changedPositions
         };
     };
     Deasciifier.prototype.turkish_toggle_accent = function (text, pos) {
         var alt = this.TURKISH_TOGGLE_ACCENT_TABLE[text.charAt(pos)];
         if (alt) {
-            return setCharAt(text, pos, alt);
+            text.setCharAt(pos, alt);
         }
-        return text;
     };
     Deasciifier.prototype.turkish_need_correction = function (text, pos) {
         var ch = text.charAt(pos);
@@ -696,12 +709,15 @@ var Deasciifier = /** @class */ (function () {
     };
     Deasciifier.prototype.turkish_get_context = function (text, pos, size) {
         // s is initially (2 * size + 1) spaces.
-        var s = Array(2 * size + 1 + 1).join(' ');
-        s = setCharAt(s, size, 'X');
+        if (this.contextPlaceholder.length != size * 2 + 1) {
+            throw "Incorrect context size";
+        }
+        var sb = new util_1.StringBuffer(this.contextPlaceholder);
+        var len = sb.length();
         var space = false;
         var i = size + 1;
         var index = pos + 1;
-        while (i < s.length && !space && index < text.length) {
+        while (i < len && !space && index < text.length()) {
             var c = text.charAt(index);
             var x = this.TURKISH_DOWNCASE_ASCIIFY_TABLE[c];
             if (!x) {
@@ -711,13 +727,13 @@ var Deasciifier = /** @class */ (function () {
                 }
             }
             else {
-                s = setCharAt(s, i, x);
+                sb.setCharAt(i, x);
                 i++;
                 space = false;
             }
             index++;
         }
-        s = s.substring(0, i);
+        sb = new util_1.StringBuffer(sb.substring(0, i));
         index = pos; // goto_char(p);
         i = size - 1;
         space = false;
@@ -732,13 +748,13 @@ var Deasciifier = /** @class */ (function () {
                 }
             }
             else {
-                s = setCharAt(s, i, x);
+                sb.setCharAt(i, x);
                 i--;
                 space = false;
             }
             index--;
         }
-        return s;
+        return sb.toString();
     };
     Deasciifier.prototype.build_skip_list = function (text, options) {
         if (options && options.skipURLs) {
@@ -803,7 +819,7 @@ var Deasciifier = /** @class */ (function () {
 }());
 exports.Deasciifier = Deasciifier;
 
-},{"./common":2,"./turkish":9}],5:[function(require,module,exports){
+},{"./common":2,"./turkish":9,"./util":10}],5:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
 exports.DomFactoryImpl = exports.DomElementImpl = void 0;
@@ -1249,6 +1265,34 @@ function make_turkish_asciify_table() {
     return table;
 }
 exports.TURKISH_ASCIIFY_TABLE = make_turkish_asciify_table();
+
+},{}],10:[function(require,module,exports){
+"use strict";
+exports.__esModule = true;
+exports.StringBuffer = void 0;
+// A basic string buffer that only supports operations needed by Deasciifier.
+var StringBuffer = /** @class */ (function () {
+    function StringBuffer(text) {
+        this.arr = text.split("");
+    }
+    StringBuffer.prototype.length = function () {
+        return this.arr.length;
+    };
+    StringBuffer.prototype.substring = function (start, end) {
+        return this.arr.slice(start, end).join("");
+    };
+    StringBuffer.prototype.charAt = function (index) {
+        return this.arr[index];
+    };
+    StringBuffer.prototype.setCharAt = function (index, c) {
+        this.arr[index] = c;
+    };
+    StringBuffer.prototype.toString = function () {
+        return this.arr.join("");
+    };
+    return StringBuffer;
+}());
+exports.StringBuffer = StringBuffer;
 
 },{}]},{},[1])(1)
 });
