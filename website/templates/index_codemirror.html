@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<title>Yeni Online Turkish Deasciifier - deasciifier.com v2</title>
+<title>Online Turkish Deasciifier - deasciifier.com</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="Content-Language" content="tr" />
 <meta name="google" value="notranslate">
@@ -18,9 +18,10 @@ deniz yuret, turkish text deasciifier, turkce karakter, otomatik turkce karakter
 if (window.location.hostname == "www.deasciifier.com" ||
     window.location.hostname == "turkce-karakter.appspot.com" ||
     window.location.hostname == "turkce-klavye.appspot.com" ||
+    window.location.hostname == "deascii.com" ||
     (window.location.hostname == "deasciifier.com" &&
      window.location.protocol == "http:")) {
-  window.location = "https://deasciifier.com/v2";
+  window.location = "https://deasciifier.com/";
 }
 </script>
 <!-- Google Analytics -->
@@ -502,12 +503,11 @@ ga('send', 'pageview');
     </div>
   </div>
 </div>
-
 <div class="text-container">
   <textarea id="txt" placeholder="Çevirmek istediğiniz metni buraya giriniz."></textarea>
 </div>
 <div style="margin: 0 auto; width: 100%; text-align: center; margin-top: 2em; margin-bottom: 1em">
-  deasciifier.com - 2018
+  deasciifier.com 2020 -  <a href="/v1" style="color: #333; font-weight: bold" target="_blank">Eski site</a>
 </div>
 <script>
 var editor = CodeMirror.fromTextArea(document.getElementById("txt"), {
