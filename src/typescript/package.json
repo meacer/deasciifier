@@ -30,7 +30,7 @@
     "codemirror": "^5.57.0",
     "jquery": "^3.5.1",
     "karma": "^6.3.2",
-    "karma-browserify": "^7.0.0",
+    "karma-browserify": "^8.1.0",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-commonjs-require": "0.0.3",
@@ -41,7 +41,7 @@
     "requirejs": "^2.3.6",
     "tsify": "^2.0.7",
     "typescript": "^3.9.7",
-    "watchify": "^3.11.1"
+    "watchify": "^4.0.0"
   },
   "repository": {
     "type": "git",
