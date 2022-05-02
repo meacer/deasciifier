@@ -42,9 +42,7 @@ The v2 version of the library is written in TypeScript. See [src/typescript/READ
 
 ### Website
 
-The website runs on Google App Engine.
-
-To run it locally, first [install the SDK](https://cloud.google.com/appengine/downloads) for Standard Python environment. Then:
+The website is a static page. To build, do the following:
 
 ```
 # Build all targets
@@ -55,9 +53,9 @@ cd src/typescript
 npm run-script build
 
 cd ../../website
-dev_appserver.py .
+python3 -m http.server
 
 ```
 
-You can now load the site at `http://localhost:8080`.
+You can now load the site at `http://localhost:8000`.
 
