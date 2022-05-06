@@ -34,7 +34,7 @@
         failonerror="true"
         failifexecutionfails="true">
       <!-- Compilation script -->
-      <arg value="${basedir}/build/compile_patterns.py"/>
+      <arg value="${basedir}/src/util/compile_patterns.py"/>
 
       <!-- Source patterns (input) -->
       <arg value="${basedir}/src/js/lib/patterns/patterns.json"/>
@@ -58,7 +58,7 @@
         failifexecutionfails="true"
         outputproperty="chrome.extension.version">
 
-      <arg value="build/chrome_extension_version.py"/>
+      <arg value="src/util/chrome_extension_version.py"/>
 
       <arg value="${basedir}/src/chrome_extension/manifest.json"/>
     </exec>
