@@ -15,7 +15,11 @@ Firefox add-on: [https://addons.mozilla.org/en-US/firefox/addon/deasciifier/](ht
 
 ## Build instructions
 
-The build tool is Apache Ant (https://ant.apache.org/). Install it and build the project as follows:
+The build uses:
+- python3
+- Apache Ant (https://ant.apache.org/)
+
+Build the project as follows:
 
 ```
 # Release build:

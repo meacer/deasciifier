@@ -29,7 +29,7 @@
       depends="build-deasciifier-js-init">
     <!-- Pattern Version 2 -->
     <exec
-        executable="python"
+        executable="python3"
         dir="${basedir}"
         failonerror="true"
         failifexecutionfails="true">
@@ -52,7 +52,7 @@
   ===========================================================================-->
   <target name="read-chromeextension-version">
     <exec
-        executable="python"
+        executable="python3"
         dir="${basedir}"
         failonerror="true"
         failifexecutionfails="true"
