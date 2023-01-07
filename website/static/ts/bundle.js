@@ -24,12 +24,12 @@ var CodeMirrorEditor = /** @class */ (function () {
     function CodeMirrorEditor(editor, eventListener) {
         this.editor = editor;
         this.eventListener = eventListener;
-        editor.getWrapperElement().onkeyup = function (e) {
-            eventListener.onKeyUp(e.keyCode);
-        };
-        editor.getWrapperElement().onclick = function (e) {
+        editor.getWrapperElement().addEventListener('keyup', function (e) {
+            eventListener.onKeyUp(e.key);
+        });
+        editor.getWrapperElement().addEventListener('click', function (e) {
             eventListener.onClick();
-        };
+        });
     }
     CodeMirrorEditor.prototype.setText = function (text, range) {
         if (range) {
@@ -147,11 +147,11 @@ var DeasciiBox = /** @class */ (function () {
     DeasciiBox.prototype.oncorrectiontextchange = function (text) {
         this.textEditor.setText(text, this.correctionMenuSelection);
     };
-    DeasciiBox.prototype.onKeyUp = function (keyCode) {
+    DeasciiBox.prototype.onKeyUp = function (key) {
         if (!this.app_options_.enableAutoConvert) {
             return;
         }
-        if (text_helper_1.TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
+        if (key == 'Enter' || key == 'Tab' || text_helper_1.TextHelper.isSeparatorChar(key)) {
             this.deasciifyCursor();
         }
     };
@@ -309,8 +309,8 @@ var App = /** @class */ (function () {
     App.prototype.hideCorrectionMenu = function () {
         this.deasciiBox.hideCorrectionMenu();
     };
-    App.prototype.onKeyUp = function (keyCode) {
-        this.deasciiBox.onKeyUp(keyCode);
+    App.prototype.onKeyUp = function (key) {
+        this.deasciiBox.onKeyUp(key);
     };
     App.prototype.onClick = function () {
         this.deasciiBox.onClick();

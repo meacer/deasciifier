@@ -381,7 +381,7 @@ ga('send', 'pageview');
       <ul class="nav navbar-nav">
         <li class="navbar-li-active">
           <button id="deasciify-btn" class="btn btn-default navbar-btn"
-              title="cgiosu → çğıöşü">
+              title="cgiosu → çğıöşü" aria-label="Deasciify Button">
             <i class="fas fa-star hidden-xs"></i>
             <span class="hidden-xs">Deasciify</span>
             <span class="visible-xs">D</span>
@@ -389,7 +389,7 @@ ga('send', 'pageview');
         </li>
         <li>
           <button id="asciify-btn" class="btn btn-default navbar-btn"
-              title="çğıöşü → cgiosu">
+              title="çğıöşü → cgiosu" aria-label="Asciify Button">
             <span class="hidden-xs">Asciify</span>
             <span class="visible-xs">A</span>
           </button>
@@ -504,7 +504,7 @@ ga('send', 'pageview');
   </div>
 </div>
 <div class="text-container">
-  <textarea id="txt" placeholder="Çevirmek istediğiniz metni buraya giriniz."></textarea>
+  <textarea id="txt" role="textbox" placeholder="Çevirmek istediğiniz metni buraya giriniz."></textarea>
 </div>
 <div style="margin: 0 auto; width: 100%; text-align: center; margin-top: 2em; margin-bottom: 1em">
   deasciifier.com 2022 - <a href="/v1.html" style="color: #333; font-weight: bold" target="_blank">Eski site</a>
@@ -607,7 +607,8 @@ window.Deasciifier.onPatternListLoaded = function(patternList) {
   var sc = document.createElement("script");
   sc.type = "text/javascript";
   sc.async = true;
-  sc.src = "/static/js/_generated_patterns.js?2";
+  // Copy the date from ../build.properties
+  sc.src = "/static/js/generated_patterns_20221107.js";
   var s = document.getElementsByTagName("script")[0];
   s.parentNode.insertBefore(sc, s);
 })();

@@ -343,7 +343,7 @@
     <!-- Patterns file -->
     <echo>Copy deasciifier.patterns.js</echo>
     <copy file="${deasciifier.js.patterns.release}"
-        tofile="${website.local.jsdir}/deasciifier.patterns.js"
+        tofile="${website.local.jsdir}/generated_patterns_${website.releaseDate}.js"
         failonerror="true"/>
   </target>
 
