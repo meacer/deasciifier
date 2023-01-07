@@ -32,8 +32,10 @@ describe('App', function () {
     let marks: codemirror.TextMarker[] = cm.getDoc().getAllMarks();
     assert.equal(expected.length, marks.length);
     for (let i = 0; i < expected.length; i++) {
-      expect({ line: 0, ch: expected[i], sticky: null }).to.eql(marks[i].find().from);
-      expect({ line: 0, ch: expected[i] + 1, sticky: null }).to.eql(marks[i].find().to);
+      expect({
+        from: { line: 0, ch: expected[i], sticky: null },
+        to: { line: 0, ch: expected[i] + 1, sticky: null }
+      }).to.eql(marks[i].find());
     }
   }
 
