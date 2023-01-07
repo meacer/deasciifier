@@ -48,8 +48,5 @@
   },
   "homepage": "https://deasciifier.com",
   "author": "meacer",
-  "license": "MIT",
-  "dependencies": {
-    "acorn": "^6.4.1"
-  }
+  "license": "MIT"
 }
