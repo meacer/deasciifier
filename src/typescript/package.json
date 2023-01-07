@@ -17,12 +17,12 @@
     "cleanup-text": "tsc --project benchmark/ && node out/benchmark/cleanup.js"
   },
   "devDependencies": {
-    "@types/chai": "^3.5.2",
+    "@types/chai": "latest",
     "@types/codemirror": "^5.60.6",
     "@types/mocha": "^2.2.48",
     "@types/node": "^10.17.35",
     "browserify": "^13.3.0",
-    "chai": "^3.5.0",
+    "chai": "latest",
     "chromedriver": "latest",
     "codemirror": "^5.65.11",
     "jquery": "^3.5.1",
