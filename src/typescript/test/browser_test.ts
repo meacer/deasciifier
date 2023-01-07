@@ -143,7 +143,7 @@ describe('App', function () {
 
     let new_pos = cm.getDoc().posFromIndex(index + text.length);
     cm.getDoc().setSelection(new_pos, null);
-    app.onKeyUp(text.charCodeAt(0));
+    app.onKeyUp(text.charAt(0));
   }
 
   function putString(text: string, index: number = -1) {

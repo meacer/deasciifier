@@ -15,20 +15,19 @@ test('deasciify button works', async ({ page }) => {
   const deasciifyButton = page.locator('role=button[name="Deasciify Button"]');
   await expect(deasciifyButton).toBeVisible();
   deasciifyButton.click();
-  // await page.waitForTimeout(1000);
 
   const codemirror = page.locator('.CodeMirror-code');
   await expect(codemirror).toHaveText("Ağaç");
 });
 
-test('ctrl a doesnt deasciify', async ({ page }) => {
+test('ctrl+a should not deasciify', async ({ page }) => {
   await page.goto('/');
 
   const textbox = page.getByRole('textbox');
   await expect(textbox).toBeVisible();
   textbox.focus();
 
-  let macOS = process.platform === 'darwin' //darwin is macOS
+  let macOS = process.platform === 'darwin';
   await page.keyboard.type('Agac');
   await page.keyboard.press(macOS ? 'Meta+A' : 'Control+A');
 

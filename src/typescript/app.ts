@@ -48,19 +48,19 @@ interface TextEditor {
 }
 
 interface TextEditorEventListener {
-  onKeyUp(keyCode: number): void;
+  onKeyUp(key: string): void;
   onClick(): void;
 }
 
 class CodeMirrorEditor implements TextEditor {
   constructor(
     private editor: any, private eventListener: TextEditorEventListener) {
-    editor.getWrapperElement().onkeyup = function (e: any) {
-      eventListener.onKeyUp(e.keyCode);
-    }
-    editor.getWrapperElement().onclick = function (e: any) {
+    editor.getWrapperElement().addEventListener('keyup', function (e: KeyboardEvent) {
+      eventListener.onKeyUp(e.key);
+    });
+    editor.getWrapperElement().addEventListener('click', function (e: MouseEvent) {
       eventListener.onClick();
-    }
+    });
   }
 
   public setText(text: string, range?: TextRange) {
@@ -203,11 +203,11 @@ class DeasciiBox {
     this.textEditor.setText(text, this.correctionMenuSelection);
   }
 
-  public onKeyUp(keyCode: number) {
+  public onKeyUp(key: string) {
     if (!this.app_options_.enableAutoConvert) {
       return;
     }
-    if (TextHelper.isSeparatorChar(String.fromCharCode(keyCode))) {
+    if (key == 'Enter' || key == 'Tab' || TextHelper.isSeparatorChar(key)) {
       this.deasciifyCursor();
     }
   }
@@ -404,8 +404,8 @@ export class App implements TextEditorEventListener {
     this.deasciiBox.hideCorrectionMenu();
   }
 
-  public onKeyUp(keyCode: number) {
-    this.deasciiBox.onKeyUp(keyCode);
+  public onKeyUp(key: string) {
+    this.deasciiBox.onKeyUp(key);
   }
 
   public onClick() {
