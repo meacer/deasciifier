@@ -37,12 +37,19 @@
   },
 
   "commands": {
-    "DEASCIIFY_SHORTCUT": {
+    "DEASCIIFY_SELECTED_TOGGLE": {
       "suggested_key": {
         "default": "Alt+Shift+D",
         "mac": "Command+Alt+D"
       },
       "description": "Deasciify the selected text"
+    },
+    "AUTO_DEASCIIFY_TOGGLE": {
+      "suggested_key": {
+        "default": "Alt+Shift+A",
+        "mac": "Command+Alt+A"
+      },
+      "description": "Toggle auto-deasciify"
     }
   }
 }

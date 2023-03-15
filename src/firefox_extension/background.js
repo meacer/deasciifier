@@ -179,7 +179,13 @@ Deasciifier.onPatternListLoaded = function(patternListV2) {
 }
 
 browser.commands.onCommand.addListener(function (command) {
-  if (command === "DEASCIIFY_SHORTCUT") {
+  if (command === "DEASCIIFY_SELECTED_TOGGLE") {
     ConvertTurkishChars();
+  }
+
+  if (command === "AUTO_DEASCIIFY_TOGGLE") {
+    browser.tabs.executeScript({ file: "execute.js" }, function () {
+      browser.tabs.executeScript({ code: "toggleAutoDeasciify();" });
+    });
   }
 });
