@@ -177,3 +177,9 @@ chrome.contextMenus.create({
 Deasciifier.onPatternListLoaded = function(patternListV2) {
   Deasciifier.init(patternListV2);
 }
+
+browser.commands.onCommand.addListener(function (command) {
+  if (command === "DEASCIIFY_SHORTCUT") {
+    ConvertTurkishChars();
+  }
+});
